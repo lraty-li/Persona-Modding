@@ -1,0 +1,10 @@
+ffmpeg -i out1.mp4 -i out2.mp4 -i out3.mp4 -i out4.mp4 -filter_complex "[0:v]pad=iw*2:ih*2[a];[a][1:v]overlay=w[b];[b][2:v]overlay=0:h[c];[c][3:v]overlay=w:h" out.mp4
+
+ffmpeg -i MOV302_x4.mkv -i MOV302_x4.mkv -i MOV302_x4.mkv -i MOV302_x4.mkv -filter_complex "[0:v]pad=iw*2:ih*2[a];[a][1:v]overlay=w[b];[b][2:v]overlay=0:h[c];[c][3:v]overlay=w:h" out.mkv
+
+
+ffmpeg -i MOV318.mkv -i MOV318.mkv -i MOV318.mkv -filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0]concat=n=3:v=1:a=1[outv][outa]" -map "[outv]" -map "[outa]" MOV318_loop3.mkv
+
+ffmpeg -f concat -safe 0 -i filelist.txt -c copy output.mkv
+
+ffmpeg -i MOV302.mkv -filter_complex "[0:v:0][0:a:0]concat=n=1:v=1:a=1[outv][outa]" -map "[outv]" -map "[outa]" output.mkv
