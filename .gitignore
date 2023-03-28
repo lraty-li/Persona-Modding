@@ -1,1 +1,5 @@
-classify_sound_file\backups
+classify_sound_file/backups
+classify_sound_file/cache
+classify_sound_file/__pycache__
+classify_sound_file/fileList.txt
+classify_sound_file/fileList.txt

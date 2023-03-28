@@ -1,0 +1,41 @@
+_vgmt_acb_ext_E080_001 总数一致，但是索引刚好完全错开
+
+_vgmt_acb_ext_E100_101 field/party/support
+
+_vgmt_acb_ext_E100_201 vp 8 0 0  MEssage里引用全 0？
+
+_vgmt_acb_ext_E101_001 
+
+
+\_vgmt_acb_ext_E489_230\ 约瑟 通用语气词？ 
+  cue1 在印象空间碰到时的语音 FIELD\INIT\FINI_191_001.BF.msg  MEME_GREETING_mes01? 第一声不像
+  某个事件？ 
+
+_vgmt_acb_ext_E512_060 第三学期 约瑟第一次喝花
+https://www.bilibili.com/video/BV1G54y1W7P3?p=4 27:40
+都是 [vp 8 0 0 0 
+
+
+script 单独处理， flow中搜索SND_VOICE_DNGEVT_SETUP
+
+sound: 486 30
+script : 151_002
+F:\Game\p5r_cpk\FIELD\HIT\FHIT_151_002_00.BF.flow # var16 = FLD_SCRIPT_READ( 151, 2, 110 );
+F:\Game\p5r_cpk\SCRIPT\FIELD\FSCR0151_002_110.BF.msg
+
+取消之前的狗屎顺序配对
+
+
+bed message 
+F:\Game\p5r_cpk\SOUND\FACILITY\FACI_BE 00349
+
+
+_vgmt_acb_ext_E080_001
+_vgmt_acb_ext_E080_003 ID刚好完全错开，长度刚好一致，但游戏确实调用了,并且仅此一处有message(event_data/message)
+
+
+
+伦布郎 kf_event 
+CALL_KF_EVENT
+F:\Game\p5r_cpk\FIELD\HIT\FHIT_003_002_00.BF.msg
+F:\Game\p5r_cpk\SOUND\EVENT\_vgmt_acb_ext_E105_302_00\awb
