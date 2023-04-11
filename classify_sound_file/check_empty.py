@@ -1,6 +1,7 @@
 from common import *
 
-soundMap = loadJson("./soundMap-readable.json")
+soundMapName = "soundMap"
+soundMap = loadJson(soundMapName)
 
 soundNoRef = []
 
@@ -21,11 +22,12 @@ for i in soundMap:
     counterSum += 1
       # print(i,j)
 
-with open("soundMap_shrinked.json", 'w+', encoding='utf8') as file:
-  file.write(json.dumps(soundMap, ensure_ascii=False))
+# with open("soundMap_shrinked.json", 'w+', encoding='utf8') as file:
+#   file.write(json.dumps(soundMap, ensure_ascii=False))
 
 # print(soundNoRef)
-with open("empty.txt", 'w+', encoding='utf8') as file:
+soundNoRef = ["all : {}\nunmatch : {}\nunmatch rate : {:.2f}%".format(counterSum, counterEmpty, counterEmpty/counterSum * 100), *soundNoRef]
+with open("unmatch-{}.txt".format(soundMapName), 'w+', encoding='utf8') as file:
   file.writelines([str(i)+"\n" for i in soundNoRef])
 print("{} {} {}" .format(counterEmpty, counterSum, counterEmpty/counterSum))
 # all : 36654

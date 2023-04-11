@@ -4,3 +4,7 @@ classify_sound_file/__pycache__
 classify_sound_file/fileList.txt
 classify_sound_file/fileList.txt
 classify_sound_file/AtlusScriptCompiler.log
+classify_sound_file/msgMap*
+classify_sound_file/soundMap*
+classify_sound_file/unmatch*
+classify_sound_file/.vscode/tasks.json
