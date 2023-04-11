@@ -13,10 +13,11 @@ paths = [
 #     SND_VOICE_DNGEVT_SETUP( 486, 30 );
 
 
-def filterFlow(folderRoot, sndIvokMap):
+def filterFlow(msgFolderRoot, folderRoot, sndIvokMap):
   # filter flows with sound refer
 
-  scriptFieldRoot = r"F:\Game\p5r_cpk\SCRIPT\FIELD"
+  # scriptFieldRoot = r"F:\Game\p5r_cpk\SCRIPT\FIELD"
+  scriptFieldRoot = os.path.join(msgFolderRoot, 'SCRIPT', 'FIELD')
   reMSGInvokPattern = r'MSG\( \w+ \);'
 
   flows = os.listdir(folderRoot)
@@ -104,11 +105,11 @@ def filterFlow(folderRoot, sndIvokMap):
 
   return sndIvokMap
 
-def dumpAllsndVoiceDNGSetUpPaths(paths):
+def dumpAllsndVoiceDNGSetUpPaths(msgFolderRoot, paths):
   refMap = []
   for path in paths:
     soundMap = {}
-    refMap.append(filterFlow(path, soundMap))
+    refMap.append(filterFlow(msgFolderRoot, os.path.join(msgFolderRoot, *path), soundMap))
   return refMap
 
 if __name__ == '__main__':

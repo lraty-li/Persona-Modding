@@ -147,30 +147,33 @@ def isVoice(line):
 
 
 def cutLine(line):
-  tagStarts = [i for i, x in enumerate(line) if x == "["]
-  tagEnds = [i for i, x in enumerate(line) if x == "]"]
+  # tagStarts = [i for i, x in enumerate(line) if x == "["]
+  # tagEnds = [i for i, x in enumerate(line) if x == "]"]
 
   index = 0
   text = ""
   tags = []
   vpTags = []
 
-  # cut out tags
-  for i, j in zip(tagStarts, tagEnds):
-    tags.append(line[i:j+1])
+  tags = re.findall(r'\[[\w| ]+\]', line)
+  texts = re.findall(r'(?<=\])[^\[]+(?=\[)', line)
+  text = "".join(texts)
+  # # cut out tags
+  # for i, j in zip(tagStarts, tagEnds):
+  #   tags.append(line[i:j+1])
 
-  # cut out text
-  joinedList = list(zip(tagEnds[:-1], tagStarts[1:]))
-  flatedJoinedList = list(flatten(joinedList))
-  for i, j in joinedList:
-    if abs(j - i) == 1:
-      flatedJoinedList.remove(i)
-      flatedJoinedList.remove(j)
-  if(len(flatedJoinedList) == 0):
-    return text, vpTags
-    # no text
-    # MSG_025_5_0 E400\E409_001.BMD.msg
-  text = line[flatedJoinedList[0] + 1: flatedJoinedList[-1]]
+  # # cut out text
+  # joinedList = list(zip(tagEnds[:-1], tagStarts[1:]))
+  # flatedJoinedList = list(flatten(joinedList))
+  # for i, j in joinedList:
+  #   if abs(j - i) == 1:
+  #     flatedJoinedList.remove(i)
+  #     flatedJoinedList.remove(j)
+  # if(len(flatedJoinedList) == 0):
+  #   return text, vpTags
+  #   # no text
+  #   # MSG_025_5_0 E400\E409_001.BMD.msg
+  # text = line[flatedJoinedList[0] + 1: flatedJoinedList[-1]]
 
   # pre prgress
 
@@ -186,7 +189,7 @@ def dumpJson(fileName, obj, sureAscii = False):
 
 
 def loadJson(filePath):
-  with open(filePath, 'r', encoding='utf8') as file:
+  with open("{}.json".format(filePath), 'r', encoding='utf8') as file:
     return json.load(file)
 
 

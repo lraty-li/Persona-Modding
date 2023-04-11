@@ -6,7 +6,7 @@ from field_hit_init_msg import dumpAllsndVoiceDNGSetUpPaths
 from gather_MEG_VOICE import matchAwbMsg
 from datetime import datetime
 
-msgFolderRoot = r'F:\Game\p5r_cpk\JP'
+msgFolderRoot = r'F:\Game\p5r_cpk\SC'
 
 soundFolderRoot = r'F:\Game\p5r_cpk\SOUND\EVENT'
 
@@ -33,44 +33,54 @@ singleLineEventIdPaths = [
 
 sndVoiceDNGSetUpPaths = [
     # SND_VOICE_DNGEVT_SETUP( eventId, eventSubId)
-    os.path.join(msgFolderRoot, 'FIELD', 'HIT'),
-    os.path.join(msgFolderRoot, 'FIELD', 'INIT'),
-    os.path.join(msgFolderRoot, 'SCRIPT', 'FIELD'),
+    ('FIELD', 'HIT'),
+    ('FIELD', 'INIT'),
+    ('SCRIPT', 'FIELD'),
 ]
 
 # unpack all bmd/bf
-def unPackAll(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths):
-    dumpTargetPaths = [
+
+
+def unPackAll(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths, charset='p5R_chinese_sim'):
+  dumpTargetPaths = [
       *list(eventDataPaths.keys()),
       *singleLineEventIdPaths,
       *sndVoiceDNGSetUpPaths
-    ]
-    for dumpPath in dumpTargetPaths:
-      for root, _, fileNames in os.walk(dumpPath):
-        targetFiles = [i for i in fileNames if(i.endswith('.BF') or i.endswith('.BMD'))]
-        for name in targetFiles:
-          os.system(deCompilerPath + " " + os.path.join(root, name)+ " " + "-Decompile -Library P5 -Encoding p5R_chinese_sim")
+  ]
+  for dumpPath in dumpTargetPaths:
+    for root, _, fileNames in os.walk(dumpPath):
+      targetFiles = [i for i in fileNames if(i.endswith('.BF') or i.endswith('.BMD'))]
+      for name in targetFiles:
+        # TODO P5R_Japanese
+        os.system(deCompilerPath + " " + os.path.join(root, name) + " " + "-Decompile -Library P5 -Encoding {}".format(charset))
 
 
 def getMsgMap(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths):
   msgMap = []
   # SND_VOICE_DNGEVT_SETUP flow
-  msgMap += dumpAllsndVoiceDNGSetUpPaths(sndVoiceDNGSetUpPaths)
+  msgMap += dumpAllsndVoiceDNGSetUpPaths(msgFolderRoot, sndVoiceDNGSetUpPaths)
 
   # event_data
   msgMap += dumpEventDataMsg(eventDataPaths)
 
   # single line event, flow
   msgMap += dumpAllSngLineMsgs(singleLineEventIdPaths)
-  dumpJson("msgMap".format(datetime.timestamp(datetime.now())), msgMap)
   return msgMap
 
+
 if __name__ == '__main__':
-  # unPackAll(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths)
+  msgMapName = "msgMap-{}".format(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+  soundMapName = "soundMap-{}".format(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 
-  # msgMap = getMsgMap(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths)
+  # unPackAll(
+  #     [os.path.join(msgFolderRoot, *i) for i in sndVoiceDNGSetUpPaths],
+  #     eventDataPaths,
+  #     singleLineEventIdPaths)
 
-  msgMap = loadJson("./msgMap-jp.json")
+  msgMap = getMsgMap(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths)
+  dumpJson(msgMapName, msgMap)
+
+  msgMap = loadJson(msgMapName)
   # match awbs
   soundMap = matchAwbMsg(soundFolderRoot, msgMap)
-  dumpJson("soundMap-jp", soundMap)
+  dumpJson(soundMapName, soundMap)
