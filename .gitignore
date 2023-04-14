@@ -8,3 +8,4 @@ classify_sound_file/msgMap*
 classify_sound_file/soundMap*
 classify_sound_file/unmatch*
 classify_sound_file/.vscode/tasks.json
+classify_sound_file/.vscode/launch.json

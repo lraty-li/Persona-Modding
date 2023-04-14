@@ -1,4 +1,5 @@
-from matplotlib.cbook import flatten
+# from matplotlib.cbook import flatten
+import os
 import json
 import re
 from enum import Enum
@@ -29,6 +30,10 @@ paths = {
 #   startingIndex = 0
 #   for index in scopsSplitInex:
 #     cuts.append(functionField[startingIndex])
+
+
+def createFolder(folderPath):
+  os.makedirs(folderPath, exist_ok=True, mode=0o777)
 
 
 def getAdxId(adxName):
@@ -183,13 +188,17 @@ def cutLine(line):
   return text, vpTags
 
 
-def dumpJson(fileName, obj, sureAscii = False):
-  with open("{}.json".format(fileName), 'w', encoding='utf8') as file:
+def dumpJson(fileName, obj, sureAscii=False):
+  if(not filePath[-5:] == '.json'):
+    filePath += '.json'
+  with open(fileName, 'w', encoding='utf8') as file:
     file.write(json.dumps(obj, ensure_ascii=sureAscii))
 
 
 def loadJson(filePath):
-  with open("{}.json".format(filePath), 'r', encoding='utf8') as file:
+  if(not filePath[-5:] == '.json'):
+    filePath += '.json'
+  with open(filePath, 'r', encoding='utf8') as file:
     return json.load(file)
 
 

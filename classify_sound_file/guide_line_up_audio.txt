@@ -1,0 +1,16 @@
+
+https://ffmpeg.org/download.html
+https://www.python.org/downloads/
+pip install ffmpeg
+
+python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+
+https://github.com/lraty-li/Persona-Modding
+https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
+https://code.visualstudio.com/download
+git clone https://gitee.com/lraty/Persona-Modding.git
+
+
