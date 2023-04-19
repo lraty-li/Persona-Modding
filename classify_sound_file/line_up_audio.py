@@ -1,4 +1,3 @@
-import ffmpeg
 import subprocess
 import os
 from datetime import datetime, timedelta
@@ -8,28 +7,41 @@ import re
 
 # ===================================================================
 
+# 以下编辑都要注意切换成英文输入法
+# 希望生成视频的对象，这些名称来源于P5R_sound_classfied文件夹的文件夹名字，每一位以引号包住，之后以逗号分隔。
+# 如果希望同时将多为对象生成为一个视频，例如武见_妙，穿朋克装的女性，为同一人，除了用引号各自包起来之外，再加多一层中括号。还是看看下面的例子吧。
 speakers = [
-    # '艾丝卡鲁格•拉拉', #BUG '艾丝卡鲁格•拉拉', '•' invalidate
-    # '米莱迪',
-    # ['拉雯妲', '诗(拉雯妲)'],
-    # ['芳泽_堇', '芳泽_跋', '芳泽_'],
-    # ['新岛_真', '真的声音', '(SE)新岛_真', '(通信)少女的声音(新岛_真)'],
-    # '约瑟',
-    # ['佐仓_双叶', '(NAVI)佐仓_双叶', '(SE)佐仓_双叶', '(通信)少女的声音(佐仓_双叶)', '暗影双叶'],
-    ['导航App语音', '导航的声音', '异世界导航App']
+    '艾丝卡鲁格•拉拉',  # BUG '艾丝卡鲁格•拉拉', '•' invalidate
+    '米莱迪',
+    ["武见_妙", "穿朋克装的女性"],
+    ['拉雯妲', '诗(拉雯妲)'],
+    ['芳泽_堇', '芳泽_跋', '芳泽_'],
+    ['新岛_真', '真的声音', '(SE)新岛_真', '(通信)少女的声音(新岛_真)'],
+    '约瑟',
+    ['佐仓_双叶', '(NAVI)佐仓_双叶', '(SE)佐仓_双叶', '(通信)少女的声音(佐仓_双叶)', '暗影双叶'],
+    ['导航App语音', '导航的声音', '异世界导航App'],
 ]
 
+# 以上的例如 “['新岛_真', '真的声音', '(SE)新岛 ...” 的命名都会使用第一个对象的名字作为名字， "新岛_真"，生成 新岛_真.mp4, 新岛_真.srt 等
+
+# 希望生成的视频的图片的位置，例如回到以下路径去寻找 新岛_真.png 生成视频，支持png.jpg
 imgsRoot = r'E:\Code\Git\Persona-Modding\classify_sound_file\cache'
-spksRoot = r'E:\Temp\p5r_sound_event-20230411\P5R_sound_classfied'
 
+# 解压分类好的文件后，能够看到各自语音的文件夹。
+spksRoot = r'E:\Temp\p5r_sound_event-20230414\P5R_sound_classfied'
 
-textMapPath = r'E:\Temp\p5r_sound_event-20230411\soundMapSpeaker-2023-04-12-01-21-06.json'
+# soundMapSpeaker... json文件的路径
+textMapPath = r'E:\Code\Git\Persona-Modding\classify_sound_file\soundMapSpeaker-2023-04-14-13-11-02.json'
+
+# 生成的视频，字幕等的输出路径
 outPutFolderRoot = r'E:\Code\Git\Persona-Modding\classify_sound_file\cache'
+
+
 vgmtool = r'D:\Game\P5RModding\vgmstream-win64\vgmstream-cli.exe'
 ffmpeg = r'D:\.bin\ffmpeg.exe'
 ffprobe = r'D:\.bin\ffprobe.exe'
 
-
+# 是否将字幕文件嵌入mp4视频,False 为关闭
 embedSubtitles = True
 
 # ===================================================================
