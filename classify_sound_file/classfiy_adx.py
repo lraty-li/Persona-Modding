@@ -1,4 +1,4 @@
-from common import loadJson, ConstString, addToMap, dumpJson
+from scripts.common import loadJson, ConstString, addToMap, dumpJson
 from datetime import datetime
 from shutil import copyfile
 import os
@@ -32,16 +32,16 @@ for folder in soundMapJson:
 
       # copy file
       dstPath = os.path.join(outPutFolder, speaker, newAdxName)
-      os.makedirs(os.path.dirname(dstPath), exist_ok=True)
+      # os.makedirs(os.path.dirname(dstPath), exist_ok=True)
       try:
-        if(os.path.exists(dstPath)):
-          # print("{} exists".format(dstPath))
-          continue
-        copyfile(os.path.join(soundFolderRoot, folder, 'awb', adxName), dstPath)
+        # if(os.path.exists(dstPath)):
+        #   print("{} exists".format(dstPath))
+        #   continue
+        # copyfile(os.path.join(soundFolderRoot, folder, 'awb', adxName), dstPath)
         soundMapSpeaker = addToMap([speaker, newAdxName], soundMapSpeaker, data[ConstString.msgText.value])
       except Exception as e:
         print(e)
         print("copy {},{} to  {} fail".format(folder, adxName, dstPath))
 
-dumpJson(soundMapName.replace('soundMap', 'soundMapSpeaker'), soundMapSpeaker)
+dumpJson(soundMapName.replace('soundMap', 'soundMapSpeaker-jp-'), soundMapSpeaker)
 print("DONE")

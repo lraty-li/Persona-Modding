@@ -188,10 +188,10 @@ def cutLine(line):
   return text, vpTags
 
 
-def dumpJson(fileName, obj, sureAscii=False):
+def dumpJson(filePath, obj, sureAscii=False):
   if(not filePath[-5:] == '.json'):
     filePath += '.json'
-  with open(fileName, 'w', encoding='utf8') as file:
+  with open(filePath, 'w', encoding='utf8') as file:
     file.write(json.dumps(obj, ensure_ascii=sureAscii))
 
 

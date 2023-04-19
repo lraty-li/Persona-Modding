@@ -1,7 +1,7 @@
 import subprocess
 import os
 from datetime import datetime, timedelta
-from common import loadJson, createFolder
+from scripts.common import loadJson, createFolder
 import random
 import re
 

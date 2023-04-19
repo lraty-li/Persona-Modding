@@ -1,16 +1,73 @@
+原地址（点击绿色的code按钮，里面有下载压缩包）
+https://github.com/lraty-li/Persona-Modding
+方便国内访问：
+https://gitee.com/lraty/Persona-Modding.git
 
+‍但是生成视频的是改完了（其实就是在测试的时候发现混进来了其他人的语音，然后一些别的事情堆上来就情绪有点控制不好）。你可以在转换得到所有wav之后，全部添加到播放列表挂着听听哪条语音不对。对于主要角色来说匹配错的可能比较少，也是因为这样之前就没有发现。之后我再从匹配上尝试解决这些问题。
+
+必须要装的：
+ffmpeg，解压得到ffmpeg.exe，ffprobe.exe，用于视频处理
 https://ffmpeg.org/download.html
-https://www.python.org/downloads/
-pip install ffmpeg
 
+python3以上即可
+https://www.python.org/downloads/
+
+Windows的话下载 vgmstream-win64.zip 即可，用于将adx转为wav 
+https://github.com/vgmstream/vgmstream/releases/
+
+
+可选（可以完全不做）：
+vscode编辑器(高高高级记事本)，可以再百度一下安装python插件
+https://code.visualstudio.com/download
+
+替换pip源为清华源
+https://mirrors.tuna.tsinghua.edu.cn/help/pypi/
 python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
+命令到哪里输入？
+win 加 r键，然后输入powershell，回车。会弹出一个蓝色窗口（cmd.exe），替换pip源中提到的命令或者之后的运行python脚本都在这里输入。
+如果你安装了vscode，在顶部的"查看"-"终端"，即可打开类似的窗口。
+
+运行脚本
+python line_up_audio.py
 
 
-https://github.com/lraty-li/Persona-Modding
-https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
-https://code.visualstudio.com/download
-git clone https://gitee.com/lraty/Persona-Modding.git
+line_up_audio.py中根据你自己的要求，开头部分要修改的有：
+
+# 以下编辑都要注意切换成英文输入法
+# 希望生成视频的对象，这些名称来源于P5R_sound_classfied文件夹的文件夹名字，每一位以引号包住，之后以逗号分隔。
+# 如果希望同时将多为对象生成为一个视频，例如武见_妙，穿朋克装的女性，为同一人，除了用引号各自包起来之外，再加多一层中括号。还是看看下面的例子吧。
+speakers = [
+    '艾丝卡鲁格•拉拉',  # BUG '艾丝卡鲁格•拉拉', '•' invalid
+    '米莱迪',
+    ["武见_妙", "穿朋克装的女性"],
+    ['拉雯妲', '诗(拉雯妲)'],
+    ['新岛_真', '真的声音', '(SE)新岛_真', '(通信)少女的声音(新岛_真)'],
+    '约瑟',
+    ['导航App语音', '导航的声音', '异世界导航App'],
+]
+
+# 以上的例如 “['新岛_真', '真的声音', '(SE)新岛 ...” 的命名都会使用第一个对象的名字作为名字， "新岛_真"，生成 新岛_真.mp4, 新岛_真.srt 等
+
+# 希望生成的视频的图片的位置，例如回到以下路径去寻找 新岛_真.png 生成视频，支持png.jpg
+imgsRoot = r'E:\Code\Git\Persona-Modding\classify_sound_file\cache'
+
+# 解压分类好的文件后，能够看到各自语音的文件夹。
+spksRoot = r'E:\Temp\p5r_sound_event-20230414\P5R_sound_classfied'
+
+# soundMapSpeaker... json文件的路径
+textMapPath = r'E:\Code\Git\Persona-Modding\classify_sound_file\soundMapSpeaker-2023-04-14-13-11-02.json'
+
+# 生成的视频，字幕等的输出路径
+outPutFolderRoot = r'E:\Code\Git\Persona-Modding\classify_sound_file\cache'
+
+必需安装的软件中，解压得到的exe
+vgmtool = r'D:\Game\P5RModding\vgmstream-win64\vgmstream-cli.exe'
+ffmpeg = r'D:\.bin\ffmpeg.exe'
+ffprobe = r'D:\.bin\ffprobe.exe'
+
+# 是否将字幕文件嵌入mp4视频,False 为关闭
+embedSubtitles = True
 
 

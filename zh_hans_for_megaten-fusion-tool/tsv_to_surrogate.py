@@ -49,7 +49,7 @@ def genSurroagate(chars, fileName, outputFile=False):
         # mCharToCodePoint[char] = CodePoint(
         #       (GLYPH_TABLE_INDEX_MARKER | tableIndex), (tableRelativeIndex), tableIndex = counter)
 
-        mCodePointToChar["{}{}".format(
+        mCodePointToChar["{} {}".format(
             hex((GLYPH_TABLE_INDEX_MARKER | tableIndex))[2:], hex(tableRelativeIndex)[2:])] = char
         counter += 1
     if(outputFile):
@@ -64,6 +64,24 @@ def genSurroagate(chars, fileName, outputFile=False):
 
 
 if __name__ == "__main__":
-    tsvFilePath = "P4.tsv"
+    tsvFilePath = "D:\Game\P5RModding\AtlusScriptToolchain.1\Charsets\p5R_chinese_sim.tsv"
+    # DEBUG END
     chars = readTsv(tsvFilePath)
-    genSurroagate(chars=chars, fileName="{}.txt".format(tsvFilePath))
+    # DEBUG
+    chars2Conver = '我一直都相信你'
+    # DEBUG END
+
+    result = genSurroagate(chars=chars, fileName="{}.txt".format(tsvFilePath))
+    inverseResult={}
+    for key,val in result.items():
+      # TODO tsv值重复
+      if(val == '一'):
+        print(key)
+      inverseResult[val]=key
+    surrgs = []
+    # 救 -> 90 B8
+    for char in chars2Conver:
+      surrgs.append(inverseResult[char])
+      
+    print(" ".join(list(surrgs)))
+    print()

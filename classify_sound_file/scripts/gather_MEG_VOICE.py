@@ -23,7 +23,7 @@ def fillEmpty(acbFolder, adxNames, mapContainer):
 
 def matchMSGLine(acbFolder, adxNames, mapContainer, msgs):
   orderList = [str(i) for i in range(1, 512)]
-  if(acbFolder == "_vgmt_acb_ext_E228_101_00"):
+  if(acbFolder == "_vgmt_acb_ext_E218_003"):
     print()
   
   # global globalAdxCounter
@@ -86,7 +86,7 @@ def matchMSGLine(acbFolder, adxNames, mapContainer, msgs):
     # 移除e000000
     adxNames = list(filter(lambda x : x.startswith("e000000") == False, adxNames))
     # globalAdxCounter += len(adxNames)
-    adxNameMatches = [re.search(r"e[0-9]+_[0-9]+_[0-9]+.adx", adx) for adx in adxNames]
+    adxNameMatches = [re.search(r"e[0-9]+_[0-9]+_[0-9]+(_(\w)+)?.adx", adx) for adx in adxNames]
     adxNameMatches = filter(lambda x : x != None, adxNameMatches)
     adxNames = [match.group(0) for match in adxNameMatches]
     # 分组，可能有不同event 的语音
@@ -94,8 +94,11 @@ def matchMSGLine(acbFolder, adxNames, mapContainer, msgs):
     for adxName in adxNames:
       eventId = adxName[1:4]
       eventSubId = adxName[4:7]
-      if(adxName == 'e748000_021_0006.adx'):
-        print()
+      vpId = adxName.split('_')[1]
+      if(int(vpId) >= 600):
+        # bypass exxxxxx_600_xxx...
+        continue
+
       groupedAdxs = addToMap([eventId, eventSubId], groupedAdxs, [adxName])
 
     for eventId in groupedAdxs:
@@ -106,6 +109,11 @@ def matchMSGLine(acbFolder, adxNames, mapContainer, msgs):
         susMsgGroup = []
         for msgMap in msgs:
           try:
+
+            # msgs[4]['451']['004']
+            # msgs[4]['991']['003']
+            if(eventId == '991' and eventSubId == '003'):
+              print()
             msg = msgMap[eventId][eventSubId]
           except KeyError as e:
             continue
@@ -114,6 +122,8 @@ def matchMSGLine(acbFolder, adxNames, mapContainer, msgs):
         # eventAdxIdsLength = len(eventAdxIds)
         for susMsgs in susMsgGroup:
           for index in range(len(eventAdxNames)):
+            if(eventAdxNames[index] == 'e451004_075_0100.adx'):
+              print()
             try:
               mapContainer = addToMap([acbFolder, eventAdxNames[index]], mapContainer, susMsgs[orderList[index]])
             except KeyError as e:

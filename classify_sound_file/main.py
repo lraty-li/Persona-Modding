@@ -1,9 +1,9 @@
 import os
-from common import dumpJson, ConstString, loadJson
-from loadAllMsg import dumpEventDataMsg
-from single_line_event import dumpAllSngLineMsgs
-from field_hit_init_msg import dumpAllsndVoiceDNGSetUpPaths
-from gather_MEG_VOICE import matchAwbMsg
+from scripts.common import dumpJson, ConstString, loadJson
+from scripts.loadAllMsg import dumpEventDataMsg
+from scripts.single_line_event import dumpAllSngLineMsgs
+from scripts.field_hit_init_msg import dumpAllsndVoiceDNGSetUpPaths
+from scripts.gather_MEG_VOICE import matchAwbMsg
 from datetime import datetime
 
 msgFolderRoot = r'F:\Game\p5r_cpk\SC'
@@ -77,9 +77,10 @@ if __name__ == '__main__':
   #     eventDataPaths,
   #     singleLineEventIdPaths)
 
-  msgMap = getMsgMap(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths)
-  dumpJson(msgMapName, msgMap)
+  # msgMap = getMsgMap(sndVoiceDNGSetUpPaths, eventDataPaths, singleLineEventIdPaths)
+  # dumpJson(msgMapName, msgMap)
 
+  msgMapName = 'E:\Code\Git\Persona-Modding\classify_sound_file\msgMap-2023-04-12-01-21-06.json'
   msgMap = loadJson(msgMapName)
   # match awbs
   soundMap = matchAwbMsg(soundFolderRoot, msgMap)

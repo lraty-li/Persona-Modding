@@ -1,4 +1,4 @@
-from common import *
+from scripts.common import *
 
 soundMapName = "soundMap"
 soundMap = loadJson(soundMapName)
@@ -27,7 +27,7 @@ for i in soundMap:
 
 # print(soundNoRef)
 soundNoRef = ["all : {}\nunmatch : {}\nunmatch rate : {:.2f}%".format(counterSum, counterEmpty, counterEmpty/counterSum * 100), *soundNoRef]
-with open("unmatch-{}.txt".format(soundMapName), 'w+', encoding='utf8') as file:
+with open("unmatch-{}.txt".format(soundMapName.split('\\')[-1]), 'w+', encoding='utf8') as file:
   file.writelines([str(i)+"\n" for i in soundNoRef])
 print("{} {} {}" .format(counterEmpty, counterSum, counterEmpty/counterSum))
 # all : 36654
