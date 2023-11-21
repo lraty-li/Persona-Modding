@@ -1,0 +1,5 @@
+use damo 3d speaker to get voice vector
+place these to 
+https://github.com/alibaba-damo-academy/3D-Speaker  
+
+/speakerlab/bin/infer_sv.py

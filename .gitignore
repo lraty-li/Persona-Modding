@@ -11,3 +11,8 @@ classify_sound_file/.vscode/tasks.json
 classify_sound_file/.vscode/launch.json
 classify_sound_file/speaker_id.json
 classify_sound_file/scripts/__pycache__/
+classify_sound_file_paddle_speech/__pycache__/*
+classify_sound_file_paddle_speech/cache
+classify_sound_file_paddle_speech/use-this-to-test-paddlespeech-install/123456789.wav
+classify_sound_file_paddle_speech/use-this-to-test-paddlespeech-install/85236145389.wav
+classify_sound_file_paddle_speech/.vscode/

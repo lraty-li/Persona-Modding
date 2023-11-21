@@ -1,0 +1,16 @@
+python 3.10.11
+cuda 11.2
+
+fuck you nvidia
+
+using
+python -m pip install paddlepaddle-gpu==2.4.2.post112 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/avx/stable.html
+
+
+>>> math.sqrt(2*(1- 0.4) )
+1.0954451150103321
+
+>>> math.sqrt(2*(1- 0.6) )
+0.8944271909999159
+
+https://github.com/alibaba-damo-academy/3D-Speaker.git
