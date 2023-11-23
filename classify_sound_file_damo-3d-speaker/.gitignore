@@ -1,0 +1,5 @@
+cache
+3D-Speaker/speakerlab/bin/build_annoy_index.py
+*.ann
+*.json
+__pycache__

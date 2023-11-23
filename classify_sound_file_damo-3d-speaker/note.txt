@@ -2,4 +2,30 @@ use damo 3d speaker to get voice vector
 place these to 
 https://github.com/alibaba-damo-academy/3D-Speaker  
 
-/speakerlab/bin/infer_sv.py
+/speakerlab/bin/
+
+--model_id damo/speech_campplus_sv_zh-cn_16k-common --wavs D:\code\git\Persona-Modding\classify_sound_file_paddle_speech\cache\reSampled\SPT01.AWB_869-16000.wav D:\code\git\Persona-Modding\classify_sound_file_paddle_speech\cache\reSampled\SPT02.AWB_1012-16000.wav
+
+
+D:\code\git\Persona-Modding\classify_sound_file_paddle_speech\cache\reSampled\SPT02.AWB_1001-16000.wav
+
+D:\code\git\Persona-Modding\classify_sound_file_paddle_speech\cache\reSampled\SPT01.AWB_869-16000.wav
+D:\code\git\Persona-Modding\classify_sound_file_paddle_speech\cache\reSampled\SPT02.AWB_1012-16000.wav
+
+damo/speech_eres2net_large_sv_zh-cn_3dspeaker_16k
+0.4889240264892578
+0.7601590752601624
+
+damo/speech_campplus_sv_zh-cn_16k-common 
+0.6409692168235779
+0.8325322866439819
+
+paddlepaddle
+0.43729493021965027
+0.6546919345855713
+
+聚类算法
+https://lunarwoffie.com/zh/5-clustering-methods/
+
+https://jimmy-huang.medium.com/kmeans%E5%88%86%E7%BE%A4%E6%BC%94%E7%AE%97%E6%B3%95-%E8%88%87-silhouette-%E8%BC%AA%E5%BB%93%E5%88%86%E6%9E%90-8be17e634589
+
