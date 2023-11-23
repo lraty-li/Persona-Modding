@@ -1,0 +1,35 @@
+https://discord.com/channels/746211612981198989/1082402586197512263
+
+./vgmstream-cli.exe -s 0 -S 50 -o ./temp/temp_?s.wav 'F:/Game/p4g/sound/adx2/v070501.awb'
+
+LRATY — 2023/04/05 03:46
+I'm trying to match voice line with thier text.
+
+https://github.com/vgmstream/vgmstream/blob/master/doc/USAGE.md#vgmstream-cli-command-line-decoder
+you can use dump wavs like this:
+./vgmstream-cli.exe -s 0 -S 50 -o ./temp/temp_?s.wav 'F:/Game/p4g/sound/adx2/v070501.awb'
+
+the "-S 50" from output of  ./vgmstream-cli.exe 'F:/Game/p4g/sound/adx2/v070501.awb'
+stream count: 50 
+
+
+https://discord.com/channels/746211612981198989/1046042733946617886/1098359345911169094
+PM1 is dialogue
+PM2 is events
+PM3 is music
+
+
+p4.tsv 不适用于 .c 
+c - 繁体
+ck - 简体
+
+vp tag, n 为语音号
+[f 6 1 6 2 0 n ] 
+f 3 1 1 0 0 n 
+
+[f 6 1 6 0 480 480] 需要就近连接
+
+070500 支援语音
+490001 迷宫内语音？
+
+废案导致speaker不准确，例如被删除的问答事件，speaker全部为kuma
