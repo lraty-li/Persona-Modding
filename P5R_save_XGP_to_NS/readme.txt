@@ -7,11 +7,12 @@
     ├─container.1
 ...
 
-SYSTEM.DAT文件会相对一般的存档文件DATA.DAT小很多，另外container文件也能够区分，用二进制读取即可看到
+SYSTEM.DAT文件会相对一般的存档文件DATA.DAT小很多，另外container文件也能够区分，用二进制读取即可看到。
+实际上把SYSTEM.DAT(68A8F400A4EC461C9E4A863A14D948C3)当作DATA.DAT也不会正常读取，游戏日期会变为4.1，主角以及团队的名字会变回默认
 
 
 The SYSTEM.DAT file will be much smaller than the general game save file DATA.DAT. And the container file can also be distinguished by reading it in binary.
-
+Actually, treating SYSTEM.DAT(68A8F400A4EC461C9E4A863A14D948C3) as DATA.DAT will not be read correctly, the game date will become 4.1, and the protagonist and team names will return to the default
 
 container.205:
 0000h  04 00 00 00 01 00 00 00 53 00 59 00 53 00 54 00  ........S.Y.S.T. 
