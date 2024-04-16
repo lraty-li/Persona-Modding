@@ -1,0 +1,41 @@
+字库识别
+paddle ocr v4, 准确率大于0.9
+
+CK 简体
+CH 繁体
+
+p3p_ns_sc
+
+E:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe E:\Games\switch_rom\out\1\data_CK\umd0\event\e100\e109_001.bf -Decompile -Library p3p -Encoding p3p_ns_sc
+
+e109_001.bf.msg 男主角
+e109_301.bf.msg 女主角
+两个文件中调用的都是v109001.afs内的音频，似乎不用关心301
+v109001_00000 ~ v109001_00016
+e109_001.bf.msg : 0 ~ 10
+e109_301.bf.msg : 11 ~ 16
+如果后缀是301就合并？
+
+e271_001.bf.msg
+e271_301.bf.msg
+编号起始一致
+但音频没有分开，可以确定301表示女主线。“向soundbank获取音频？”
+
+e272_001.bf.msg
+v272001_00033.ADX
+
+e272_002.bf.msg
+v272002_00026.ADX
+
+识别率不够
+all : 7535
+fail : 1683
+>0.9 : 4068
+
+v450001 - v452001 召p语音?
+
+以虎狼丸为例，游戏文本中标注了使用一段空语音，所以我这里根据游戏文本得到的也会出现这条文本。而其中不是狗叫的那段音频也同样，猜测可能是废案
+
+v340003_00014-random664 e340_303.bf->14
+v340004_00014-random664 e340_304.bf -> 14
+搜索300 + 偏移?
