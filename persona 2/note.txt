@@ -1,0 +1,44 @@
+文件archive
+https://ia902201.us.archive.org/view_archive.php?archive=/15/items/def-jam-vendetta-u/Shin%20Megami%20Tensei%20-%20Persona%202%20-%20Innocent%20Sin%20%28US%29.iso
+
+英化
+https://www.reddit.com/r/PERSoNA/comments/of1juo/persona_2_eternal_punishment_psx_localization/?utm_medium=android_app&utm_source=share
+
+https://twitter.com/eiowlta/status/1412679030948700160
+
+
+文件头搜索
+https://mark0.net/onlinetrid.html
+
+1psp 图片
+https://www.psdevwiki.com/ps3/Graphic_Image_Map_(GIM)
+
+解包bin
+https://github.com/Megaflan/ClassicPersonaToolkit
+https://www.psdevwiki.com/ps3/GimConv
+但是解不了event.bin
+
+
+图片工具
+https://www.psdevwiki.com/ps3/GimConv
+
+https://tizzyt-archive.blogspot.com/2013/10/gis2png.html
+https://github.com/noahc3/MinoriTool
+
+./GimConv.exe "D:\game\Persona 2 - Batsu (Japan)(PSN)\PSP_GAME\USRDIR\pack\P2PT_ALL\credit\1.gim" -o out.png
+
+http://www.megaten.ru/Terminal/_PSx__Persona_2_Innocent_Sin_-_English_Script.pdf
+
+here's me splitting it as 2bpp
+https://discord.com/channels/934828922032504852/1218792012862717962/1222231195694403715
+
+
+https://segaxtreme.net/threads/translating-shin-megami-tensei-devil-summoner-soul-hackers.25342/page-2
+
+
+Hi! Well... I'm sorry if this is not the correct channel, but I've been trying to rack my brains to try to translate the PSP versions of P2 IS and EP, well, I'd like to learn and it's hard for me to have to take a translator all the time to better understand what it says, so I would like to know how to extract the texts and then re-implement them, I have been looking for information about this but the information is limited ( or I can't find it well, it may be), if you could help me a little or guide me on what I should do to see the texts, I would be deeply grateful, since both P1 and P2 are the only ones that are not translated into my language because they are the first games of Persona and Atlus forgets about them apparently haha, I'm sorry if my English is not so correct, because the translator helps me, hehe
+https://discord.com/channels/934828922032504852/934876438019080234/1069342105874485248
+
+
+extract_file
+https://discord.com/channels/934828922032504852/934832652828176475/970663107095576636

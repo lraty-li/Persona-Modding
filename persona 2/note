@@ -1,0 +1,8 @@
+node .\p2ep_tool.mjs extract -t all --raw --recursive --iso "d:\game\Persona 2 - Batsu (Japan)(PSN)\Persona 2 - Batsu (Japan)(PSN).iso" -o out
+node .\p2ep_tool.mjs extract -t all --raw --recursive "d:\game\Persona 2 - Batsu (Japan)(PSN)\PSP_GAME\USRDIR\pack\P2PT_ALL\event.bin" -o out
+
+
+function extract_data(argv, buff) {
+  return [];
+}
+是空的
