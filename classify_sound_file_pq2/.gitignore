@@ -12,3 +12,7 @@ AtlusScriptCompiler.log
 *.xllt
 *.xlor
 *.7z
+*.json
+ai_translate/__pycache__
+ai_translate/openai_api_ket.py
+pq(2) 事件文本汉化20240420.pdf
