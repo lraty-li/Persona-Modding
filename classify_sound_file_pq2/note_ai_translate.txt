@@ -1,0 +1,3 @@
+sakura-14b-qwen2beta-v0.9-iq4_xs_ver2.gguf 无法加载 https://github.com/ggerganov/llama.cpp/discussions/3350
+sakura-13b-lnovel-v0.9b-Q4_K_M.gguf 结果乱码
+sakura-1b8-qwen2beta-v0.9.1-fp16.gguf unknown gwen2
