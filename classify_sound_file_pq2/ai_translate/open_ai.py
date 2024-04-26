@@ -1,35 +1,53 @@
 from openai import OpenAI
-
+from queue import Queue
 from openai_api_ket import API_KEY
 
 # Set your OpenAI API key
 MODEL = "gpt-3.5-turbo-0125"
 # OpenAI.api_key = API_KEY
 
+CONTEXT_THREAD_HOLD = 4  # 往前的回复
+contextQueue = Queue(maxsize=CONTEXT_THREAD_HOLD)
 
-def translate(client, japanese_text):
+systemMsg = {
+    "role": "system",
+    "content": "You will be provided with a sentence in japanese, and your task is to translate it into simplified Chinese.",
+}
+
+
+def translate(client, japanese_text, enableContext=False):
+    userMsg = {
+            "role": "user",
+            "content": "{}".format(japanese_text),
+        }
+    requestMsg = []
+    requestMsg.append(systemMsg)
+    requestMsg.append(userMsg)
+    if(enableContext):
+        for contextMsg in contextQueue.queue:
+            requestMsg.append(
+                {
+                    "role": "assistant",
+                    "content": "{}".format(contextMsg),
+                }
+            )
     response = client.chat.completions.create(
         model=MODEL,
-        messages=[
-            # {
-            #     "role": "system",
-            #     "content": "You will be provided with a sentence in English, and your task is to translate it into French.",
-            # },
-            {
-                "role": "user",
-                "content": "translate japanese into just Chinese {}".format(japanese_text),
-            },
-        ],
-        temperature=0.7,
+        messages=requestMsg,
+        temperature=0.9,
         top_p=0.5,
     )
 
     # Extract translated text from the response
     translation = response.choices[0].message.content
-
+    if(enableContext):
+        if(contextQueue.full()):
+            contextQueue.get()
+        contextQueue.put(translate)
     return translation
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 
     japanese_text = "オイオイ、しっかりしろよ。"
 
