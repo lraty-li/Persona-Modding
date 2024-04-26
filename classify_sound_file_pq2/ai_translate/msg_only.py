@@ -25,15 +25,50 @@ def reJoinMsg(ctlStrs, msg):
     # 尝试缝合：
     reJoin = ""
     msgLength = len(msg)
-    msgCtlStrs = len(ctlStrs)
-    if msgCtlStrs > msgLength:
-        for i in range(msgCtlStrs):
+    msgCtlStrsLength = len(ctlStrs)
+    if msgCtlStrsLength > msgLength:
+        for i in range(msgCtlStrsLength):
             reJoin += ctlStrs[i]
             if i < msgLength:
                 reJoin += msg[i]
     else:
         raise Exception("control string more  than msg?")
     return reJoin
+
+
+
+def textPreProgress(text):
+    # DEBUG
+    # text = "　"
+    # DEBUG END
+    text = text.replace("\u3000", "  ")
+    # text = text.replace("…", "..")
+    # matchEllipsis = re.findall(r"…+。", text)
+    # if len(matchEllipsis) > 0:
+    #     text = text.replace("…", "...")
+    return text
+
+
+def reJoinJustMsg(ctlStrs, msg):
+    oriCtlStrs = list(ctlStrs)
+    reJoin = ""
+    msgLength = len(msg)
+    msgCtlStrsLength = len(ctlStrs)
+    ctlStrNeedRemove = []
+    if msgCtlStrsLength > msgLength:
+        for i in range(msgCtlStrsLength):
+            if ctlStrs[i] == "[n]":
+                removeIndex = i
+                ctlStrNeedRemove.append(removeIndex)
+                reJoin += ","
+            if i < msgLength:
+                reJoin += msg[i]
+    else:
+        raise Exception("control string more  than msg?")
+    ctlStrNeedRemove.reverse()
+    for index in ctlStrNeedRemove:
+        ctlStrs.pop(index)
+    return reJoin, ctlStrs
 
 
 # 要记录原本控制字符得信息，回填。总之能拼出来跟结构一模一样的文本
@@ -67,7 +102,12 @@ def parseLine(text):
         print(text)
         print(reJoin)
         raise Exception("rejoin mismatch!")
-    return [msg, ctlStrs]#use list for json
+    # 把[n] 合并掉，
+    # TODO 之后拼回来的时候再手动添加
+    joinedMsg, ctlStrsNoNewLine = reJoinJustMsg(ctlStrs, msg)
+
+    msgNoU3000 = textPreProgress(joinedMsg)
+    return [msgNoU3000, ctlStrsNoNewLine]  # use list for json
 
 
 def progressBlock(block):
@@ -105,6 +145,7 @@ for event in events:
                     blocksData.append(data)
             msgMap[file] = blocksData
 
-with open("event_msg_map-{}.json".format("for_ai_transl"), "w+") as file:
+with open("msg_-{}.json".format("ai_transl"), "w+") as file:
     file.write(json.dumps(msgMap, ensure_ascii=False))
+
 print("DONE")

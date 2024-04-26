@@ -1,6 +1,6 @@
 import json
 
-msgMapPath = "D:\code\git\Persona-Modding\classify_sound_file_pq2\event_msg_map-for_ai_transl.json"
+msgMapPath = "D:\code\git\Persona-Modding\classify_sound_file_pq2\msg_-ai_transl.json"
 msgMap = {}
 msgPartsMap = {}
 with open(msgMapPath, "r") as msgFile:
@@ -14,6 +14,13 @@ for event in msgMap.keys():
         block = blocks[blockIndex]
         for lineInfoIndex in range(len(block["linesInfo"])):
             lineInfo = block["linesInfo"][lineInfoIndex]
+            if(type(lineInfo[0]) == str):
+                msgPartsMap[
+                    "{}_{}_{}_{}".format(
+                        event, blockIndex, lineInfoIndex, 0
+                    )
+                ] = lineInfo[0]
+                continue
             for msgInnerLineIndex in range(len(lineInfo[0])):
                 # if(spliter in msg):
                 #     raise Exception("{} is in msg".format(spliter))
