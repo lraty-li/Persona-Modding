@@ -34,7 +34,9 @@ def shuildBypass(text):
     #DEBUG END
     if(text.isspace()):
         return text.replace('\u3000','  ')
-    matchEllipsis = re.findall(r'…+。',text)
+    #TODO BUG え、ああ…うん…。被匹配
+    # TODO ……?
+    matchEllipsis = re.findall(r'…+。',text) 
     if(len(matchEllipsis) >0):
         return text
     return ''
