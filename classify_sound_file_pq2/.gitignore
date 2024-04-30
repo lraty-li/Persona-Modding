@@ -3,9 +3,6 @@ output_workplace
 tmp
 pq1
 3dstool
-font - 快捷方式.lnk
-persona-tools - 快捷方式.lnk
-ctr_FontConverter - 快捷方式.lnk
 AtlusScriptCompiler.log
 *.bcfnt
 *.tsv
@@ -22,3 +19,6 @@ msg_-ai_transl-parts-zh.json
 ai_translate/draft_msg/event_msg_map-for_ai_transl.json
 ai_translate/output-openai
 event_msg_map-jp.json
+build_fake_charset/cropped
+build_fake_charset/pq2*
+*.lnk
