@@ -2,7 +2,11 @@ cache
 output_workplace
 tmp
 pq1
-3dstool
+3dstool/*.exe
+3dstool/*.3ds
+3dstool/cci
+3dstool/ext_key.txt
+3dstool/ignore_3dstool.txt
 AtlusScriptCompiler.log
 *.bcfnt
 *.tsv

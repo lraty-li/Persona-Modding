@@ -181,3 +181,69 @@ https://github.com/evandixon/DotNet3dsToolkit
 https://github.com/ihaveamac/3DS-rom-tools/wiki/Extract-a-game-or-application-in-.3ds-or-.cci-format
 
 https://github.com/3DSGuy/Project_CTR/blob/master/makerom/README.md
+
+资源黑体
+https://github.com/CyanoHao/Resource-Han-Rounded
+ResourceHanRoundedCN-Medium
+
+seurapro_13_13 : 
+宽18 长21 共246行  
+ResourceHanRoundedCN-Medium 字号13px 生成： 宽18 长23
+
+seurapro_12_12 : 
+宽17 长20 共246行  
+ResourceHanRoundedCN-Medium 字号12px 生成： 宽17 长22
+
+seurapro_12_12.txt第1到10行的编码可能是留给游戏显示特殊符号用的，复制这部分字符以及位图。之后脚本里的信息的符号都换成全角符号
+
+实际上使用的都是seurapro_13_13 整理出来的charset xllt等
+
+
+流程：
+翻译文本 -> build_fake_charset/collect_all_char.py 得到字库，字库xlor等等等
+从原本的字体生成图片，放到某处，然后 build_fake_charset/cut_charset_bmp.py 切出来备用
+build_fake_charset/build_new_charset_bmp.py 生成新的字库图片，然后用新字库的xlor去生成字库
+
+re_compile_msg/rebuild_msg.py 重新拼接msg文件并且编译并且复制到datacpk文件夹准备打包
+
+手动复制字库文件到cpk文件夹准备打包
+
+
+回填翻译：
+问题：
+例如：
+[f 0 5 65278][f 2 1][f 4 6 72 2 0 0][f 6 1 2 0 0 7][f 3 1 1 0 0 18]了解だ、[f 6 1 30 0 0 0]。[n][f 1 3 65535][f 1 1][e]
+文本会被合并成： 了解だ、。
+但因为并不是 [n] 分割，所以控制字符串有三个元素:
+['[f 0 5 65278][f 2 1][f 4 6 72 2 0 0][f 6 1 2 0 0 7][f 3 1 1 0 0 18]', '[f 6 1 30 0 0 0]', '[n][f 1 3 65535][f 1 1][e]']
+该如何回插呢，之前是完全地切分，但机翻发现会有重复句子（原本是同一行的文本，拆成两次给机翻，机器推断出了句子的意思）。
+直接在第一个控制字符后插入吧，都在同一行文本，估计没啥问题。
+
+
+2024/4/29 10:17:45  Info: (0019:0000) Compiling procedure: e000_140
+2024/4/29 10:17:45  Error: (0034:0011) Void-returning function 'function( 8212 ) void WND_FUNCTION_0014(int param1)' used in expression 
+2024/4/29 10:17:45  Error: (0034:0011) Failed to emit code for assigment value expression
+2024/4/29 10:17:45  Error: (0034:0004) Failed to emit assignment: var0 = (WND_FUNCTION_0014(None 1))
+2024/4/29 10:17:45  Error: (0034:0004) Failed to emit variable assignment: var0 = (WND_FUNCTION_0014(None 1))
+
+往回编译的时候会有检查
+https://discord.com/channels/746211612981198989/1209607503491498026/1209608672255279114
+
+在F:\modding\persona-tools\Atlus-Script-Tools\Libraries\PersonaQ2\Modules\Window\Functions.json
+修改WND_FUNCTION_0014的返回值
+
+
+2024/4/29 10:43:43  Info: Base directory set to 'D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\event\e800'
+2024/4/29 10:43:43  Error: Syntax error: missing ')' at '-32764' (29:26)
+2024/4/29 10:43:43  Error: Syntax error: missing ';' at '(' (29:32)
+2024/4/29 10:43:43  Error: Syntax error: mismatched input ')' expecting ';' (29:40)
+2024/4/29 10:43:43  Error: Syntax error: extraneous input 'else' expecting {'(', ';', '{', '}', '--', '++', '!', '-', 'function', 'global', 'const', 
+'ai_local', 'ai_global', 'bit', 'enum', 'local', 'count', 'if', 'for', 'while', 'break', 'continue', 'return', 'goto', 'switch', BoolLiteral, IntLiteral, FloatLiteral, StringLiteral, TypeIdentifier, Identifier} (79:4)
+2024/4/29 10:43:43  Info: Parsing compilation unit
+2024/4/29 10:43:43  Info: Parsing procedure 'e808_020'
+
+https://discord.com/channels/746211612981198989/746230710150496367/1232988845151092777
+就在四天前啊
+即使手动去改了 -32764 的负号，也会 报错，单个整数的表达式不合法
+
+那现在只能先这样了，只有前面的bf被替换

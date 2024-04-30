@@ -1,0 +1,2 @@
+.\3dstool.exe -cvtf romfs cci\cxi0\romfs.bin --romfs-dir cci\cxi0\romfs
+.\3dstool.exe -cvtf cxi cci\0.cxi --header cci\cxi0\ncchheader.bin --exh cci\cxi0\exh.bin --logo cci\cxi0\logo.bcma.lz --plain cci\cxi0\plain.bin --exefs cci\cxi0\exefs.bin --romfs cci\cxi0\romfs.bin --not-encrypt
