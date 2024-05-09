@@ -75,9 +75,9 @@ for msgFile in rawMsg:
             for index in range(len(ctlStrs)):
                 reJoinedLine += ctlStrs[index]
                 if index < 1:  # 文本都被合并成一行了
-                    # TODO 翻译，以及[n]
-                    newLineJoined = joinNewLineCtlStr(translatedMsgLine)
-                    reJoinedLine += replaceZhToJpKanji(newLineJoined)
+                    # replace chars before insert [n], otherwise [n] would be replaced  
+                    replacedLine = replaceZhToJpKanji(translatedMsgLine)
+                    reJoinedLine += joinNewLineCtlStr(replacedLine)
             transMsgLines.append(reJoinedLine)
         transMsgLines.append("\n")
         transMsgLines.append("\n")
