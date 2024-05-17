@@ -1,5 +1,5 @@
 cache
-output_workplace
+cpk_output_workplace
 tmp
 pq1
 3dstool/*.exe
@@ -26,3 +26,4 @@ event_msg_map-jp.json
 build_fake_charset/cropped
 build_fake_charset/pq2*
 *.lnk
+3dstool/pq2-event_only-gpt_3.5_turbo_0125-20240429.zip
