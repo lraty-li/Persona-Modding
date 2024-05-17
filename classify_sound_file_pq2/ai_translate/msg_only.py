@@ -36,7 +36,6 @@ def reJoinMsg(ctlStrs, msg):
     return reJoin
 
 
-
 def textPreProgress(text):
     # DEBUG
     # text = "　"
@@ -114,12 +113,22 @@ def progressBlock(block):
     lines = iter(block.split("\n"))
     header = next(lines)
     speaker = parseSpeaker(header)
+    headerParts = []
+    if len(speaker) == 0:
+        # [msg ...]
+        headerParts = [header[:-1], header[-1:]]
+    else:
+        # [msg ... [speaker]]
+        rIndexL = header.rfind("[")
+        rIndexR = header.rfind("]")  # -2
+        headerParts = [header[: rIndexL + 1], header[rIndexR - 1 :]]
+
     data = []
     for line in lines:
         lineInfo = parseLine(line)
         data.append(lineInfo)
 
-    return {"header": header, "speaker": speaker, "linesInfo": data}
+    return {"header": headerParts, "speaker": speaker, "linesInfo": data}
 
 
 evenRoot = "cache/data-extract/event"

@@ -2,7 +2,7 @@ import json, os, shutil
 
 
 scriptCompiler = r"f:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
-reBuildCPKroot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\output_workplace\datacpk\event"
+reBuildCPKroot = r"F:\TMP\cpk_output_workplace\datacpk\event"
 msgRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\event"
 translatedMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
 zhChar2JpKanjiPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-zhChar2JpKanji.json"
@@ -19,6 +19,7 @@ def replaceZhToJpKanji(text):
     replacedLine = ""
     for char in text:
         if char in zhChar2JpKanji.keys():
+            # print("WARN: {} not found in zhChar2JpKanji".format(char))
             replacedLine += zhChar2JpKanji[char]
         else:
             replacedLine += char  # 被跳过的部分，所以不会有编码
@@ -57,12 +58,18 @@ JpKanji2zhChar = loadJson(JpKanji2zhCharPath)
 rawMsg = loadJson(rawMsgPath)
 
 transedMsgToBeWrite = {}
+failTargets = []
 for msgFile in rawMsg:
     transMsgLines = []
     msgFileData = rawMsg[msgFile]
     for blockIndex in range(len(msgFileData)):
         block = msgFileData[blockIndex]
-        header = block["header"]
+        # TODO translate speaker name
+        speaker = block["speaker"]
+        # if(len(speaker) != 0):
+        #     print()
+        transSpeaker = replaceZhToJpKanji(speaker)
+        header = "{}{}{}".format(block["header"][0], transSpeaker, block["header"][1])
         transMsgLines.append(header)
         for lineInfoIndex in range(len(block["linesInfo"])):
             # text = lineInfo[0]
@@ -75,7 +82,8 @@ for msgFile in rawMsg:
             for index in range(len(ctlStrs)):
                 reJoinedLine += ctlStrs[index]
                 if index < 1:  # 文本都被合并成一行了
-                    # replace chars before insert [n], otherwise [n] would be replaced  
+                    # BUG 数字被替换 "秀尽学園  ２－Ｄ教室…",
+                    # replace chars before insert [n], otherwise [n] would be replaced
                     replacedLine = replaceZhToJpKanji(translatedMsgLine)
                     reJoinedLine += joinNewLineCtlStr(replacedLine)
             transMsgLines.append(reJoinedLine)
@@ -95,6 +103,7 @@ for msgFile in rawMsg:
 
     # 编译文件
     # TODO BUG 寄，speaker是没翻译的，编码中可能不包含这些文字
+    #TODO muti thread
     command = [
         scriptCompiler,
         os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".flow")),
@@ -104,9 +113,18 @@ for msgFile in rawMsg:
     ]
     os.system(" ".join(command))
     outPutBFname = os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".flow.bf"))
-    shutil.copy(
-        outPutBFname,
-        os.path.join(reBuildCPKroot, eventFolder, msgFile.replace(".msg", "")),
-    )
+    try:
+        shutil.copy(
+            outPutBFname,
+            os.path.join(reBuildCPKroot, eventFolder, msgFile.replace(".msg", "")),
+        )
+    except FileNotFoundError as e:
+        # recompile fail
+        # TODO just bypass now
+        # but the way to insert zh msg into bf file need still 
+        failTargets.append(msgFile)
 
+
+print("fails")
+print(failTargets)
 print("DONE")
