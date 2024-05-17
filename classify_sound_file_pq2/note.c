@@ -248,5 +248,16 @@ https://discord.com/channels/746211612981198989/746230710150496367/1232988845151
 
 那现在只能先这样了，只有前面的bf被替换
 
+正如简介所言，解包工具支持尚不完全，但对于汉化来说并不需要编辑那些没有被工具支持的部分。
+有个想法就是直接二进制编辑.bf文件，把汉化并转换后的数据替换并插入到原本日文的位置，并且编辑好文件大小偏移等标志。
 https://amicitia.miraheze.org/wiki/BF
-直接把消息数据二进制插入/替换, 但注意偏移以及文件大小标志
+
+另外的话，以前我汉化过一个合p计算器网站，p的名称是存储在TBL文件里的，这是当时用到的脚本（看了下似乎没啥用，能提供下思路也不错）
+https://github.com/lraty-li/Persona-Modding/blob/main/zh_hans_for_megaten-fusion-tool/tbl_to_txt.py
+
+这是pq2对应的Wiki
+https://amicitia.miraheze.org/wiki/Persona_Q2/Enemies
+
+
+
+cri packed file maker 建CPK 的时候必须要压缩，不然黑屏开不了游戏

@@ -32,7 +32,10 @@ def buildCompaTable(jpCharSetFilePath):
     global chars
     zhChars = list(chars["zh"])
     # TODO 如何处理 else 类别的字符，理论上原本字符集应该包含了所有事件文本的字符
-    BYPASS_LINE_NUM = 48
+    # 原版的 "pq2_seurapro_13_13 比 pq2_seurapro_12_12 在12行多了一个∥，之后全部往后推"
+    # 所以把bypass前推到11，不然因为原版字符图片的错位，新生成的字符图片会有错位，例如索引片假的时候。   
+    # 仝 是汉字，但放得很前，不知道啥原因，但按范围来说是日文汉字，会被替换 看看会不会有bug吧
+    BYPASS_LINE_NUM = 11
     newCharSet = []
     fakeCharSet = []
     replacedLines = []
@@ -85,9 +88,10 @@ def buildCompaTable(jpCharSetFilePath):
     # check
     otherChars = chars["else"]
     bypassedJpChars = "".join(rawLines[: BYPASS_LINE_NUM - 1])
+    joinedNewCharset = ''.join(newCharSet)
     for char in otherChars:
-        if not char in bypassedJpChars:
-            print("{} is not in bypassedJpChars".format(char))
+        if not (char in joinedNewCharset or char in bypassedJpChars):
+            print("not encoded char: {} ".format(char))
     # (qiē cuō zhuó mó) 这种注音不管了
     return newCharSet, fakeCharSet
 

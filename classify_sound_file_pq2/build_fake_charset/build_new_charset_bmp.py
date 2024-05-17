@@ -58,13 +58,15 @@ def getChatImgSize(font):
     testChar = "我"
     fontSize = font.size
     x1, y1, x2, y2 = font.getbbox(testChar)
+    #TODO should draw margin/border, help debug when building bcfnt
     marginX = 5  # 17-12, 18-13
     marginY = 8  # 20 - 12, 21-13
+    # marginY = 10  # 20 - 12, 21-13
     charImgWidth = fontSize + marginX
     charImgHeight = fontSize + marginY
     drawOffsetX = abs(marginX / 2 - x1)
     drawOffsetY = abs(marginY / 2 - y1)
-    return charImgWidth, charImgHeight, drawOffsetX, drawOffsetY
+    return charImgWidth, charImgHeight, drawOffsetX, drawOffsetY - 1
     # return charImgWidth, charImgHeight, drawOffsetX + 1, drawOffsetY + 1
 
 
@@ -80,8 +82,9 @@ def buildImage(chatset, fontName, charImgRoot, charSize, fontPath):
         size=(CHARS_PER_LINE * charImgWidth, len(charset) * charImgHeight),
         color="#FFFFFFFF",
     )
-
-    BYPASS_LINE_NUM = 46
+    # 原版的 "pq2_seurapro_13_13 比 pq2_seurapro_12_12 在12行多了一个∥，之后全部往后推"
+    # 所以把bypass前推到11，不然因为原版字符图片的错位，新生成的字符图片会有错位，例如索引片假的时候。    
+    BYPASS_LINE_NUM = 9
     lineIndex = 0
     for lineIndex in range(len(charset)):
         line = charset[lineIndex]
