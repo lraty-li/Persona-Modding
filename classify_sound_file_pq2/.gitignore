@@ -23,7 +23,13 @@ msg_-ai_transl-parts-zh.json
 ai_translate/draft_msg/event_msg_map-for_ai_transl.json
 ai_translate/output-openai
 event_msg_map-jp.json
-build_fake_charset/cropped
-build_fake_charset/pq2*
+zh/build_fake_charset/cropped
+zh/build_fake_charset/pq2*
 *.lnk
 3dstool/pq2-event_only-gpt_3.5_turbo_0125-20240429.zip
+zh/init/cmptable_bin/zh
+zh/init/cmptable_bin/jp
+zh/__pycache__
+zh/init/cmptable_bin/rebuild
+zh/init/cmptable_bin/*.json
+zh/init/cmptable_bin/__pycache__

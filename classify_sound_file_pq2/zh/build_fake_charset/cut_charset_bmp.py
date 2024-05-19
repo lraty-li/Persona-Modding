@@ -38,7 +38,7 @@ def cutImage(
 
 if __name__ == "__main__":
     outPutRoot = (
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\cropped"
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\cropped"
     )
     seurapro12Bmp = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_12_12.bmp"
     seurapro13Bmp = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_13_13.bmp"

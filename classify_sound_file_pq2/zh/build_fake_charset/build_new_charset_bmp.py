@@ -115,7 +115,7 @@ def buildImage(chatset, fontName, charImgRoot, charSize, fontPath):
 
 if __name__ == "__main__":
 
-    charSetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-charSet.txt"
+    charSetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-charSet.txt"
     fontPath = r"cache/RHR-CN-0.990/ResourceHanRoundedCN-Medium.ttf"
     charset = []
     with open(charSetPath, "r", encoding="utf-16le") as file:
@@ -124,7 +124,7 @@ if __name__ == "__main__":
             charset.append(line[:-1])  # remove \n
             line = file.readline()
 
-    outPutRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\cropped"
+    outPutRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\cropped"
 
     targets = [
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_12_12.bmp",

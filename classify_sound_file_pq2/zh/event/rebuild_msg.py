@@ -1,63 +1,20 @@
-import json, os, shutil
+import  os, shutil
 
+import sys
+sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+from zh_common import *
 
 scriptCompiler = r"f:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
 reBuildCPKroot = r"F:\TMP\cpk_output_workplace\datacpk\event"
 msgRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\event"
-translatedMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
-zhChar2JpKanjiPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-zhChar2JpKanji.json"
-JpKanji2zhCharPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-JpKanji2zhChar.json"
+
+translatedMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
+translatedMsg = loadJson(translatedMsgPath)
+
 rawMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\msg_-ai_transl.json"
 
-
-def loadJson(filePath):
-    with open(filePath, "r") as file:
-        return json.loads(file.read())
-
-
-def replaceZhToJpKanji(text):
-    replacedLine = ""
-    for char in text:
-        if char in zhChar2JpKanji.keys():
-            # print("WARN: {} not found in zhChar2JpKanji".format(char))
-            replacedLine += zhChar2JpKanji[char]
-        else:
-            replacedLine += char  # 被跳过的部分，所以不会有编码
-    return replacedLine
-
-
-SPLITERS = ["，", "。", "？", "…", "?", "!", "."]
-NEW_LINE_THREADHOLD = 22
-
-
-def joinNewLineCtlStr(text):
-    if len(text) > NEW_LINE_THREADHOLD:
-        splited = False
-        for spliter in SPLITERS:
-            if spliter in text:
-                spliterIndex = text.rfind(spliter)
-                frontPart = joinNewLineCtlStr(text[:spliterIndex])
-                if spliterIndex + 1 == len(text):
-                    backPart = ""
-                else:
-                    backPart = joinNewLineCtlStr(text[spliterIndex + 1 :])
-                return "{}{}[n]{}".format(frontPart, spliter, backPart)
-        if not splited:
-            # 后部的文本就是很长，没有标点符号,直接折半
-            frontPart = joinNewLineCtlStr(text[: int(len(text) / 2)])
-            backPart = joinNewLineCtlStr(text[int(len(text) / 2) :])
-            return "{}[n]{}".format(frontPart, backPart)
-            # raise Exception("not splited")
-    else:
-        return text
-
-
-translatedMsg = loadJson(translatedMsgPath)
-zhChar2JpKanji = loadJson(zhChar2JpKanjiPath)
-JpKanji2zhChar = loadJson(JpKanji2zhCharPath)
-rawMsg = loadJson(rawMsgPath)
-
 transedMsgToBeWrite = {}
+rawMsg = loadJson(rawMsgPath)
 failTargets = []
 for msgFile in rawMsg:
     transMsgLines = []
@@ -82,7 +39,6 @@ for msgFile in rawMsg:
             for index in range(len(ctlStrs)):
                 reJoinedLine += ctlStrs[index]
                 if index < 1:  # 文本都被合并成一行了
-                    # BUG 数字被替换 "秀尽学園  ２－Ｄ教室…",
                     # replace chars before insert [n], otherwise [n] would be replaced
                     replacedLine = replaceZhToJpKanji(translatedMsgLine)
                     reJoinedLine += joinNewLineCtlStr(replacedLine)
@@ -118,6 +74,7 @@ for msgFile in rawMsg:
             outPutBFname,
             os.path.join(reBuildCPKroot, eventFolder, msgFile.replace(".msg", "")),
         )
+        pass
     except FileNotFoundError as e:
         # recompile fail
         # TODO just bypass now

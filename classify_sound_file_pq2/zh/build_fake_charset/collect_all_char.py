@@ -158,10 +158,10 @@ def addHalfFullWidth(halfWidthToFullWidthPath):
 
 if __name__ == "__main__":
     translatedFile = (
-        "build_fake_charset/pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427.txt"
+        "zh/build_fake_charset/pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427.txt"
     )
     jpCharsetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_13_13.txt"
-    halfWidthToFullWidth = "build_fake_charset/half_width_to_full_width.json"
+    halfWidthToFullWidth = "zh/build_fake_charset/half_width_to_full_width.json"
     with open(translatedFile, "r") as file:
         while file.readable():
             line = file.readline()

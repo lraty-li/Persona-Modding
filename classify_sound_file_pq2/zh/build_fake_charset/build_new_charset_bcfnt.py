@@ -5,16 +5,16 @@
 import shutil,os
 
 shutil.copy(
-    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-jp-charSet.xlor",
+    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-jp-charSet.xlor",
     r'F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\xlor\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-jp-charSet.xlor'
 )
 ctrFontConv = r"f:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\ctr_FontConverterConsole.exe"
 
 targets = ["seurapro_12_12", "seurapro_13_13"]
 
-imgRoot  = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\cropped'
+imgRoot  = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\cropped'
 rebuildCPKFont = r'F:\TMP\cpk_output_workplace\datacpk\font'
-xlorPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-jp-charSet.xlor"
+xlorPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-jp-charSet.xlor"
 cpXlorPath = r'F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\xlor\jp-charSet.xlor'
 shutil.copy(xlorPath, cpXlorPath)
 os.chdir(r'F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter')
