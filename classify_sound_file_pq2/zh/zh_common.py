@@ -31,7 +31,9 @@ def replaceZhToJpKanji(text):
             replacedLine += zhChar2JpKanji[char]
         else:
             print("WARN: {} not found in zhChar2JpKanji".format(char))
-            replacedLine += char  # 被跳过的部分，所以不会有编码
+            #TODO 区分是跳过部分还是无编码
+            # replacedLine += char  # 被跳过的部分，所以不会有编码
+            replacedLine += ' '  # 被跳过的部分，所以不会有编码
     return replacedLine
 
 
