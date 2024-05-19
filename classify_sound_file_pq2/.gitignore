@@ -33,4 +33,5 @@ zh/__pycache__
 zh/init/cmptable_bin/rebuild
 zh/init/cmptable_bin/*.json
 zh/init/cmptable_bin/__pycache__
+zh/event/txt/*.json
 3dstool/__pycache__
