@@ -261,3 +261,9 @@ https://amicitia.miraheze.org/wiki/Persona_Q2/Enemies
 
 
 cri packed file maker 建CPK 的时候必须要压缩，不然黑屏开不了游戏
+
+
+cpkmakec 命令行显示cpk有 8947个文件
+但图形版/ 解包后文件夹 有8948个文件...
+
+靠...cpkmakec输出到打包文件夹了...

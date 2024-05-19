@@ -13,3 +13,8 @@ unPath = Path(unpackedBin)
 outputBinPath = Path().joinpath(unPath.parent, unPath.name.replace("_", "."))
 repackBin(unpackedBin)
 shutil.copy(outputBinPath, os.path.join(rebldCpkInintRoot, Path(outputBinPath).name))
+
+
+#rebuild xci
+sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool")
+import rebuild_cpk
