@@ -1,28 +1,18 @@
-import json
 import os
 from pathlib import Path
+
+from common import loadJson, zhChar2JpKanjiPath, JpKanji2zhCharPath
+
 pakPack = "f:\modding\persona-tools\AtlusFileSystemLibrary-release\PAKPack.exe"
 atlusScriptCompiler = (
     r"F:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
 )
 
-# build the charset need
-zhChar2JpKanjiPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-zhChar2JpKanji.json"
-JpKanji2zhCharPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-JpKanji2zhChar.json"
+zhChar2JpKanji = loadJson(zhChar2JpKanjiPath)
+JpKanji2zhChar = loadJson(JpKanji2zhCharPath)
 
-
-def loadJson(filePath):
-    with open(filePath, "r") as file:
-        return json.loads(file.read())
-
-
-def dumpJson(filePath, data):
-    with open(
-        filePath,
-        "w",
-    ) as file:
-        file.write(json.dumps(data, ensure_ascii=False))
-
+# clear?
+notFoundedCharWhenReplace =[]
 
 def replaceZhToJpKanji(text):
     replacedLine = ""
@@ -30,10 +20,14 @@ def replaceZhToJpKanji(text):
         if char in zhChar2JpKanji.keys():
             replacedLine += zhChar2JpKanji[char]
         else:
-            print("WARN: {} not found in zhChar2JpKanji".format(char))
-            #TODO 区分是跳过部分还是无编码
+            # TODO 区分是跳过部分还是无编码
             # replacedLine += char  # 被跳过的部分，所以不会有编码
-            replacedLine += ' '  # 被跳过的部分，所以不会有编码
+            if(char in JpKanji2zhChar.keys()):
+                replacedLine += " " 
+            else:
+                print("WARN: {} not found in zhChar2JpKanji or JpKanji2zhChar".format(char))
+                replacedLine += " "
+                notFoundedCharWhenReplace.append(char)
     return replacedLine
 
 
@@ -63,8 +57,6 @@ def joinNewLineCtlStr(text):
         return text
 
 
-
-
 def unpackBin(filePath, outputPath=None):
     targPth = Path(filePath)
     if outputPath == None:
@@ -83,7 +75,3 @@ def repackBin(folderPath, outputPath=None):
         os.mkdir(outputPath)
     command = [pakPack, "pack", folderPath, "v2", outputPath]
     os.system(" ".join(command))
-
-
-zhChar2JpKanji = loadJson(zhChar2JpKanjiPath)
-JpKanji2zhChar = loadJson(JpKanji2zhCharPath)

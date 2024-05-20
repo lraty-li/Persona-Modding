@@ -1,14 +1,16 @@
-import  os, shutil
+import os, shutil
 
 import sys
-sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
-from zh_common import *
 
-scriptCompiler = r"f:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
-reBuildCPKroot = r"F:\TMP\cpk_output_workplace\datacpk\event"
+sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+from zh_common import atlusScriptCompiler,replaceZhToJpKanji, joinNewLineCtlStr,notFoundedCharWhenReplace
+from common import rebuildCPKRoot, loadJson
+
+
+reBuildCPKEventroot = os.path.join(rebuildCPKRoot, "event")
 msgRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\event"
 
-translatedMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
+translatedMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
 translatedMsg = loadJson(translatedMsgPath)
 
 rawMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\msg_-ai_transl.json"
@@ -59,9 +61,9 @@ for msgFile in rawMsg:
 
     # 编译文件
     # TODO BUG 寄，speaker是没翻译的，编码中可能不包含这些文字
-    #TODO muti thread
+    # TODO muti thread
     command = [
-        scriptCompiler,
+        atlusScriptCompiler,
         os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".flow")),
         outPutMsgPath,
         os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".msg.h")),
@@ -72,16 +74,17 @@ for msgFile in rawMsg:
     try:
         shutil.copy(
             outPutBFname,
-            os.path.join(reBuildCPKroot, eventFolder, msgFile.replace(".msg", "")),
+            os.path.join(reBuildCPKEventroot, eventFolder, msgFile.replace(".msg", "")),
         )
         pass
     except FileNotFoundError as e:
         # recompile fail
         # TODO just bypass now
-        # but the way to insert zh msg into bf file need still 
+        # but the way to insert zh msg into bf file need still
         failTargets.append(msgFile)
 
 
 print("fails")
 print(failTargets)
+print(notFoundedCharWhenReplace)
 print("DONE")

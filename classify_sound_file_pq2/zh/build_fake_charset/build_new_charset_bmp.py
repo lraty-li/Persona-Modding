@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-import os, json
+import os, json,sys
 from PIL import Image
 from PIL import ImageOps
 from pathlib import Path
@@ -8,6 +8,10 @@ from pathlib import Path
 from fontTools.ttLib import TTFont
 from PIL import Image, ImageDraw, ImageFont
 import shutil
+
+
+sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+from common import zhcharsetOpPath 
 
 CHARS_PER_LINE = 16
 
@@ -115,10 +119,9 @@ def buildImage(chatset, fontName, charImgRoot, charSize, fontPath):
 
 if __name__ == "__main__":
 
-    charSetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-charSet.txt"
     fontPath = r"cache/RHR-CN-0.990/ResourceHanRoundedCN-Medium.ttf"
     charset = []
-    with open(charSetPath, "r", encoding="utf-16le") as file:
+    with open(zhcharsetOpPath, "r", encoding="utf-16le") as file:
         line = file.readline()
         while len(line) > 0:
             charset.append(line[:-1])  # remove \n

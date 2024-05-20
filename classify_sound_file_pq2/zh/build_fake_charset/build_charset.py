@@ -1,12 +1,14 @@
-import os, json
+import os, json, sys
 from pathlib import Path
 import unicodedata
 
-# os.chdir("build_fake_font")
+
+sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+from common import *
 
 charset2xllt = r"f:\modding\persona-tools\3dsfont\charset2xllt.exe"
 charset2xlor = r"f:\modding\persona-tools\3dsfont\charset2xlor.exe"
-translatedMsg = {}
+translatedEventMsg = {}
 chars = {"zh": {}, "else": {}}
 zhChar2JpKanji = {}
 JpKanji2zhChar = {}
@@ -30,10 +32,11 @@ def isJpKanjiChar(char):
 
 def buildCompaTable(jpCharSetFilePath):
     global chars
+    jpCharsKeepd = []
     zhChars = list(chars["zh"])
     # TODO 如何处理 else 类别的字符，理论上原本字符集应该包含了所有事件文本的字符
     # 原版的 "pq2_seurapro_13_13 比 pq2_seurapro_12_12 在12行多了一个∥，之后全部往后推"
-    # 所以把bypass前推到11，不然因为原版字符图片的错位，新生成的字符图片会有错位，例如索引片假的时候。   
+    # 所以把bypass前推到11，不然因为原版字符图片的错位，新生成的字符图片会有错位，例如索引片假的时候。
     # 仝 是汉字，但放得很前，不知道啥原因，但按范围来说是日文汉字，会被替换 看看会不会有bug吧
     BYPASS_LINE_NUM = 11
     newCharSet = []
@@ -45,12 +48,9 @@ def buildCompaTable(jpCharSetFilePath):
     lineCounter = 1
     global zhChar2JpKanji, JpKanji2zhChar
     with open(jpCharSetFilePath, "r", encoding="utf-16le") as file:
-        rawLines = file.readlines()
+        rawLines = file.read().splitlines()
     for lineIndex in range(len(rawLines)):
-        line = rawLines[lineIndex]
-        if line[-1] == "\n":
-            line = line[:-1]
-            rawLines[lineIndex] = line
+        jpLine = rawLines[lineIndex]
         if zhCharIndex >= zhCharsCount:
             break
         lineCounter += 1
@@ -59,17 +59,27 @@ def buildCompaTable(jpCharSetFilePath):
             continue
 
         replacedLine = ""
-        for jpCharIndex in range(len(line)):
-            jpChar = line[jpCharIndex]
+        for jpCharIndex in range(len(jpLine)):
+            # 从原版字符集，逐个字符读取，如果是日文汉字，就替换成中文字符
+            jpChar = jpLine[jpCharIndex]
             replacedChar = jpChar
             if zhCharIndex >= zhCharsCount:
                 break
+            if(jpChar == 'ガ'):
+                print()
             if isJpKanjiChar(jpChar):
                 zhChar = zhChars[zhCharIndex]
                 zhChar2JpKanji[zhChar] = jpChar
                 JpKanji2zhChar[jpChar] = zhChar
                 replacedChar = zhChar
                 zhCharIndex += 1
+            else:
+                # 非日文汉字，保留编码
+                zhChar2JpKanji[jpChar] = jpChar
+                JpKanji2zhChar[jpChar] = jpChar
+                replacedChar = jpChar
+                print("keep {}".format(jpChar))
+                jpCharsKeepd.append(jpChar)
             replacedLine += replacedChar
         replacedLines.append(replacedLine)
     replacedLines = rawLines[: BYPASS_LINE_NUM - 1] + replacedLines
@@ -88,46 +98,14 @@ def buildCompaTable(jpCharSetFilePath):
     # check
     otherChars = chars["else"]
     bypassedJpChars = "".join(rawLines[: BYPASS_LINE_NUM - 1])
-    joinedNewCharset = ''.join(newCharSet)
+    joinedNewCharset = "".join(newCharSet)
     for char in otherChars:
         if not (char in joinedNewCharset or char in bypassedJpChars):
             print("not encoded char: {} ".format(char))
     # (qiē cuō zhuó mó) 这种注音不管了
+    print('these jp chars was keeped in comparatable')
+    print(jpCharsKeepd)
     return newCharSet, fakeCharSet
-
-
-def collectChar(msgLine):
-    global chars
-    # collect char
-    for char in msgLine:
-        charType = "else"
-        if isZhChar(char):
-            charType = "zh"
-        if char in chars.keys():
-            chars[charType][char] += 1
-            pass
-        else:
-            chars[charType][char] = 1
-
-
-def collectMsg(eventIndex, zhMsg):
-    # collect msg
-    global translatedMsg
-    if eventIndex in translatedMsg.keys():
-        if type(translatedMsg[eventIndex]) == list:
-            translatedMsg[eventIndex].append(zhMsg)
-        elif type(translatedMsg[eventIndex]) == str:
-            translatedMsg[eventIndex] = [translatedMsg[eventIndex], zhMsg]
-    else:
-        translatedMsg[eventIndex] = zhMsg
-
-
-def dumpJson(filePath, data):
-    with open(
-        filePath,
-        "w",
-    ) as file:
-        file.write(json.dumps(data, ensure_ascii=False))
 
 
 def addHalfFullWidth(halfWidthToFullWidthPath):
@@ -156,65 +134,70 @@ def addHalfFullWidth(halfWidthToFullWidthPath):
         JpKanji2zhChar[full] = half
 
 
-if __name__ == "__main__":
-    translatedFile = (
-        "zh/build_fake_charset/pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427.txt"
-    )
-    jpCharsetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_13_13.txt"
-    halfWidthToFullWidth = "zh/build_fake_charset/half_width_to_full_width.json"
-    with open(translatedFile, "r") as file:
-        while file.readable():
-            line = file.readline()
-            if len(line) <= 0:
-                break
-            if line[-1] == "\n":
-                line = line[:-1]
-            if line.startswith("=========="):
-                continue
-            elif line.startswith("e"):
-                parts = line.split(" | ")
-                eventIndex = parts[0]
-                zhMsg = parts[2]
-                collectChar(zhMsg)
-                collectMsg(eventIndex, zhMsg)
+def collectChar(msgLine):
+    global chars
+    # collect char
+    for char in msgLine:
+        charType = "else"
+        if isZhChar(char):
+            charType = "zh"
+        if char in chars.keys():
+            chars[charType][char] += 1
+            pass
+        else:
+            chars[charType][char] = 1
 
-    fakeZhCharset, fakeJpCharset = buildCompaTable(jpCharsetPath)
-    transFileNoExte = Path(translatedFile).stem
-    transFileFolder = Path(translatedFile).parent
+
+def collectAllJsonTransFile(targets):
+
+    for targ in targets:
+        contenet = loadJson(targ)
+        for mKey in contenet:
+            line = contenet[mKey]
+            for char in line:
+                collectChar(char)
+
+
+def writeCharsetData(outputPath, data):
+    with open(
+        outputPath,
+        "w",
+        encoding="utf-16le",
+    ) as file:
+        for line in data:
+            file.write(line + "\n")
+
+
+if __name__ == "__main__":
+    targets = [
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json",
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt\bmd-parts-zh.json",
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd-parts-zh.json",
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\ctd-zh.json",
+    ]
+    collectAllJsonTransFile(targets)
 
     addHalfFullWidth(halfWidthToFullWidth)
 
+    originalJpCharsetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_13_13.txt"
+    fakeZhCharset, fakeJpCharset = buildCompaTable(originalJpCharsetPath)
+
+
+    # dump charset
+
     # dump data
-    subFixs = ["-maped", "-JpKanji2zhChar", "-zhChar2JpKanji"]
-    targets = [translatedMsg, JpKanji2zhChar, zhChar2JpKanji]
-    for index in range(len(subFixs)):
-        replaceTo = subFixs[index]
+    targets = [JpKanji2zhChar, zhChar2JpKanji]
+    outputPaths = [JpKanji2zhCharPath, zhChar2JpKanjiPath]
+    for index in range(len(targets)):
+        outputPath = outputPaths[index]
         data = targets[index]
-        replaceToExtension = "{}.json".format(replaceTo)
         dumpJson(
-            os.path.join(transFileFolder, transFileNoExte + replaceToExtension),
+            str(outputPath),
             data,
         )
-    # dump charset
-    zhcharsetOpPath = os.path.join(transFileFolder, transFileNoExte + "-charSet.txt")
-    with open(
-        zhcharsetOpPath,
-        "w",
-        encoding="utf-16le",
-    ) as file:
-        for line in fakeZhCharset:
-            file.write(line + "\n")
-    jpCharsetSubFix = "-jp-charSet"
-    jpCharsetOpPath = os.path.join(
-        transFileFolder, transFileNoExte + jpCharsetSubFix + ".txt"
-    )
-    with open(
-        jpCharsetOpPath,
-        "w",
-        encoding="utf-16le",
-    ) as file:
-        for line in fakeJpCharset:
-            file.write(line + "\n")
+
+    writeCharsetData(str(zhcharsetOpPath), fakeZhCharset)
+    writeCharsetData(str(jpCharsetOpPath), fakeJpCharset)
 
     # build fake xllt xlor
     # os.system(
@@ -228,7 +211,7 @@ if __name__ == "__main__":
         "{} {} {}".format(
             charset2xlor,
             jpCharsetOpPath,
-            os.path.join(transFileFolder, transFileNoExte + jpCharsetSubFix + ".xlor"),
+            str(jpXlorPath),
         )
     )
     print("DONE")

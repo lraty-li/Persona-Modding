@@ -269,3 +269,21 @@ cpkmakec 命令行显示cpk有 8947个文件
 靠...cpkmakec输出到打包文件夹了...
 
 ctd就是得自己读取了，文件头16byte，每块文本装在64byte内，很单纯地摆着，用shifjis编码/解码
+
+
+event/txt/evt_intro...bmd
+
+[msg evt_intro_AKECHI]
+[f 0 5 65278][f 2 1]岸巌玩癌 悔恢牙永 叶椛快怪[n]永眼鰍苑岩 益翫贋扱雁頑迦屋[n]縞専唄圧遇 詠穫基椛＂眼鰍甘[n]暗扱鴬卯＂ 芽蛾鯵＂裟廠＂ [n][e]
+
+最后一行内有这些文本的时候，会把游戏卡死
+去掉 ＂ 试试
+
+＂ 应该没有对应编码，为什么没被替换掉 #BUG
+
+
+F:\TMP\cpk_output_workplace\datacpk\tutorial\scr
+教程
+
+F:\TMP\cpk_output_workplace\ori-data\battle\message
+战斗中事件文本，技能描述

@@ -4,11 +4,11 @@ from enum import Enum
 
 from zh_common import (
     atlusScriptCompiler,
-    loadJson,
-    dumpJson,
     replaceZhToJpKanji,
     joinNewLineCtlStr,
 )
+
+from common import loadJson, dumpJson
 
 
 def splitIntoBlocks(text):
@@ -188,9 +188,11 @@ class RecompileType(Enum):
 
 
 def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
+    if msgFile == "evt_introduction.bmd.msg":
+        print()
     transMsgLines = []
     for lineInfoIndex in range(len(blockLines)):
-        # text = lineInfo[0]
+        # text = lineInfo[0] #TODO hand over the translatedMsg logic to outside
         translatedMsgLine = translatedMsg[
             "{}_{}_{}_{}".format(msgFile, blockIndex, lineInfoIndex, 0)
         ]
@@ -205,7 +207,7 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 reJoinedLine += joinNewLineCtlStr(replacedLine)
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
-    transMsgLines.append("\n")
+    # transMsgLines.append("\n")
     return transMsgLines
 
 
@@ -223,6 +225,8 @@ def rebuilMsg(rawData, translatedMsg, msgFile):
     msgFileData = rawData
     transMsgLines = []
     for blockIndex in range(len(msgFileData)):
+        if blockIndex == 28:
+            print()
         block = msgFileData[blockIndex]
         header = rebuildBlockHeader(block)
         transMsgLines.append(header)
