@@ -35,3 +35,7 @@ zh/init/cmptable_bin/*.json
 zh/init/cmptable_bin/__pycache__
 zh/event/txt/*.json
 3dstool/__pycache__
+del/event/*
+zh/charset
+zh/event/*.json
+zh/event/*.txt
