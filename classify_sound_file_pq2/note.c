@@ -287,3 +287,63 @@ F:\TMP\cpk_output_workplace\datacpk\tutorial\scr
 
 F:\TMP\cpk_output_workplace\ori-data\battle\message
 战斗中事件文本，技能描述
+
+F:\TMP\cpk_output_workplace\ori-data\init\tutorialtable.bin
+
+F:\TMP\cpk_output_workplace\ori-data\Item\equipitemexpbattle.mbm
+
+
+mbm 有点头疼
+不过这时候才想起来要搜，有老哥在做西班牙语化。但看起来只做了常规的翻译，ctd文件没有翻译
+https://github.com/Artur16211/PQ2-Spanish-Mod
+
+f8 01 也许是调用游戏的什么东西，ff才是表示消息结束
+
+
+
+ctd:
+16 bytes header and end of file
+then every 64 bytes is a block of message, 
+
+mbm:
+battle\message\skillburstexp.mbm
+        0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  
+0000h  00 00 00 00 4D 53 47 32 00 00 01 00 84 03 00 00  ....MSG2....„... 
+0010h  1E 00 00 00 20 00 00 00 00 00 00 00 00 00 00 00  .... ........... 
+0020h  00 00 00 00 0E 00 00 00 00 02 00 00 00 00 00 00  ................ 
+0030h  01 00 00 00 0E 00 00 00 0E 02 00 00 00 00 00 00  ................ 
+0040h  02 00 00 00 0E 00 00 00 1C 02 00 00 00 00 00 00  ................ 
+0050h  03 00 00 00 0E 00 00 00 2A 02 00 00 00 00 00 00  ........*....... 
+......
+01B0h  19 00 00 00 0A 00 00 00 52 03 00 00 00 00 00 00  ........R....... 
+01C0h  1A 00 00 00 0A 00 00 00 5C 03 00 00 00 00 00 00  ........\....... 
+01D0h  1B 00 00 00 0A 00 00 00 66 03 00 00 00 00 00 00  ........f....... 
+01E0h  1C 00 00 00 0A 00 00 00 70 03 00 00 00 00 00 00  ........p....... 
+01F0h  1D 00 00 00 0A 00 00 00 7A 03 00 00 00 00 00 00  ........z....... 
+0200h  93 C1 8E EA 83 58 83 4C 83 8B F8 01 FF FF 93 C1  “ÁŽêƒXƒLƒ‹ø.ÿÿ“Á 
+0210h  8E EA 83 58 83 4C 83 8B F8 01 FF FF 93 C1 8E EA  ŽêƒXƒLƒ‹ø.ÿÿ“ÁŽê 
+0220h  83 58 83 4C 83 8B F8 01 FF FF 8D 55 8C 82 83 58  ƒXƒLƒ‹ø.ÿÿ
+
+0000h - 001Fh :
+file header: size: 32 bytes
+    0010: message count(1E of this skillburstexp.mbm, 00 ~ 1D)
+    other data remains unknow
+0020h - 01F0h :
+every message's infomation, size: 16 bytes
+    0020h-002Fh: the first message's infomation(index 0), 
+        0020h: 00H index 0
+        0025h: high byte of length of message 00
+        0024h: low byte of length of message 0e
+        so the length of message 0 is 00 0eh, 14 bytes
+        
+        0029h: high byte of start location(offset) of message 02
+        0028h: low byte of start location of message 00
+        so the start offset of message is 02 00h,
+        the message start from 0200h to 0200h + 000eh = 02 0eh: 93 C1 8E EA 83 58 83 4C 83 8B F8 01 FF FF
+
+0200h - EOF: messages are stored here
+
+if high byte is F8, it seens to be some kind of function invoking, should by pass itself and some bytes fllowing it(if needed).
+since f8 xx could not be decode by shift-jis  
+
+    
