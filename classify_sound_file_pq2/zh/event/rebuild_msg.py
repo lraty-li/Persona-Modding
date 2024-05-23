@@ -3,7 +3,12 @@ import os, shutil
 import sys
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
-from zh_common import atlusScriptCompiler,replaceZhToJpKanji, joinNewLineCtlStr,notFoundedCharWhenReplace
+from zh_common import (
+    atlusScriptCompiler,
+    replaceZhToJpKanji,
+    joinNewLineCtlStr,
+    notFoundedCharWhenReplace,
+)
 from common import rebuildCPKRoot, loadJson
 
 
@@ -44,8 +49,6 @@ for msgFile in rawMsg:
                     # replace chars before insert [n], otherwise [n] would be replaced
                     replacedLine = replaceZhToJpKanji(translatedMsgLine)
                     reJoinedLine += joinNewLineCtlStr(replacedLine)
-                else:
-                    raise Exception 
             transMsgLines.append(reJoinedLine)
         transMsgLines.append("\n")
         transMsgLines.append("\n")

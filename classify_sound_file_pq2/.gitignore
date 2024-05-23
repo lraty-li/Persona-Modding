@@ -43,3 +43,4 @@ zh/battle/message/__pycache__
 zh/charset/*-JpKanji2zhChar.json
 zh/charset/*-zhChar2JpKanji.json
 zh/charset/*.txt
+zh/tutorial/scr/*.json

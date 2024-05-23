@@ -80,7 +80,7 @@ def reJoinJustMsg(ctlStrs, msg):
 
 # 要记录原本控制字符得信息，回填。总之能拼出来跟结构一模一样的文本
 # [n] 临时替换为句号?
-def parseLine(text, postProgress = True):
+def parseLine(text, postProgress=True):
     reFindIter = re.finditer(r"\[.*?\]", text, flags=0)
     data = []
     msg = []
@@ -111,7 +111,7 @@ def parseLine(text, postProgress = True):
         raise Exception("rejoin mismatch!")
     # 把[n] 合并掉，
     # TODO 之后拼回来的时候再手动添加
-    if(postProgress):
+    if postProgress:
         joinedMsg, ctlStrsNoNewLine = reJoinJustMsg(ctlStrs, msg)
 
         msgNoU3000 = textPreProgress(joinedMsg)
@@ -188,6 +188,7 @@ def getMsgLines(msgMapPath, outptJson=True):
 class RecompileType(Enum):
     BMD = 1
     BF = 2
+    Tutorial_Scr_Bf = 3
 
 
 def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
@@ -208,8 +209,6 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 # replace chars before insert [n], otherwise [n] would be replaced
                 replacedLine = replaceZhToJpKanji(translatedMsgLine)
                 reJoinedLine += joinNewLineCtlStr(replacedLine)
-            else:
-                    raise Exception 
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
     # transMsgLines.append("\n")
@@ -282,6 +281,18 @@ def recompileMsg(msgFile, msgOutPutRoot, fType):
             msgOutPutRoot, msgFile.replace("bmd.msg", "bmd.msg.bmd")
         )
 
+    elif fType == RecompileType.Tutorial_Scr_Bf:
+        compileParam = "-Compile -OutFormat V2 -Library pq2 -Encoding SJ"
+        command = [
+            atlusScriptCompiler,
+            os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".flow")),
+            outPutMsgPath,
+            os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".msg.h")),
+            compileParam,
+        ]
+        outputBfName = os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".flow.bf"))
+        outputFileName = outputBfName
+
     os.system(" ".join(command))
     return outputFileName
 
@@ -297,6 +308,8 @@ def rebuilAllMsg(unTransMsgPath, transMsgPath, reBuildRoot, fType):
         if fType == RecompileType.BF:
             eventFolder = msgFile[:2] + "00"
             msgOutPutRoot = os.path.join(reBuildRoot, eventFolder)
+        elif fType == RecompileType.Tutorial_Scr_Bf:
+            msgOutPutRoot = reBuildRoot
         outputFileP = recompileMsg(msgFile, msgOutPutRoot, fType)
         recompiledFiles.append(outputFileP)
     return recompiledFiles

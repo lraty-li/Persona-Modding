@@ -12,37 +12,28 @@ atlusScriptCompiler = (
 )
 
 workplace = (
-    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\tutorial\scr"
+    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\message"
 )
 
 # move to _cache, avoiding any side effect to repack 
 workplacePlib = Path(workplace)
 cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
-cacheFolder = workplace
 if not os.path.exists(cacheFolder):
     os.mkdir(cacheFolder)
 
 
-def dumpBfs():
-    #!/usr/bin/python3
-    deCompilerPath = "F:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
-
-    import os,json
-    eventRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\tutorial\scr"
-
-    # TODO 多线程
-    bfFiles = {}
-    for root, dirs, files in os.walk(eventRoot, topdown=False):
-        for name in files:
-            if name.endswith(".bf"):
-                if(root not in bfFiles.keys()):
-                    bfFiles[root] = [name]
-                bfFiles[root].append(name)
-                os.system(deCompilerPath + " " + os.path.join(root, name).replace("\\", "/")+ " " + "-Decompile -Library pq2 -Encoding SJ")
-                #print(os.path.join(root, name))
-
-
-    print(len(bfFiles))
+def dumBmds():
+    files = os.listdir(workplace)
+    bmdFiles = [i for i in files if i.endswith(".bmd")]
+    for bmdFile in bmdFiles:
+        cacheBmdFile = os.path.join(cacheFolder, bmdFile)
+        shutil.copy(os.path.join(workplace, bmdFile), cacheBmdFile)
+        command = [
+            atlusScriptCompiler,
+            cacheBmdFile,
+            "--Decompile -Library pq2 -Encoding SJ",
+        ]
+        os.system(" ".join(command))
 
 
 # parse .msg
@@ -57,13 +48,13 @@ def parseMsgs():
 
 
 if __name__ == "__main__":
-    # dumpBfs()
+    dumBmds()
     msgMap = parseMsgs()
     os.chdir(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\tutorial\scr"
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message"
     )
     # msgMapPath = Path(workplace).stem + "-bmd.json"
-    msgMapPath = "msg.json"
+    msgMapPath = "bmd.json"
     dumpJson(msgMapPath, msgMap)
     msgParts = getMsgLines(msgMapPath,)
     print()
