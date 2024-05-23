@@ -44,6 +44,8 @@ for msgFile in rawMsg:
                     # replace chars before insert [n], otherwise [n] would be replaced
                     replacedLine = replaceZhToJpKanji(translatedMsgLine)
                     reJoinedLine += joinNewLineCtlStr(replacedLine)
+                else:
+                    raise Exception 
             transMsgLines.append(reJoinedLine)
         transMsgLines.append("\n")
         transMsgLines.append("\n")

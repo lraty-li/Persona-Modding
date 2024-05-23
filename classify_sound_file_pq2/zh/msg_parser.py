@@ -80,7 +80,7 @@ def reJoinJustMsg(ctlStrs, msg):
 
 # 要记录原本控制字符得信息，回填。总之能拼出来跟结构一模一样的文本
 # [n] 临时替换为句号?
-def parseLine(text):
+def parseLine(text, postProgress = True):
     reFindIter = re.finditer(r"\[.*?\]", text, flags=0)
     data = []
     msg = []
@@ -111,10 +111,13 @@ def parseLine(text):
         raise Exception("rejoin mismatch!")
     # 把[n] 合并掉，
     # TODO 之后拼回来的时候再手动添加
-    joinedMsg, ctlStrsNoNewLine = reJoinJustMsg(ctlStrs, msg)
+    if(postProgress):
+        joinedMsg, ctlStrsNoNewLine = reJoinJustMsg(ctlStrs, msg)
 
-    msgNoU3000 = textPreProgress(joinedMsg)
-    return [msgNoU3000, ctlStrsNoNewLine]  # use list for json
+        msgNoU3000 = textPreProgress(joinedMsg)
+        return [msgNoU3000, ctlStrsNoNewLine]  # use list for json
+    else:
+        return [msg, ctlStrs]  # use list for json
 
 
 def progressBlock(block):
@@ -205,6 +208,8 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 # replace chars before insert [n], otherwise [n] would be replaced
                 replacedLine = replaceZhToJpKanji(translatedMsgLine)
                 reJoinedLine += joinNewLineCtlStr(replacedLine)
+            else:
+                    raise Exception 
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
     # transMsgLines.append("\n")

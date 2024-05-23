@@ -129,6 +129,7 @@ def addHalfFullWidth(halfWidthToFullWidthPath):
     with open(halfWidthToFullWidthPath, "r") as file:
         halfWidthToFullWidth = json.loads(file.read())
     for half in halfWidthToFullWidth:
+        #TODO BUG check if in shiftjis
         full = halfWidthToFullWidth[half]
         zhChar2JpKanji[half] = full
         JpKanji2zhChar[full] = half
