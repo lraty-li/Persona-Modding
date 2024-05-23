@@ -326,16 +326,19 @@ battle\message\skillburstexp.mbm
 
 0000h - 001Fh :
 file header: size: 32 bytes
-    0010: message count(1E of this skillburstexp.mbm, 00 ~ 1D)
-    other data remains unknow
+    000c - 000f: whold file size: 00 00 03 84
+    0010 - 0013: message count(00 00 00 1E of this skillburstexp.mbm, 00 ~ 1D)
+    other seems to be same for every file
 0020h - 01F0h :
 every message's infomation, size: 16 bytes
     0020h-002Fh: the first message's infomation(index 0), 
-        0020h: 00H index 0
+        0020h - 0023h: 00 00 00 00H, index 0
+        0024-0027:
         0025h: high byte of length of message 00
         0024h: low byte of length of message 0e
         so the length of message 0 is 00 0eh, 14 bytes
         
+        0028-002b:
         0029h: high byte of start location(offset) of message 02
         0028h: low byte of start location of message 00
         so the start offset of message is 02 00h,
@@ -347,3 +350,10 @@ if high byte is F8, it seens to be some kind of function invoking, should by pas
 since f8 xx could not be decode by shift-jis  
 
     
+
+e800 无法反编译：
+把msg编译为bmd，然后接到bf的message部分即可，内容是差不多的，注意bf文件头的文件大小
+note_image/2024-05-22 08 30 07
+
+bf文件的05cH是msg部分的起始位置偏移 两byte，低位在前
+0004h-0005h 跟 0006c 0006d 总是相同？是message的结束位置

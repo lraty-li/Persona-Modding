@@ -1,8 +1,13 @@
 from pathlib import Path
+import sys
 
-HEX_F8_VALUE = b"\xf8"[0]
-HEX_7F_VALUE = b"\x7F"[0]
-HEX_FF_VALUE = b"\xff"[0]
+from mbm_common import *
+
+sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+from common import dumpJson
+from msg_parser import parseLine, reJoinMsg
+
+
 
 
 def isAscii(bByteInt):
@@ -29,6 +34,13 @@ def printBytes(bBytes):
     print("\n")
 
 
+def readBinData(filePath):
+    rawData = ""
+    with open(filePath, "rb") as file:
+        rawData = file.read()
+    return rawData
+
+
 def decodeMsgBytes(bBytes):
     msgLine = ""
     byteIndex = 0
@@ -41,9 +53,24 @@ def decodeMsgBytes(bBytes):
             continue
         elif isSpecial(byte1):
             # TODO how too keep bypassed bytes
-            # bypass next byte too
-            byteIndex += 2
-            continue
+            # bypass next byte too # f8 01 should not bypass next
+            byte2 = bBytes[byteIndex + 1]
+            if byte2 == 0x01:
+                byteIndex += 2  # bypass itself
+                msgLine += "[f8 01]"
+                continue
+            if byte2 == 0x11:
+                msgLine += "[f8 11]"
+                nextTwoByte = bBytes[byteIndex + 2 : byteIndex + 4]
+                msgLine += "[{:02x} {:02x}]".format(
+                    bBytes[byteIndex + 2], bBytes[byteIndex + 3]
+                )
+                byteIndex += 4  # bypass itself and next one byte
+                continue
+            else:
+                print("Unimplement")
+                raise Exception
+
         elif byte1 == HEX_FF_VALUE:
             # TODO how too keep bypassed bytes
             break
@@ -60,49 +87,93 @@ def decodeMsgBytes(bBytes):
     return msgLine
 
 
+def getReveBinValue(bBytes):
+    # bBytes = list(reversed(bBytes))
+    sum = 0
+    for bByteIndex in range(len(bBytes)):
+        sum += bBytes[bByteIndex] << (8 * bByteIndex)
+    return sum
+
+
 def decodeAllMbm(tTargets):
-    for index in range(len(targets)):
-        targ = targets[index]
-        print("\n"+Path(targ).name)
+    msgMap = {}
+    decodedMsg = {}
+    for index in range(len(tTargets)):
+        targ = tTargets[index]
+        decodedMsg["{}".format(targ.name)] = []
+        print("\n" + Path(targ).name)
         sum = 0
-        with open(targ, "rb") as file:
-            rawData = file.read()
-            HEADER_SIZE = 0x20
-            MSG_COUNT_OFFSET = 0x10
-            MSG_INFO_SIZE = 0x10
+        rawData = readBinData(targ)
+        if True:  # TODO format
+
             header = rawData[:HEADER_SIZE]
-            msgCount = header[MSG_COUNT_OFFSET]
-            msgAreaOffset = HEADER_SIZE + msgCount * MSG_INFO_SIZE
+            msgCount = getReveBinValue(header[MSG_COUNT_OFFSET : MSG_COUNT_OFFSET + 4])
+            fileSize = getReveBinValue(header[FILE_SIZE_OFFSET : FILE_SIZE_OFFSET + 4])
             for index in range(msgCount):
-                msgInfo = rawData[
-                    HEADER_SIZE
-                    + index * MSG_INFO_SIZE : HEADER_SIZE
-                    + (index + 1) * MSG_INFO_SIZE
-                ]
+                msgInfo = rawData[ 
+                    HEADER_SIZE + index * MSG_INFO_SIZE 
+                    : HEADER_SIZE + (index + 1) * MSG_INFO_SIZE
+                ]  # fmt: skip
                 # msg size
                 # ... 4 ...,...5...
                 # low byte, hight byte
-                msgSize = (msgInfo[5] << 8) + msgInfo[4]
+
+                msgSize = getReveBinValue(
+                    msgInfo[MSG_SIZE_OFFSET : MSG_SIZE_OFFSET + 4]
+                )
+
                 # msg start offset
                 # ... 8 ...,...9...
                 # low byte, hight byte
-                msgLineStartOffset = (msgInfo[9] << 8) + msgInfo[8]
+                
+                msgLineStartOffset = getReveBinValue(
+                    msgInfo[MSG_OFFSET : MSG_OFFSET + 4]
+                )
                 msgBytes = rawData[msgLineStartOffset : msgLineStartOffset + msgSize]
-                # unkown = msgInfo[9]
-                # if unkown == 3:
-                #     print()
                 msg = decodeMsgBytes(msgBytes)
-                print("{} {}".format(msgInfo[0], msg))
-                # print("{} {}".format(hex(msgInfo[0]), msg))
-                # printBytes(msgBytes)
+                parsedMsg = parseLine(msg, False)
+                # rejoined = reJoinMsg(parsedMsg[1], parsedMsg[0])
+                # rejoined == msg
+                
+                msgNomber = getReveBinValue(msgInfo[MSG_NO_OFFSET : MSG_NO_OFFSET + 4])
+                # { filename: [[ msg, ctlStrs],[msg,ctlStr]...],...}
+                decodedMsg["{}".format(targ.name)].append(parsedMsg)
 
-        # print("sum {}".format(hex(sum)))
+    return decodedMsg
+
+
+def flattenTheMap(mMap):
+    flattenMap = {}
+    for fileName in mMap:
+        msgClts = mMap[fileName]
+        for msgIndex in range(len(msgClts)):
+            oneMsgInfo = msgClts[msgIndex]
+            oneMsgs = oneMsgInfo[0]
+            for index in range(len(oneMsgs)):
+                flattenMap["{}_{}_{}".format(fileName, msgIndex, index)] = oneMsgs[index]
+    return flattenMap
 
 
 if __name__ == "__main__":
+    # skillexpbattle_player.mbm ? TODO 稀疏文件，很多msgInfo是空的
+    # >>> [i for i in os.listdir('.') if i.endswith('.mbm')]
     targets = [
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\message\skillburstexp.mbm",
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\item\skyitemequipexplain.mbm",
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\message\skillcustom.mbm",
+        "battlemessage.mbm",
+        "skillburstexp.mbm",
+        "skillcustom.mbm",
+        "skillexpbattle.mbm",
+        "skillexpbattle_enemy.mbm",
+        "skillexpbattle_player.mbm",
     ]
-    decodeAllMbm(targets)
+    cacheRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\message"
+    )
+
+    targets = [Path().joinpath(cacheRoot, i) for i in targets]
+    msgMap = decodeAllMbm(targets)
+    flattenMsgMap = flattenTheMap(msgMap)
+    outputJpJson = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message\mbm.json"
+    dumpJson(outputJpJson, msgMap)
+    outputJpJsonP = Path(outputJpJson)
+    dumpJson(Path().joinpath(outputJpJsonP.parent, outputJpJsonP.stem + '-parts.json'), flattenMsgMap)
+    print()
