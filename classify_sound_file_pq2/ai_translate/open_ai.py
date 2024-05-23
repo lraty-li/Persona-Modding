@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import OpenAI,BadRequestError
 from queue import Queue
 from openai_api_ket import API_KEY
 
@@ -31,15 +31,18 @@ def translate(client, japanese_text, enableContext=False):
                     "content": "{}".format(contextMsg),
                 }
             )
-    response = client.chat.completions.create(
-        model=MODEL,
-        messages=requestMsg,
-        temperature=0.9,
-        top_p=0.5,
-    )
-
-    # Extract translated text from the response
-    translation = response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=requestMsg,
+            temperature=0.9,
+            top_p=0.5,
+        )
+        # Extract translated text from the response
+        translation = response.choices[0].message.content
+    except BadRequestError :
+        #fucking censorship
+        translation = 'BadRequestError'
     if(enableContext):
         if(contextQueue.full()):
             contextQueue.get()

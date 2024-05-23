@@ -4,7 +4,7 @@ from openai_api_ket import API_KEY
 import sys
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
-from zh_common import loadJson, dumpJson
+from common import loadJson, dumpJson
 
 client = openai.OpenAI(
     api_key=API_KEY,
@@ -46,10 +46,9 @@ def translate_init_bmds():
         msgMap[bmdF] = zhMsg
     dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
 
+
 def translate_event_init_bmds():
-    workplaceRoot = (
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt"
-    )
+    workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt"
     os.chdir(workplaceRoot)
     bmdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt\bmd-parts.json"
     bmdMsgLines = loadJson(bmdJsonPath)
@@ -62,7 +61,53 @@ def translate_event_init_bmds():
         msgMap[bmdF] = zhMsg
     dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
 
+
+def translate_battle_message_mbm():
+    workplaceRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message"
+    )
+    os.chdir(workplaceRoot)
+    mbmJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message\mbm-parts.json"
+    outputPath = mbmJsonPath.replace(".json", "-zh.json")
+    lastKey = readLastKey(outputPath)
+    mbmMsgLines = loadJson(mbmJsonPath)
+    mbmKeys = []
+    msgMap = {}
+    mbmMsgLinesKeys = list(mbmMsgLines.keys())
+    if len(lastKey) > 0:
+        mbmKeys = mbmMsgLinesKeys[mbmMsgLinesKeys.index(lastKey) + 1 :]
+        msgMap = loadJson(outputPath)
+    else:
+        mbmKeys = mbmMsgLinesKeys
+
+    # flatten
+    # mbmMsgLines = {}
+    # for targFile in data:
+    #     msgLinesOfFile = data[targFile]
+    #     for lineKey in msgLinesOfFile:
+    #         mbmMsgLines[lineKey] = msgLinesOfFile[lineKey]
+    for mbmF in mbmKeys:
+        jpLine = mbmMsgLines[mbmF]
+        try:
+            zhMsg = translate(client, jpLine)
+        except Exception as e:
+            print(e)
+            break
+        print("{} | {}".format(jpLine, zhMsg))
+        msgMap[mbmF] = zhMsg
+    dumpJson(outputPath, msgMap)
+
+
+def readLastKey(filePath):
+    if os.path.exists(filePath):
+        data = loadJson(filePath)
+        return list(data.keys())[-1]  # no order, set substance?
+    else:
+        return ""
+
+
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
     # translate_init_bmds()
-    translate_event_init_bmds()
+    # translate_event_init_bmds()
+    translate_battle_message_mbm()
