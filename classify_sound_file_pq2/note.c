@@ -292,6 +292,12 @@ F:\TMP\cpk_output_workplace\ori-data\init\tutorialtable.bin
 
 F:\TMP\cpk_output_workplace\ori-data\Item\equipitemexpbattle.mbm
 
+F:\TMP\cpk_output_workplace\ori-data\facility
+arc file?
+
+F:\TMP\cpk_output_workplace\ori-data\init\fcltable.bin
+
+F:\TMP\cpk_output_workplace\ori-data\Item\seaitemequipexplain.mbm
 
 mbm 有点头疼
 不过这时候才想起来要搜，有老哥在做西班牙语化。但看起来只做了常规的翻译，ctd文件没有翻译
