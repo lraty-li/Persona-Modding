@@ -1,61 +1,11 @@
 import sys
 from pathlib import Path
-from mbm_common import *
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+from mbm_common import *
 from common import loadJson
 from zh_common import replaceZhToJpKanji
 from msg_parser import parseLine, reJoinMsg
-
-
-def ctlStrsToBytes(text):
-    bBytes = []
-    if len(text) == 0:
-        return []
-    else:
-        hexStrs = text[1:-1].replace("][", " ")
-        hexStrs = hexStrs.split(" ")
-        bBytes = bytes.fromhex("".join(hexStrs))
-        return bBytes
-
-
-def reJoinToBytes(ctlStrs, msg):
-    # 尝试缝合：
-    reJoin = []
-    msgLength = len(msg)
-    msgCtlStrsLength = len(ctlStrs)
-    if msgCtlStrsLength > msgLength:
-        for i in range(msgCtlStrsLength):
-            ctlBytes = ctlStrsToBytes(ctlStrs[i])
-            reJoin += ctlBytes
-            if i < msgLength:
-                # BUG 修复字符集，hall to full width 有很多非shiftjis部分
-                reJoin += msg[i].encode("shiftjis")
-    else:
-        raise Exception("control string more than msg?")
-    return reJoin
-
-
-def valueToLittleBytes(value):
-    # reverd
-    # input : 19,088,743
-    # output 67 45 23 01
-    return value.to_bytes(4, "little")
-
-
-def fillToBytes(start, container, bBytes):
-    if len(bBytes) > len(container):
-        raise
-    else:
-        for bbyte in bBytes:
-            container[start] = bbyte
-            start += 1
-    return container
-
-
-def writeMbmFile(filepaht, data):
-    with open(filepaht, "wb") as file:
-        file.write(bytes(data))
 
 
 if __name__ == "__main__":
@@ -83,11 +33,8 @@ if __name__ == "__main__":
                 transMsg = translatedMsg["{}_{}_{}".format(file, msgInfoIndex, index)]
                 transedMsgLines.append(transMsg)
             # TODO 某些翻译失败的文本简单过滤，但是应该放到translate.py
-            # TODO replace with charset
             transedMsgLinesRp = []
             for line in transedMsgLines:
-                if "'" in line:
-                    print()
                 replacedLine = replaceZhToJpKanji(line)
                 # DEBUG
                 transedMsgLinesRp.append(replacedLine)
@@ -130,7 +77,11 @@ if __name__ == "__main__":
             msgArea += msgBytes
             msgArea += b"\xff\xff"
         # join all area
+        fileSize = len(fileHeader) + len(fileHeader) + msgArea
+        fileSizeBytes = valueToLittleBytes(fileSize)
+        fileHeader = fillToBytes(FILE_SIZE_OFFSET,fileHeader,fileSizeBytes)
         mbmFileBytes = fileHeader + msgInfo + msgArea
+        #TODO file size
         # just dump to repack root
         outputPath = Path().joinpath(repackCpkRoot,targ)
         writeMbmFile(str(outputPath), mbmFileBytes)
