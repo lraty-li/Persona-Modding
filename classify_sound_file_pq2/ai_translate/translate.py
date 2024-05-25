@@ -40,8 +40,8 @@ def translate_init_bmds():
         "D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin"
     )
     os.chdir(workplaceRoot)
-    bmdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd-parts.json"
-    bmdMsgLines = loadJson(bmdJsonPath)
+    msgJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd-parts.json"
+    bmdMsgLines = loadJson(msgJsonPath)
     msgMap = {}
     for bmdF in bmdMsgLines:
         jpLine = bmdMsgLines[bmdF]
@@ -49,14 +49,14 @@ def translate_init_bmds():
         # zhMsg = "daw"
         print("{} | {}".format(jpLine, zhMsg))
         msgMap[bmdF] = zhMsg
-    dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
 def translate_event_init_bmds():
     workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt"
     os.chdir(workplaceRoot)
-    bmdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt\bmd-parts.json"
-    bmdMsgLines = loadJson(bmdJsonPath)
+    msgJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt\bmd-parts.json"
+    bmdMsgLines = loadJson(msgJsonPath)
     msgMap = {}
     for bmdF in bmdMsgLines:
         jpLine = bmdMsgLines[bmdF]
@@ -64,7 +64,7 @@ def translate_event_init_bmds():
         # zhMsg = "daw"
         print("{} | {}".format(jpLine, zhMsg))
         msgMap[bmdF] = zhMsg
-    dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
 def translate_battle_message_mbm():
@@ -148,8 +148,8 @@ def translate_battle_message_bmds():
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message"
     )
     os.chdir(workplaceRoot)
-    bmdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message\bmd-parts.json"
-    bmdMsgLines = loadJson(bmdJsonPath)
+    msgJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message\bmd-parts.json"
+    bmdMsgLines = loadJson(msgJsonPath)
     msgMap = {}
     for bmdF in bmdMsgLines:
         jpLine = bmdMsgLines[bmdF]
@@ -157,7 +157,7 @@ def translate_battle_message_bmds():
         # zhMsg = "daw"
         print("{} | {}".format(jpLine, zhMsg))
         msgMap[bmdF] = zhMsg
-    dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
 def translate_tutorial_scr_msgs():
@@ -165,8 +165,8 @@ def translate_tutorial_scr_msgs():
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\tutorial\scr"
     )
     os.chdir(workplaceRoot)
-    bmdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\tutorial\scr\msg-parts.json"
-    bmdMsgLines = loadJson(bmdJsonPath)
+    msgJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\tutorial\scr\msg-parts.json"
+    bmdMsgLines = loadJson(msgJsonPath)
     msgMap = {}
     for bmdF in bmdMsgLines:
         jpLine = bmdMsgLines[bmdF]
@@ -174,7 +174,7 @@ def translate_tutorial_scr_msgs():
         # zhMsg = "daw"
         print("{} | {}".format(jpLine, zhMsg))
         msgMap[bmdF] = zhMsg
-    dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
 def trans_init_fcltable_ftd():
@@ -199,6 +199,26 @@ def trans_init_fcltable_ftd():
     dumpJson(ctdJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
+def translate_battle_event_msgs(msgJsonPath):
+    workplaceRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event"
+    )
+    os.chdir(workplaceRoot)
+    msgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for msgF in msgLines:
+        jpLine = msgLines[msgF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, msgF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
+
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
     # translate_init_bmds()
@@ -207,4 +227,7 @@ if __name__ == "__main__":
     # translate_battle_message_bmds()
     # translate_tutorial_scr_msgs()
     # translate_item_mbm()
-    trans_init_fcltable_ftd()
+    # trans_init_fcltable_ftd()
+    translate_battle_event_msgs(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-parts.json")
+    translate_battle_event_msgs(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-bgm-parts.json")
+    translate_battle_event_msgs(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-support-parts.json")

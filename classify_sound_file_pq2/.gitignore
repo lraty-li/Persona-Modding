@@ -46,3 +46,4 @@ zh/charset/*.txt
 zh/tutorial/scr/*.json
 zh/item/*.json
 zh/init/fcltable_bin/*.json
+zh/battle/event/*.json
