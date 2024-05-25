@@ -177,6 +177,28 @@ def translate_tutorial_scr_msgs():
     dumpJson(bmdJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
+def trans_init_fcltable_ftd():
+    workplaceRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\fcltable_bin"
+    )
+    os.chdir(workplaceRoot)
+    # ctds = [i for i in files if i.endswith("ctd")]
+    ctdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\fcltable_bin\ftd.json"
+    msgs = loadJson(ctdJsonPath)
+    msgMap = {}
+    for ftdF in msgs:
+        jpLine = msgs[ftdF][0]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, ftdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(ctdJsonPath.replace(".json", "-zh.json"), msgMap)
+
+
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
     # translate_init_bmds()
@@ -184,4 +206,5 @@ if __name__ == "__main__":
     # translate_battle_message_mbm()
     # translate_battle_message_bmds()
     # translate_tutorial_scr_msgs()
-    translate_item_mbm()
+    # translate_item_mbm()
+    trans_init_fcltable_ftd()
