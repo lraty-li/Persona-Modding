@@ -16,7 +16,7 @@ if __name__ == "__main__":
     reBuildRoot = (
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\event"
     )
-    reBuildBinRoot = r"F:\TMP\cpk_output_workplace\ori-data\battle\event"
+    reBuildBinRoot = r"F:\TMP\cpk_output_workplace\datacpk\battle\event"
     transedBmds = rebuilAllMsg(rawJson, zhJson, reBuildRoot, RecompileType.Tutorial_Scr_Bf)
     for bmdF in transedBmds:
         targetBmdf = Path().joinpath(
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     reBuildRoot = (
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\event\bgm"
     )
-    reBuildBinRoot = r"F:\TMP\cpk_output_workplace\ori-data\battle\event\bgm"
+    reBuildBinRoot = r"F:\TMP\cpk_output_workplace\datacpk\battle\event\bgm"
     transedBmds = rebuilAllMsg(rawJson, zhJson, reBuildRoot, RecompileType.Tutorial_Scr_Bf)
     for bmdF in transedBmds:
         targetBmdf = Path().joinpath(
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     reBuildRoot = (
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\event\support"
     )
-    reBuildBinRoot = r"F:\TMP\cpk_output_workplace\ori-data\battle\event\support"
+    reBuildBinRoot = r"F:\TMP\cpk_output_workplace\datacpk\battle\event\support"
     transedBmds = rebuilAllMsg(rawJson, zhJson, reBuildRoot, RecompileType.Tutorial_Scr_Bf)
     for bmdF in transedBmds:
         targetBmdf = Path().joinpath(
