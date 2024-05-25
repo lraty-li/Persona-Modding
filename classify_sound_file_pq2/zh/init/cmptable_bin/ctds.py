@@ -36,7 +36,7 @@ def parseCtd(filePath):
                 byte2 = content[byteIndex + 1]
                 if byte1 == 0 and byte2 == 0:
                     break
-                if byte1 <= 0x7F and byte2 > 0x7F:
+                if byte1 <= 0x7F and byte2 > 0x7F: #BUG byte2 > 0x81, shiftjis range
                     # byte1 ASCII, byte2 is high byte of shifjis
                     char = bytes([byte1]).decode("shiftjis")
                     msgLine += char
@@ -63,6 +63,7 @@ def parseCtd(filePath):
 
 if __name__ == "__main__":
     msgMap = {}
+    #TODO BUG? is all ctd's block size same?
     for target in targets:
         # if target == "cmpDifficultItem.ctd":
         #     print()

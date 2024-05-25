@@ -44,7 +44,7 @@ rpMsgMap = {}
 
 for ctdF in ctdMsgCountMap:
     replacedMsgs = []
-    for index in range(ctdMsgCountMap[ctdF]):
+    for index in range(ctdMsgCountMap[ctdF]): # BUG ctdMsgCountMap[ctdF]是最大索引，range的话会少一位，应该 +1
         line = zhMsg['{}_{}'.format(ctdF, index)]
         replacedLine = replaceZhToJpKanji(line)
         replacedMsgs.append(replacedLine)

@@ -75,3 +75,4 @@ def repackBin(folderPath, outputPath=None):
         os.mkdir(outputPath)
     command = [pakPack, "pack", folderPath, "v2", outputPath]
     os.system(" ".join(command))
+    return outputPath

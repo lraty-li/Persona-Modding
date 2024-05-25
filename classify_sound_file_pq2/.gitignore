@@ -45,3 +45,4 @@ zh/charset/*-zhChar2JpKanji.json
 zh/charset/*.txt
 zh/tutorial/scr/*.json
 zh/item/*.json
+zh/init/fcltable_bin/*.json
