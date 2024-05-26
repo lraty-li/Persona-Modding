@@ -289,13 +289,14 @@ event/txt/evt_intro...bmd
 
 \battle\message Done
 战斗中事件文本，技能描述
-*.tbl
 event Done
+Done
 \battle\table\playerskillnametable.tbl
 \battle\table\enemynametable.tbl
 \battle\table\enemyskillnametable.tbl
 \battle\table\skillnametable.tbl
 \battle\table\personanametable.tbl
+f:\TMP\cpk_output_workplace\datacpk\battle\btl_com.bf
 
 \battle\support\message Done
 \battle\result
@@ -326,7 +327,7 @@ arc file?
 \facility\pack\cmbroot.arc
 \facility\pack\shop.arc
 \facility\pack\top.arc
-facility/ *.bmd
+facility/ *.bmd Done
 facility/ *.bf
 
 
@@ -339,7 +340,7 @@ facility/ *.bf
 \interfaceFile\Dungeon.mbm
 
 item/ mbms Done
-
+Done
 \Item\seaitemname.tbl
 \Item\equipitemnametable.tbl
 limititemnametable.tbl
