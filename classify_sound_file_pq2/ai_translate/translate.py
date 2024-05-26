@@ -84,8 +84,8 @@ def translate_battle_message_mbm():
     #     msgLinesOfFile = data[targFile]
     #     for lineKey in msgLinesOfFile:
     #         mbmMsgLines[lineKey] = msgLinesOfFile[lineKey]
-    if len(restKey) > 0:
-        msgMap = loadJson(outputPath)
+    # if len(restKey) > 0:
+    #     msgMap = loadJson(outputPath)
     for mbmF in restKey:
         jpLine = mbmMsgLines[mbmF]
         try:
@@ -110,6 +110,8 @@ def restKeys(filePath, flattenMap):
 def mutiThreadTranslate(client, jpLine, msgMap, mbmF):
     try:
         zhMsg = translate(client, jpLine)
+        #TODO zhMsg may be None?
+        zhMsg = '{}'.format(zhMsg) 
     except Exception as e:
         print(e)
         zhMsg = "ERROR"
@@ -128,8 +130,8 @@ def translate_item_mbm():
     mbmMsgLines = loadJson(mbmJsonPath)
     restKey = restKeys(outputPath, mbmMsgLines)
     msgMap = {}
-    if len(restKey) > 0:
-        msgMap = loadJson(outputPath)
+    # if len(restKey) > 0:
+    #     msgMap = loadJson(outputPath)
     for mbmF in restKey:
         jpLine = mbmMsgLines[mbmF]
         while threading.active_count() > MUTI_THREADING_THREADHOLD:
@@ -240,6 +242,58 @@ def translate_battle_support_message_bmds():
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
+def translate_item_tbl():
+    initThreadCount = threading.active_count()
+    workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\item"
+    os.chdir(workplaceRoot)
+    mbmJsonPath = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\item\tbl-parts.json"
+    )
+    outputPath = mbmJsonPath.replace(".json", "-zh.json")
+    mbmMsgLines = loadJson(mbmJsonPath)
+    restKey = restKeys(outputPath, mbmMsgLines)
+    msgMap = {}
+    # if len(restKey) < len(mbmMsgLines):
+    #     msgMap = loadJson(outputPath)
+    for mbmF in restKey:
+        jpLine = mbmMsgLines[mbmF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, mbmF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(outputPath, msgMap)
+
+
+def translate_battle_table_tbl():
+    initThreadCount = threading.active_count()
+    workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\table"
+    os.chdir(workplaceRoot)
+    mbmJsonPath = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\table\tbl-parts.json"
+    )
+    outputPath = mbmJsonPath.replace(".json", "-zh.json")
+    mbmMsgLines = loadJson(mbmJsonPath)
+    restKey = restKeys(outputPath, mbmMsgLines)
+    msgMap = {}
+    # if len(restKey) < len(mbmMsgLines):
+    #     msgMap = loadJson(outputPath)
+    for mbmF in restKey:
+        jpLine = mbmMsgLines[mbmF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, mbmF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(outputPath, msgMap)
+
+
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
     # translate_init_bmds()
@@ -258,4 +312,6 @@ if __name__ == "__main__":
     # translate_battle_event_msgs(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-support-parts.json"
     # )
-    translate_battle_support_message_bmds()
+    # translate_battle_support_message_bmds()
+    # translate_item_tbl()
+    translate_battle_table_tbl()

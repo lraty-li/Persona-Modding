@@ -272,6 +272,8 @@ ctd就是得自己读取了，文件头16byte，每块文本装在64byte内，�
 
 
 event/txt/evt_intro...bmd
+\event\msg_GAMEOVER.bmd
+\event\msg_POEM.bmd
 
 [msg evt_intro_AKECHI]
 [f 0 5 65278][f 2 1]岸巌玩癌 悔恢牙永 叶椛快怪[n]永眼鰍苑岩 益翫贋扱雁頑迦屋[n]縞専唄圧遇 詠穫基椛＂眼鰍甘[n]暗扱鴬卯＂ 芽蛾鯵＂裟廠＂ [n][e]
@@ -282,22 +284,78 @@ event/txt/evt_intro...bmd
 ＂ 应该没有对应编码，为什么没被替换掉 #BUG
 
 
-F:\TMP\cpk_output_workplace\datacpk\tutorial\scr
+\tutorial\scr  Done
 教程
 
-F:\TMP\cpk_output_workplace\ori-data\battle\message
+\battle\message Done
 战斗中事件文本，技能描述
+*.tbl
+event Done
+\battle\table\playerskillnametable.tbl
+\battle\table\enemynametable.tbl
+\battle\table\enemyskillnametable.tbl
+\battle\table\skillnametable.tbl
+\battle\table\personanametable.tbl
 
-F:\TMP\cpk_output_workplace\ori-data\init\tutorialtable.bin
+\battle\support\message Done
+\battle\result
 
-F:\TMP\cpk_output_workplace\ori-data\Item\equipitemexpbattle.mbm
 
-F:\TMP\cpk_output_workplace\ori-data\facility
+\attraction\attrnametable.tbl
+\attraction\attrquestnametable.tbl
+\attraction\schwalkname.tbl
+
+\camp\cmppoem.bf
+
+\camp\dictionary.tbl
+
+dungeon\pack\dng_com.arc
+\dungeon\floor_name.tbl
+\dungeon\message
+\dungeon\script\charaTalk
+\dungeon\script\gimmick
+\dungeon\script\support
+\dungeon\script\dun_com.bf
+
+\init\tutorialtable.bin 
+
+
+
+\facility
 arc file?
+\facility\pack\cmbroot.arc
+\facility\pack\shop.arc
+\facility\pack\top.arc
+facility/ *.bmd
+facility/ *.bf
 
-F:\TMP\cpk_output_workplace\ori-data\init\fcltable.bin
 
-F:\TMP\cpk_output_workplace\ori-data\Item\seaitemequipexplain.mbm
+\init\fcltable.bin
+\init\itemtbl.bin
+\init\qsttable.bin
+\init\spkrtbl.bin
+\init\tutorialtable.bin
+
+\interfaceFile\Dungeon.mbm
+
+item/ mbms Done
+
+\Item\seaitemname.tbl
+\Item\equipitemnametable.tbl
+limititemnametable.tbl
+\Item\seaitemequipeffect.tbl
+\Item\skyitemequipeffect.tbl
+\Item\skyitemname.tbl
+\Item\useitemnametable.tbl
+
+
+\quest\table\questnametable.tbl
+
+\shared\bgm_detail.bmd
+
+\title\nameentry.bin
+
+在电影院售票处的右上角信息在哪？
 
 mbm 有点头疼
 不过这时候才想起来要搜，有老哥在做西班牙语化。但看起来只做了常规的翻译，ctd文件没有翻译
@@ -377,3 +435,11 @@ ftd:
 msg的话在分块完之后，再每块按 00 00 切开，这样比较好避开分隔符解析的问题(以及 ff ff)
 
 反复按行宽大小读取，如果剩下的byte数量小于行宽，一般应该是刚好是header大小，不是的话报错看看啥情况
+
+
+https://discord.com/channels/746211612981198989/1046037499056762911/1179184941691588699
+PUT prints only numbers
+PUTS prints only text
+PUTF prints only floats
+
+battle/event/support/msg 的flow里面有很多文本，看来只是print
