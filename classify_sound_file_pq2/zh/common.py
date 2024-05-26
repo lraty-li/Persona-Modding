@@ -29,3 +29,21 @@ def dumpJson(filePath, data):
         "w",
     ) as file:
         file.write(json.dumps(data, ensure_ascii=False))
+
+def writeBinFile(filepaht, data):
+    with open(filepaht, "wb") as file:
+        file.write(bytes(data))
+
+def valueToLittleBytes(value,width = 4):
+    # reverd
+    # input : 19,088,743
+    # output 67 45 23 01
+    return value.to_bytes(width, "little")
+
+def getReveBinValue(bBytes):
+    # bBytes = list(reversed(bBytes))
+    # little-endian
+    sum = 0
+    for bByteIndex in range(len(bBytes)):
+        sum += bBytes[bByteIndex] << (8 * bByteIndex)
+    return int(sum)

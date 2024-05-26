@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from mbm_common import *
-from common import loadJson
+from common import loadJson, writeBinFile, valueToLittleBytes
 from zh_common import replaceZhToJpKanji
 from msg_parser import parseLine, reJoinMsg
 
@@ -81,6 +81,6 @@ if __name__ == "__main__":
         #TODO file size
         # just dump to repack root
         outputPath = Path().joinpath(repackCpkRoot,targ)
-        writeMbmFile(str(outputPath), mbmFileBytes)
+        writeBinFile(str(outputPath), mbmFileBytes)
 
 print()

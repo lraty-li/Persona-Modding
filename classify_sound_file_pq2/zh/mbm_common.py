@@ -20,6 +20,7 @@ MBM_MSG_INFO_TEMPLATE = "00 00 00 00 0E 00 00 00 00 02 00 00 00 00 00 00"
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import parseLine
+from common import getReveBinValue
 
 
 def isAscii(bByteInt):
@@ -110,15 +111,6 @@ def decodeMsgBytes(bBytes):
 
     return msgLine
 
-
-def getReveBinValue(bBytes):
-    # bBytes = list(reversed(bBytes))
-    sum = 0
-    for bByteIndex in range(len(bBytes)):
-        sum += bBytes[bByteIndex] << (8 * bByteIndex)
-    return sum
-
-
 def getMsgOfInfo(rawData, msgInfo):
     # msg size
     # ... 4 ...,...5...
@@ -151,7 +143,7 @@ def decodeAllMbm(tTargets):
         if True:  # TODO format
 
             header = rawData[:HEADER_SIZE]
-            msgCount = getReveBinValue(header[MSG_COUNT_OFFSET : MSG_COUNT_OFFSET + 4])
+            msgCount = getReveBinValue(header[MSG_COUNT_OFFSET : MSG_COUNT_OFFSET + 4]) #BUG？ 2byte 
             fileSize = getReveBinValue(header[FILE_SIZE_OFFSET : FILE_SIZE_OFFSET + 4])
             # skyitemfoodeffect.mbm 的 file size 怎么不对的......
             firstMsgInfo = rawData[HEADER_SIZE : HEADER_SIZE + MSG_INFO_SIZE]
@@ -231,12 +223,6 @@ def reJoinToBytes(ctlStrs, msg):
     return reJoin
 
 
-def valueToLittleBytes(value):
-    # reverd
-    # input : 19,088,743
-    # output 67 45 23 01
-    return value.to_bytes(4, "little")
-
 
 def fillToBytes(start, container, bBytes):
     if len(bBytes) > len(container):
@@ -246,8 +232,3 @@ def fillToBytes(start, container, bBytes):
             container[start] = bbyte
             start += 1
     return container
-
-
-def writeMbmFile(filepaht, data):
-    with open(filepaht, "wb") as file:
-        file.write(bytes(data))

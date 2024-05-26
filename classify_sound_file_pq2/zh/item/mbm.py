@@ -4,7 +4,7 @@ import sys
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from common import dumpJson
-from mbm_common import *
+from mbm_common import decodeAllMbm, flattenTheMap
 
 
 if __name__ == "__main__":

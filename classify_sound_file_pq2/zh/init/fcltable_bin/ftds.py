@@ -3,8 +3,7 @@ import os, shutil, re
 import sys
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
-from mbm_common import getReveBinValue
-from common import dumpJson
+from common import dumpJson, getReveBinValue
 from zh_common import unpackBin
 
 
