@@ -49,7 +49,7 @@ def dumpBfs():
 def parseMsgs():
     msgMap = {}
     files = os.listdir(cacheFolder)
-    msgFile = [i for i in files if i.endswith(".msg")]
+    msgFile = [i for i in files if i.endswith(".msg")] #TODO .bf.msg
     for msgF in msgFile:
         msgData = parseMsgFile(os.path.join(cacheFolder, msgF))
         msgMap[msgF] = msgData

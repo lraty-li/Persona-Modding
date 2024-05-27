@@ -30,6 +30,13 @@ def dumpJson(filePath, data):
     ) as file:
         file.write(json.dumps(data, ensure_ascii=False))
 
+def readBinFile(filePath):
+    data = []
+    with open(filePath, "rb") as file:
+        data = file.read()
+    return data
+
+
 def writeBinFile(filepaht, data):
     with open(filepaht, "wb") as file:
         file.write(bytes(data))
@@ -47,3 +54,12 @@ def getReveBinValue(bBytes):
     for bByteIndex in range(len(bBytes)):
         sum += bBytes[bByteIndex] << (8 * bByteIndex)
     return int(sum)
+
+def fillToBytes(start, container, bBytes):
+    if len(bBytes) > len(container):
+        raise
+    else:
+        for bbyte in bBytes:
+            container[start] = bbyte
+            start += 1
+    return container

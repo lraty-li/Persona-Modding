@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from mbm_common import *
-from common import loadJson, writeBinFile, valueToLittleBytes
+from common import loadJson, writeBinFile, valueToLittleBytes,fillToBytes
 from zh_common import replaceZhToJpKanji
 from msg_parser import parseLine, reJoinMsg
 

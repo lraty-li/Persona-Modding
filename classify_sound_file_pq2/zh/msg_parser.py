@@ -9,7 +9,7 @@ from zh_common import (
 )
 
 from common import loadJson, dumpJson
-
+from common import fillToBytes, valueToLittleBytes, readBinFile
 
 def splitIntoBlocks(text):
     blocks = []
@@ -189,6 +189,7 @@ class RecompileType(Enum):
     BMD = 1
     BF = 2
     Tutorial_Scr_Bf = 3
+    Unknown_Func_Bf = 4
 
 
 def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
@@ -292,6 +293,16 @@ def recompileMsg(msgFile, msgOutPutRoot, fType):
         ]
         outputBfName = os.path.join(msgOutPutRoot, msgFile.replace(".msg", ".flow.bf"))
         outputFileName = outputBfName
+    elif fType == RecompileType.Unknown_Func_Bf:
+        compileParam = "--Compile -OutFormat V1 -Library pq2 -Encoding SJ"
+        command = [
+            atlusScriptCompiler,
+            outPutMsgPath,
+            compileParam,
+        ]
+        outputFileName = os.path.join(
+            msgOutPutRoot, msgFile.replace(".bf.msg", ".bf.msg.bmd")
+        )
 
     os.system(" ".join(command))
     return outputFileName
@@ -313,3 +324,32 @@ def rebuilAllMsg(unTransMsgPath, transMsgPath, reBuildRoot, fType):
         outputFileP = recompileMsg(msgFile, msgOutPutRoot, fType)
         recompiledFiles.append(outputFileP)
     return recompiledFiles
+
+
+def rebuildFailBf(target, oriRoot, cacheRoot):
+    # rebuild Bf file unable to decompile correctly
+    # original bf file
+    oriBfFilePath = os.path.join(oriRoot, target)
+    oriBfFile = readBinFile(oriBfFilePath)
+    # seach bmd file header of origin bf file ，truncate
+    # 07 00 00 00 __ __ 00 00 4D 53 47 31 00 00 00 00  ........MSG1....
+    bmdHeaderRegx = b"\x07\x00\x00\x00..\x00\x00\x4d\x53\x47\x31\x00\x00\x00\x00"
+    bmdHeaderStartOffset = list(re.finditer(bmdHeaderRegx, oriBfFile))[0].start()
+    oriBfFrontPart = oriBfFile[:bmdHeaderStartOffset]
+
+    # build bmd file,
+    msgFileName = target.replace(".bf", ".bf.msg")
+    bmdFilePath = recompileMsg(msgFileName, cacheRoot, RecompileType.Unknown_Func_Bf)
+
+    # concat origin bf file's front part bytes and  bmd bytes
+    bmdFileBytes = readBinFile(bmdFilePath)
+    rebuildBfBytes = list(oriBfFrontPart + bmdFileBytes)
+
+    # fix whole file size
+    totalFileSizeByte = valueToLittleBytes(len(rebuildBfBytes))
+    rebuildBfBytes = fillToBytes(0x4, rebuildBfBytes, totalFileSizeByte)
+    rebuildBfBytes = fillToBytes(0x6C, rebuildBfBytes, totalFileSizeByte)
+    # fix message part(bmd) file size
+    bmdFileSizeByte = bmdFileBytes[0x4 : 0x4 + 2]
+    rebuildBfBytes = fillToBytes(0x58, rebuildBfBytes, bmdFileSizeByte)
+    return bytes(rebuildBfBytes)

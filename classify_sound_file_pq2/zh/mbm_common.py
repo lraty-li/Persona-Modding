@@ -221,14 +221,3 @@ def reJoinToBytes(ctlStrs, msg):
     else:
         raise Exception("control string more than msg?")
     return reJoin
-
-
-
-def fillToBytes(start, container, bBytes):
-    if len(bBytes) > len(container):
-        raise
-    else:
-        for bbyte in bBytes:
-            container[start] = bbyte
-            start += 1
-    return container

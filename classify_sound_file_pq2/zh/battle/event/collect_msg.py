@@ -46,7 +46,7 @@ def dumpBfs(eventRoot):
 def parseMsgs(folderRoot):
     msgMap = {}
     files = os.listdir(folderRoot)
-    msgFile = [i for i in files if i.endswith(".msg")]
+    msgFile = [i for i in files if i.endswith(".msg")] #TODO .bf.msg
     for msgF in msgFile:
         msgData = parseMsgFile(os.path.join(folderRoot, msgF))
         msgMap[msgF] = msgData
