@@ -3,8 +3,7 @@ from pathlib import Path
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import getMsgLines, parseMsgFile
-from common import dumpJson
-from zh_common import atlusScriptCompiler
+from common import dumpJson ,atlusScriptCompiler
 
 
 def dumpBfs(eventRoot, cacheRoot):

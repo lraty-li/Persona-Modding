@@ -50,3 +50,4 @@ zh/battle/event/*.json
 zh/battle/support/message/*.json
 zh/battle/table/*.json
 zh/facility/*.json
+zh/init/*.json

@@ -1,9 +1,9 @@
-import os
+import os,shutil
 import regex as re
 from enum import Enum
+from common import atlusScriptCompiler
 
 from zh_common import (
-    atlusScriptCompiler,
     replaceZhToJpKanji,
     joinNewLineCtlStr,
 )
@@ -353,3 +353,16 @@ def rebuildFailBf(target, oriRoot, cacheRoot):
     bmdFileSizeByte = bmdFileBytes[0x4 : 0x4 + 2]
     rebuildBfBytes = fillToBytes(0x58, rebuildBfBytes, bmdFileSizeByte)
     return bytes(rebuildBfBytes)
+
+def dumBmds(workplace, cacheFolder):
+    files = os.listdir(workplace)
+    bmdFiles = [i for i in files if i.endswith(".bmd")]
+    for bmdFile in bmdFiles:
+        cacheBmdFile = os.path.join(cacheFolder, bmdFile)
+        shutil.copy(os.path.join(workplace, bmdFile), cacheBmdFile)
+        command = [
+            atlusScriptCompiler,
+            cacheBmdFile,
+            "--Decompile -Library pq2 -Encoding SJ",
+        ]
+        os.system(" ".join(command))

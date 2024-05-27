@@ -1,6 +1,10 @@
 import json
 from pathlib import Path
 
+atlusScriptCompiler = (
+    r"F:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
+)
+
 halfWidthToFullWidth = "D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\charset\half_width_to_full_width.json"
 
 charsetOutRoot = "D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\charset"

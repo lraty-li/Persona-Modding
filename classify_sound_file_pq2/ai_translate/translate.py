@@ -35,7 +35,7 @@ def trans_init_cmptable_ctd():
     dumpJson(ctdJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
-def translate_init_bmds():
+def translate_init_cmptable_bin_bmds():
     workplaceRoot = (
         "D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin"
     )
@@ -359,9 +359,29 @@ def translate_facility_msgs(msgJsonPath):
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
+
+def translate_init_bmds():
+    workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init"
+    os.chdir(workplaceRoot)
+    msgJsonPath = r"bmd-parts.json"
+    bmdMsgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for bmdF in bmdMsgLines:
+        jpLine = bmdMsgLines[bmdF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, bmdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
+
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
-    # translate_init_bmds()
+    # translate_init_cmptable_bin_bmds()
     # translate_event_init_bmds()
     # translate_battle_message_mbm()
     # translate_battle_message_bmds()
@@ -382,6 +402,7 @@ if __name__ == "__main__":
     # translate_battle_table_tbl()
     # translate_battle_facility_bmds()
     # translate_battle_message_tbl()
-    translate_facility_msgs(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
-    )
+    # translate_facility_msgs(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
+    # )
+    translate_init_bmds()

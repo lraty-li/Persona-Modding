@@ -328,9 +328,9 @@ arc file?
 \facility\pack\shop.arc
 \facility\pack\top.arc
 facility/ *.bmd Done
-facility/ *.bf
+facility/ *.bf Done
 
-
+init/ *.bmd Done
 \init\fcltable.bin
 \init\itemtbl.bin
 \init\qsttable.bin

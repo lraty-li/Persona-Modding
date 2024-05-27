@@ -4,9 +4,7 @@ from pathlib import Path
 from common import loadJson, zhChar2JpKanjiPath, JpKanji2zhCharPath
 
 pakPack = "f:\modding\persona-tools\AtlusFileSystemLibrary-release\PAKPack.exe"
-atlusScriptCompiler = (
-    r"F:\modding\persona-tools\Atlus-Script-Tools\AtlusScriptCompiler.exe"
-)
+
 
 zhChar2JpKanji = loadJson(zhChar2JpKanjiPath)
 JpKanji2zhChar = loadJson(JpKanji2zhCharPath)
