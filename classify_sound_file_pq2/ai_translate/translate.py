@@ -378,6 +378,24 @@ def translate_init_bmds():
         time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
+def translate_init_itemtbl_bin():
+    workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\itemtbl_bin"
+    os.chdir(workplaceRoot)
+    msgJsonPath = r"itemtbl.json"
+    bmdMsgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for bmdF in bmdMsgLines:
+        jpLine = bmdMsgLines[bmdF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, bmdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
 
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
@@ -405,4 +423,5 @@ if __name__ == "__main__":
     # translate_facility_msgs(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
     # )
-    translate_init_bmds()
+    # translate_init_bmds()
+    translate_init_itemtbl_bin()

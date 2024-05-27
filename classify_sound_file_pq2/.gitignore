@@ -51,3 +51,5 @@ zh/battle/support/message/*.json
 zh/battle/table/*.json
 zh/facility/*.json
 zh/init/*.json
+zh/init/itemtbl_bin/*.json
+note_image
