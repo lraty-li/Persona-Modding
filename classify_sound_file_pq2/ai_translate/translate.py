@@ -339,6 +339,26 @@ def translate_battle_message_tbl():
     dumpJson(outputPath, msgMap)
 
 
+def translate_facility_msgs(msgJsonPath):
+    # workplaceRoot = (
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event"
+    # )
+    # os.chdir(workplaceRoot)
+    msgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for msgF in msgLines:
+        jpLine = msgLines[msgF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, msgF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
+
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
     # translate_init_bmds()
@@ -361,4 +381,7 @@ if __name__ == "__main__":
     # translate_item_tbl()
     # translate_battle_table_tbl()
     # translate_battle_facility_bmds()
-    translate_battle_message_tbl()
+    # translate_battle_message_tbl()
+    translate_facility_msgs(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
+    )

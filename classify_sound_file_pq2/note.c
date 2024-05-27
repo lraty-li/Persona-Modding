@@ -444,3 +444,21 @@ PUTS prints only text
 PUTF prints only floats
 
 battle/event/support/msg 的flow里面有很多文本，看来只是print
+
+fail to rebuild, like event 800
+['noffice.bf.flow.bf', 'scrgotodungeon.bf.flow.bf', 'townsupport.bf.flow.bf', 'weapon.bf.flow.bf']
+
+ori-data\event\e100\e100_155.bf
+打包后的 event\e100\e100_155.bf
+对比函数部分：(	Instruction data)
+原本是： 09 00 00 00 09 00 00 00 函数部分 09 00 00 00 
+打包后： 09 00 00 00 函数部分 09 00 00 00 
+也许是优化掉了？不管估计没事
+
+符号部分：
+总56字节，最后一个字节是某种偏移，打包后的总是比打包前的小1，跟 Instruction data 部分少4字节有关？
+
+对比比较大的e100_172
+符号部分很多 ifelse_label_*， 文件的 0030，004Fh 有所变化，那能不能完全不动呢？
+
+要动的部分：文件整体大小、message 部分大小（可以在bmd的文件头找到）
