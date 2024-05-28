@@ -359,7 +359,6 @@ def translate_facility_msgs(msgJsonPath):
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
-
 def translate_init_bmds():
     workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init"
     os.chdir(workplaceRoot)
@@ -378,8 +377,11 @@ def translate_init_bmds():
         time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
+
 def translate_init_itemtbl_bin():
-    workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\itemtbl_bin"
+    workplaceRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\itemtbl_bin"
+    )
     os.chdir(workplaceRoot)
     msgJsonPath = r"itemtbl.json"
     bmdMsgLines = loadJson(msgJsonPath)
@@ -390,6 +392,47 @@ def translate_init_itemtbl_bin():
             time.sleep(MUTI_THREADING_SLEEP)
         t = threading.Thread(
             target=mutiThreadTranslate, args=(client, jpLine, msgMap, bmdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
+
+def translate_facility_pack_shop_arc_bmd():
+    workplaceRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc"
+    )
+    os.chdir(workplaceRoot)
+    msgJsonPath = r"bmd-parts.json"
+    bmdMsgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for bmdF in bmdMsgLines:
+        jpLine = bmdMsgLines[bmdF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, bmdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
+
+def translate_facility_pack_shop_arc_bf(msgJsonPath):
+    # workplaceRoot = (
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event"
+    # )
+    # os.chdir(workplaceRoot)
+    msgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for msgF in msgLines:
+        jpLine = msgLines[msgF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, msgF)
         )
         t.start()
     while threading.active_count() != 1:
@@ -424,4 +467,8 @@ if __name__ == "__main__":
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
     # )
     # translate_init_bmds()
-    translate_init_itemtbl_bin()
+    # translate_init_itemtbl_bin()
+    # translate_facility_pack_shop_arc_bmd()
+    translate_facility_pack_shop_arc_bf(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
+    )
