@@ -54,3 +54,4 @@ zh/init/*.json
 zh/init/itemtbl_bin/*.json
 note_image
 zh/facility/pack/shop_arc/*.json
+zh/facility/pack/cmbroot_arc/*.json

@@ -212,6 +212,8 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 replacedLine = replaceZhToJpKanji(translatedMsgLine)
                 reJoinedLine += joinNewLineCtlStr(replacedLine)
                 # check if message is shiftjis 
+                #TODO fix charset
+                #     "～": "～",
                 reJoinedLine.encode('shiftjis')
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
