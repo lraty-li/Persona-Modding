@@ -1,4 +1,4 @@
-import os,shutil
+import os, shutil
 import regex as re
 from enum import Enum
 from common import atlusScriptCompiler
@@ -10,6 +10,7 @@ from zh_common import (
 
 from common import loadJson, dumpJson
 from common import fillToBytes, valueToLittleBytes, readBinFile
+
 
 def splitIntoBlocks(text):
     blocks = []
@@ -210,6 +211,8 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 # replace chars before insert [n], otherwise [n] would be replaced
                 replacedLine = replaceZhToJpKanji(translatedMsgLine)
                 reJoinedLine += joinNewLineCtlStr(replacedLine)
+                # check if message is shiftjis 
+                reJoinedLine.encode('shiftjis')
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
     # transMsgLines.append("\n")
@@ -326,7 +329,7 @@ def rebuilAllMsg(unTransMsgPath, transMsgPath, reBuildRoot, fType):
     return recompiledFiles
 
 
-def rebuildFailBf(target, oriRoot, cacheRoot):
+def rebuildFailBf(target, oriRoot, cacheRoot, rawJsonPath):
     # rebuild Bf file unable to decompile correctly
     # original bf file
     oriBfFilePath = os.path.join(oriRoot, target)
@@ -338,9 +341,15 @@ def rebuildFailBf(target, oriRoot, cacheRoot):
     oriBfFrontPart = oriBfFile[:bmdHeaderStartOffset]
 
     # build bmd file,
-    msgFileName = target.replace(".bf", ".bf.msg")
-    bmdFilePath = recompileMsg(msgFileName, cacheRoot, RecompileType.Unknown_Func_Bf)
-
+    # TODO 之前的有没有重建message？
+    rawJsonPath = os.path.join(cacheRoot, rawJsonPath)
+    bmdFilePaths = rebuilAllMsg(
+        rawJsonPath,
+        rawJsonPath.replace(".json", "-parts-zh.json"),
+        cacheRoot,
+        RecompileType.Unknown_Func_Bf,
+    )
+    bmdFilePath = bmdFilePaths[0]
     # concat origin bf file's front part bytes and  bmd bytes
     bmdFileBytes = readBinFile(bmdFilePath)
     rebuildBfBytes = list(oriBfFrontPart + bmdFileBytes)
@@ -353,6 +362,7 @@ def rebuildFailBf(target, oriRoot, cacheRoot):
     bmdFileSizeByte = bmdFileBytes[0x4 : 0x4 + 2]
     rebuildBfBytes = fillToBytes(0x58, rebuildBfBytes, bmdFileSizeByte)
     return bytes(rebuildBfBytes)
+
 
 def dumBmds(workplace, cacheFolder):
     files = os.listdir(workplace)

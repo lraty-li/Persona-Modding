@@ -17,7 +17,7 @@ def testRebuild():
     targ = "e000_015.bf"
     oriRoot = r"F:\TMP\cpk_output_workplace\ori-data\event\e000"
     cacheRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\event\e000"
-    rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot)
+    rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot) 
     writeBinFile("{}_test_rebuild_unknow_func.bf".format(targ), rebuildBytes)
     return
 
@@ -37,5 +37,5 @@ if __name__ == "__main__":
     )
     repackRoot = r"F:\TMP\cpk_output_workplace\datacpk\facility"
     for targ in targets:
-        rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot)
+        rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot) # TODO add msg.json path for rebuild
         # writeBinFile(str(Path().joinpath(repackRoot, targ)), rebuildBytes)
