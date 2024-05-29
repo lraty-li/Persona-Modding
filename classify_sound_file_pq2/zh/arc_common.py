@@ -3,16 +3,15 @@ import sys, os
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from common import readBinFile, valueToLittleBytes, fillToBytes, getReveBinValue
 
-ARC_HEADER = b"\x04\x00\x00\x00"
 NEXT_BLOCK_SIZE_SIZE = 4
 FILE_NAME_SIZE = 0x20
 
 
-def getArcFileNames(arcFilePath):
+def getArcFileNames(arcFilePath, arcHeader):
     # keep the order
     fileBytes = readBinFile(arcFilePath)
     index = 0
-    index += len(ARC_HEADER)
+    index += len(arcHeader)
     fileNames = []
     while index < len(fileBytes):
         nameBytes = fileBytes[index : index + FILE_NAME_SIZE]
@@ -26,9 +25,9 @@ def getArcFileNames(arcFilePath):
     return fileNames
 
 
-def rebuildArcBytes(folderRoot, targets):
+def rebuildArcBytes(folderRoot, targets,arcHeader):
     arcBytes = b""
-    arcBytes += ARC_HEADER
+    arcBytes += arcHeader
     for targ in targets:
         fileNameTemplate = [0] * FILE_NAME_SIZE
         fileNameTemplate = fillToBytes(0, fileNameTemplate, targ.encode("shiftjis"))

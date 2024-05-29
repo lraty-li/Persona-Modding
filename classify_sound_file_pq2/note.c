@@ -299,6 +299,7 @@ Done
 f:\TMP\cpk_output_workplace\datacpk\battle\btl_com.bf
 
 \battle\support\message Done
+\battle\support\ *.bvp
 \battle\result
 
 
@@ -324,8 +325,8 @@ dungeon\pack\dng_com.arc
 
 \facility
 arc file?
-\facility\pack\cmbroot.arc
-\facility\pack\shop.arc
+\facility\pack\cmbroot.arc Done
+\facility\pack\shop.arc Done
 \facility\pack\top.arc
 facility/ *.bmd Done
 facility/ *.bf Done
@@ -355,8 +356,7 @@ limititemnametable.tbl
 \shared\bgm_detail.bmd
 
 \title\nameentry.bin
-
-在电影院售票处的右上角信息在哪？
+\title\diff select.bin
 
 mbm 有点头疼
 不过这时候才想起来要搜，有老哥在做西班牙语化。但看起来只做了常规的翻译，ctd文件没有翻译
@@ -498,3 +498,17 @@ b48c + 20h +4 + 4105c0 = 43e910 (还有空余字符)
 #TODO issue
 
 话说看了下西班牙语上的shop.arc，也是有00 填充的，怎么他的没事...
+
+charset fixing
+①
+
+
+F:\TMP\cpk_output_workplace\ori-data\attraction\schwalkname.tbl
+F:\TMP\cpk_output_workplace\ori-data\battle\ai\scr_bos_elizabeth_z.bf
+
+TODO rebuild all 少了待机时右上角信息
+
+进天鹅绒会崩溃，替换
+cmbroot.arc
+后正常
+修复arc文件头
