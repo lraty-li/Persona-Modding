@@ -5,9 +5,8 @@ sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from common import writeBinFile
 from tbl_common import rebuildTblBytes
 
+def rebuildTbl():
 
-
-if __name__ == "__main__":
     rawJson = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\table\tbl.json"
     translatedJson = (
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\table\tbl-parts-zh.json"
@@ -16,3 +15,6 @@ if __name__ == "__main__":
     data = rebuildTblBytes(rawJson, translatedJson)
     for tblF in data:
         writeBinFile(Path().joinpath(repackCpkRoot, tblF), data[tblF])
+
+if __name__ == "__main__":
+    rebuildTbl()

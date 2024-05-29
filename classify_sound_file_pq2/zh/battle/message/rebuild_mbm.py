@@ -7,8 +7,8 @@ from common import loadJson, writeBinFile, valueToLittleBytes,fillToBytes
 from zh_common import replaceZhToJpKanji
 from msg_parser import parseLine, reJoinMsg
 
+def rebuildMbm():
 
-if __name__ == "__main__":
     rawJson = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message\mbm.json"
     translatedJson = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\message\mbm-parts-zh.json"
     repackCpkRoot= r'F:\TMP\cpk_output_workplace\datacpk\battle\message'
@@ -77,7 +77,7 @@ if __name__ == "__main__":
             msgArea += msgBytes
             msgArea += b"\xff\xff"
         # join all area
-        fileSize = len(fileHeader) + len(fileHeader) + msgArea
+        fileSize = len(fileHeader) + len(fileHeader) + len(msgArea)
         fileSizeBytes = valueToLittleBytes(fileSize)
         fileHeader = fillToBytes(FILE_SIZE_OFFSET,fileHeader,fileSizeBytes)
         mbmFileBytes = fileHeader + msgInfo + msgArea
@@ -86,4 +86,6 @@ if __name__ == "__main__":
         outputPath = Path().joinpath(repackCpkRoot,targ)
         writeBinFile(str(outputPath), mbmFileBytes)
 
-print()
+
+if __name__ == "__main__":
+    rebuildMbm()

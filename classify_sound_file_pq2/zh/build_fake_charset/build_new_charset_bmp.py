@@ -78,7 +78,7 @@ def getCorpedIndex(row, column):
     return row * CHARS_PER_LINE + column
 
 
-def buildImage(chatset, fontName, charImgRoot, charSize, fontPath):
+def buildImage(charset, fontName, charImgRoot, charSize, fontPath):
     font = ImageFont.truetype(fontPath, charSize)
     charImgWidth, charImgHeight, drawOffsetX, drawOffsetY = getChatImgSize(font)
     image = Image.new(
@@ -117,9 +117,9 @@ def buildImage(chatset, fontName, charImgRoot, charSize, fontPath):
     image.save(charsetImgOutputPath)
 
 
-if __name__ == "__main__":
+def buildCharsetBmp():
 
-    fontPath = r"cache/RHR-CN-0.990/ResourceHanRoundedCN-Medium.ttf"
+    fontPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\RHR-CN-0.990\ResourceHanRoundedCN-Medium.ttf"
     charset = []
     with open(zhcharsetOpPath, "r", encoding="utf-16le") as file:
         line = file.readline()
@@ -144,4 +144,5 @@ if __name__ == "__main__":
             charset, fontName[index], targetOutputs[index], charSize[index], fontPath
         )
 
-print("DONE")
+if __name__ == "__main__":
+    buildCharsetBmp()

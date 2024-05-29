@@ -21,8 +21,7 @@ def testRebuild():
     writeBinFile("{}_test_rebuild_unknow_func.bf".format(targ), rebuildBytes)
     return
 
-
-if __name__ == "__main__":
+def rebuilBf():
     targets = [
         "noffice.bf.flow.bf",
         "scrgotodungeon.bf.flow.bf",
@@ -36,6 +35,10 @@ if __name__ == "__main__":
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility_cache"
     )
     repackRoot = r"F:\TMP\cpk_output_workplace\datacpk\facility"
+    rawJsonPath = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg.json'
     for targ in targets:
-        rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot) # TODO add msg.json path for rebuild
+        rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot, rawJsonPath)
         # writeBinFile(str(Path().joinpath(repackRoot, targ)), rebuildBytes)
+
+if __name__ == "__main__":
+    rebuilBf()

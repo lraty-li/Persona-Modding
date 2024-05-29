@@ -4,30 +4,31 @@
 # f:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\xlor\letter-order.dtd
 import shutil, os, sys
 
-sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
-from common import jpXlorPath, rebuildCPKRoot
+def buildCharsetBcFnt():
+    sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
+    from common import jpXlorPath, rebuildCPKRoot
 
-ctrFontConv = r"f:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\ctr_FontConverterConsole.exe"
+    ctrFontConv = r"f:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\ctr_FontConverterConsole.exe"
 
-targets = ["seurapro_12_12", "seurapro_13_13"]
+    targets = ["seurapro_12_12", "seurapro_13_13"]
 
-imgRoot = (
-    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\cropped"
-)
-rebuildCPKFont = os.path.join(rebuildCPKRoot, "font")
-cpXlorPath = r"F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\xlor\jp-charSet.xlor"
-shutil.copy(jpXlorPath, cpXlorPath)
-os.chdir(r"F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter")
-for fontName in targets:
-    command = [
-        "ctr_FontConverterConsole.exe -i image -if",
-        os.path.join(imgRoot, fontName + ".bmp"),
-        "-io",
-        cpXlorPath,
-        " -ic A8 -o bcfnt -oe sjis -of",
-        os.path.join(rebuildCPKFont, "{}.bcfnt".format(fontName)),
-    ]
-    os.system(" ".join(command))
+    imgRoot = (
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\build_fake_charset\cropped"
+    )
+    rebuildCPKFont = os.path.join(rebuildCPKRoot, "font")
+    cpXlorPath = r"F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\xlor\jp-charSet.xlor"
+    shutil.copy(jpXlorPath, cpXlorPath)
+    os.chdir(r"F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter")
+    for fontName in targets:
+        command = [
+            "ctr_FontConverterConsole.exe -i image -if",
+            os.path.join(imgRoot, fontName + ".bmp"),
+            "-io",
+            cpXlorPath,
+            " -ic A8 -o bcfnt -oe sjis -of",
+            os.path.join(rebuildCPKFont, "{}.bcfnt".format(fontName)),
+        ]
+        os.system(" ".join(command))
 
 # move to  F:\TMP\cpk_output_workplace\datacpk\font
 
@@ -37,3 +38,6 @@ for fontName in targets:
 # -io "F:\modding\persona-tools\3dsfont-master\bin\ctr_FontConverter\xlor\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-jp-charSet.xlor"
 #  -ic A8 -o bcfnt -of test13.bcfnt
 # '''
+
+if __name__ == '__main__':
+    buildCharsetBcFnt()

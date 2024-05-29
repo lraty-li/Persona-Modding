@@ -8,7 +8,7 @@ atlusScriptCompiler = (
 halfWidthToFullWidth = "D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\charset\half_width_to_full_width.json"
 
 charsetOutRoot = "D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\charset"
-charsetVersion = "20240520"
+charsetVersion = "20240529"
 zhcharsetOpPath = Path().joinpath(charsetOutRoot, charsetVersion + "-charSet.txt")
 jpCharsetOpPath = Path().joinpath(
     charsetOutRoot, charsetVersion + "-jp-charSet.txt"

@@ -27,10 +27,9 @@ def somthing():
     print(failTargets)
 
 
-# def rebuildBMDs():
+def rebuildBMDs():
 
 
-if __name__ == "__main__":
     rawJson = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd.json"
     zhJson = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd-parts-zh.json"
     reBuildRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\init\cmptable_bin_cache"
@@ -44,3 +43,5 @@ if __name__ == "__main__":
         )
         shutil.copy(bmdF, targetBmdf)
     # rebuildBin()
+if __name__ == "__main__":
+    rebuildBMDs()

@@ -47,15 +47,20 @@ def rebuildBmds(workplaceRoot, reBuildRoot, reBuildBinRoot):
         shutil.copy(bmdF, targetBmdf)
 
 
+workplace = (
+    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc"
+)
+cacheRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache"
+cacheWorkplace = cacheRoot + r"\facility\pack\shop_arc_cache"
+reBuildBinRoot = cacheRoot + r"\facility\pack\shop_arc"
+
+def rebuildAllBmd():
+    rebuildBmds(workplace, cacheWorkplace, reBuildBinRoot)
+
+
 if __name__ == "__main__":
-    workplace = (
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc"
-    )
     # workplacePlib = Path(workplace)
     # collect_msg(workplacePlib)
 
-    cacheRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache"
-    cacheWorkplace = cacheRoot + r"\facility\pack\shop_arc_cache"
-    reBuildBinRoot = cacheRoot + r"\facility\pack\shop_arc"
     rebuildBmds(workplace, cacheWorkplace, reBuildBinRoot)
 

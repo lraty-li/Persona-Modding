@@ -24,15 +24,20 @@ def trans_init_cmptable_ctd():
     os.chdir(workplaceRoot)
     # ctds = [i for i in files if i.endswith("ctd")]
     ctdJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\ctd.json"
+    outputPath = ctdJsonPath.replace(".json", "-parts-zh.json")
     msgs = loadJson(ctdJsonPath)
     msgMap = {}
     for ctdF in msgs:
         jpLine = msgs[ctdF]
-        zhMsg = translate(client, jpLine)
-        # zhMsg = "debug"
-        print("{} | {}".format(msgs[ctdF], zhMsg))
-        msgMap[ctdF] = zhMsg
-    dumpJson(ctdJsonPath.replace(".json", "-zh.json"), msgMap)
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, ctdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(outputPath, msgMap)
 
 
 def translate_init_cmptable_bin_bmds():
@@ -88,14 +93,14 @@ def translate_battle_message_mbm():
     #     msgMap = loadJson(outputPath)
     for mbmF in restKey:
         jpLine = mbmMsgLines[mbmF]
-        try:
-            zhMsg = translate(client, jpLine)
-        except Exception as e:
-            print(e)
-            msgMap[mbmF] = "ERROR"
-            break
-        print("{} | {}".format(jpLine, zhMsg))
-        msgMap[mbmF] = zhMsg
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, mbmF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(outputPath, msgMap)
 
 
@@ -155,10 +160,14 @@ def translate_battle_message_bmds():
     msgMap = {}
     for bmdF in bmdMsgLines:
         jpLine = bmdMsgLines[bmdF]
-        zhMsg = translate(client, jpLine)
-        # zhMsg = "daw"
-        print("{} | {}".format(jpLine, zhMsg))
-        msgMap[bmdF] = zhMsg
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, bmdF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
@@ -198,7 +207,7 @@ def trans_init_fcltable_ftd():
         t.start()
     while threading.active_count() != 1:
         time.sleep(MUTI_THREADING_SLEEP)
-    dumpJson(ctdJsonPath.replace(".json", "-zh.json"), msgMap)
+    dumpJson(ctdJsonPath.replace(".json", "-parts-zh.json"), msgMap)
 
 
 def translate_battle_event_msgs(msgJsonPath):
@@ -508,6 +517,6 @@ if __name__ == "__main__":
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
     # )
     # translate_facility_pack_shop_arc_bmd()
-    translate_facility_pack_cmbroot_arc_bf(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc\msg-parts.json"
-    )
+    # translate_facility_pack_cmbroot_arc_bf(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc\msg-parts.json"
+    # )

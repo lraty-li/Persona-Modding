@@ -7,7 +7,8 @@ import os,shutil
 import sys
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
-from zh_common import dumpJson,unpackBin
+from common import dumpJson
+from zh_common import unpackBin
 
 sys.path.append(
     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin"

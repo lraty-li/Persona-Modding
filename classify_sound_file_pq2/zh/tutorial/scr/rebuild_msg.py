@@ -5,10 +5,7 @@ sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import rebuilAllMsg, RecompileType
 
 
-# def rebuildBMDs():
-
-
-if __name__ == "__main__":
+def rebuildBMDs():
     rawJson = (
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\tutorial\scr\msg.json"
     )
@@ -23,3 +20,6 @@ if __name__ == "__main__":
             reBuildBinRoot, Path(bmdF).name.replace(".bf.flow.bf", ".bf")
         )
         shutil.copy(bmdF, str(targetBmdf))
+
+if __name__ == "__main__":
+    rebuildBMDs()

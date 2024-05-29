@@ -84,15 +84,15 @@ def rebuildBf():
     writeBinFile(Path().joinpath(workplace, targetFile), rebuildBytes)
 
 
+workplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\shop_arc"
+# move to _cache, avoiding any side effect to repack
+codeWorkplace = (
+    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc"
+)
+os.chdir(codeWorkplace)
+workplacePlib = Path(workplace)
+cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
 if __name__ == "__main__":
-    workplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\shop_arc"
-    # move to _cache, avoiding any side effect to repack
-    codeWorkplace = (
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc"
-    )
-    os.chdir(codeWorkplace)
-    workplacePlib = Path(workplace)
-    cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
     # collectMsg()
 
     rebuildBf()

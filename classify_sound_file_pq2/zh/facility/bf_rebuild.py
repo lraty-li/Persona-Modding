@@ -4,8 +4,7 @@ from pathlib import Path
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import rebuilAllMsg, RecompileType
 
-
-if __name__ == "__main__":
+def rebuilBf():
     failTargets = []
     workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility"
     os.chdir(workplaceRoot)
@@ -30,3 +29,6 @@ if __name__ == "__main__":
     print("failTargets")
     print(failTargets)
 
+
+if __name__ == "__main__":
+    rebuilBf()

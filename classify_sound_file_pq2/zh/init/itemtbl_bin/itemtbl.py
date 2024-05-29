@@ -48,6 +48,7 @@ def collectText():
 
 
 def rebuild():
+    os.chdir(workPlace)
     rebuildBinPath = r'F:\TMP\cpk_output_workplace\datacpk\init\itemtbl.bin'
     rawBytes = readBinFile(oriFilePath)
     frontPart = rawBytes[: getTextAreaIndex(rawBytes)]
@@ -68,6 +69,5 @@ def rebuild():
 
 
 if __name__ == "__main__":
-    os.chdir(workPlace)
+    
     rebuild()
-    print()

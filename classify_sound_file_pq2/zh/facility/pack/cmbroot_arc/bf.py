@@ -95,14 +95,13 @@ def rebuildBf():
         )
         shutil.copy(bmdF, str(targetBmdf))
 
-
+workplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\cmbroot_arc"
+# move to _cache, avoiding any side effect to repack
+codeWorkplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc"
+os.chdir(codeWorkplace)
+workplacePlib = Path(workplace)
+cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
 if __name__ == "__main__":
-    workplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\cmbroot_arc"
-    # move to _cache, avoiding any side effect to repack
-    codeWorkplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc"
-    os.chdir(codeWorkplace)
-    workplacePlib = Path(workplace)
-    cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
 
     # collectMsg()
 

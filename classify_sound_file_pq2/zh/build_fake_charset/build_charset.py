@@ -1,10 +1,18 @@
+import struct
 import os, json, sys
 from pathlib import Path
+from enum import Enum
 import unicodedata
 
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from common import *
+
+
+class BytePackType(Enum):
+    bigEndUnsignedChar = ">B"
+    bigEndUnsignedShort = ">H"
+
 
 charset2xllt = r"f:\modding\persona-tools\3dsfont\charset2xllt.exe"
 charset2xlor = r"f:\modding\persona-tools\3dsfont\charset2xlor.exe"
@@ -33,6 +41,7 @@ def isJpKanjiChar(char):
 def buildCompaTable(jpCharSetFilePath):
     global chars
     jpCharsKeepd = []
+    jpCharsThrowed = []
     zhChars = list(chars["zh"])
     # TODO 如何处理 else 类别的字符，理论上原本字符集应该包含了所有事件文本的字符
     # 原版的 "pq2_seurapro_13_13 比 pq2_seurapro_12_12 在12行多了一个∥，之后全部往后推"
@@ -65,7 +74,7 @@ def buildCompaTable(jpCharSetFilePath):
             replacedChar = jpChar
             if zhCharIndex >= zhCharsCount:
                 break
-            if(jpChar == 'ガ'):
+            if jpChar == "ガ":
                 print()
             if isJpKanjiChar(jpChar):
                 zhChar = zhChars[zhCharIndex]
@@ -75,11 +84,18 @@ def buildCompaTable(jpCharSetFilePath):
                 zhCharIndex += 1
             else:
                 # 非日文汉字，保留编码
-                zhChar2JpKanji[jpChar] = jpChar
-                JpKanji2zhChar[jpChar] = jpChar
-                replacedChar = jpChar
-                print("keep {}".format(jpChar))
-                jpCharsKeepd.append(jpChar)
+                # if is shiftjis, keep
+                try:
+                    jpChar.encode("shiftjis")
+                    zhChar2JpKanji[jpChar] = jpChar
+                    JpKanji2zhChar[jpChar] = jpChar
+                    replacedChar = jpChar
+                    # print("keep {}".format(jpChar))
+                    jpCharsKeepd.append(jpChar)
+                except UnicodeEncodeError as e:
+                    print("throw {}".format(jpChar))
+                    jpCharsThrowed.append(jpChar)
+                    pass
             replacedLine += replacedChar
         replacedLines.append(replacedLine)
     replacedLines = rawLines[: BYPASS_LINE_NUM - 1] + replacedLines
@@ -103,9 +119,110 @@ def buildCompaTable(jpCharSetFilePath):
         if not (char in joinedNewCharset or char in bypassedJpChars):
             print("not encoded char: {} ".format(char))
     # (qiē cuō zhuó mó) 这种注音不管了
-    print('these jp chars was keeped in comparatable')
+    print("these jp chars was keeped in comparatable")
     print(jpCharsKeepd)
+    print("these jp chars was throwed in comparatable")
+    print(jpCharsThrowed)
     return newCharSet, fakeCharSet
+
+
+def isShiftjis(char):
+    try:
+        char.encode("shiftjis")
+        return True
+    except UnicodeEncodeError as e:
+        return False
+
+
+def intToShiftjis(value, format=BytePackType.bigEndUnsignedShort):
+    try:
+        char = struct.pack(format.value, value).decode("shiftjis")
+        return char
+    except UnicodeDecodeError as e:
+        return ""
+
+
+def buildComaTableCodeGen():
+    # https://uic.io/zh/charset/show/shift_jis/
+    global chars
+    SHIFT_JIS_KANJI_START = 0x889F
+    SHIFT_JIS_SINGLE_BYTE_MAX = 0xDF
+    SHIFT_JIS_TWO_BYTE_STAET = 0x8140
+    SHIFT_JIS_MAX = 0xEAA4
+    zhChars = list(chars["zh"])
+    BYPASS_LINE_NUM = 11
+    newCharSet = []
+    fakeCharSet = []
+    zhCharIndex = 0
+    zhCharsCount = len(zhChars)
+    # 大概有这么多日文汉字
+    jpKanjiCount = ((SHIFT_JIS_MAX >> 8) - (SHIFT_JIS_KANJI_START >> 8) - 3) * (0xFF - 0x40)  # type: ignore
+    if zhCharsCount > jpKanjiCount:
+        raise Exception("out of shift-jis kanji range")
+    lineCounter = 1
+    global zhChar2JpKanji, JpKanji2zhChar
+    shiftjisCharIndex = 0x20 # bypass control chars
+
+    # ASCII and some jp
+    while shiftjisCharIndex < SHIFT_JIS_SINGLE_BYTE_MAX:
+        if(shiftjisCharIndex == 0x7f):
+            shiftjisCharIndex += 1
+            continue # bypass control chars
+        jpChar = intToShiftjis(shiftjisCharIndex, BytePackType.bigEndUnsignedChar)
+        shiftjisCharIndex += 1
+        if len(jpChar) == 0:
+            continue
+        newCharSet.append(jpChar)
+        fakeCharSet.append(jpChar)
+        zhChar2JpKanji[jpChar] = jpChar
+        JpKanji2zhChar[jpChar] = jpChar
+
+    shiftjisCharIndex = SHIFT_JIS_TWO_BYTE_STAET
+    while shiftjisCharIndex < SHIFT_JIS_KANJI_START:
+        jpChar = intToShiftjis(shiftjisCharIndex)
+        shiftjisCharIndex += 1
+        # 保留片甲区域之类的
+        if len(jpChar) == 0:
+            continue
+        newCharSet.append(jpChar)
+        fakeCharSet.append(jpChar)
+        zhChar2JpKanji[jpChar] = jpChar
+        JpKanji2zhChar[jpChar] = jpChar
+    # 实际上是40~FF，但应该用不了多久，摸了
+    while zhCharIndex < zhCharsCount and shiftjisCharIndex < SHIFT_JIS_MAX:
+        zhChar = zhChars[zhCharIndex]
+        jpChar = intToShiftjis(shiftjisCharIndex)
+        shiftjisCharIndex += 1
+        if len(jpChar) == 0:
+            continue
+        newCharSet.append(zhChar)
+        zhCharIndex += 1
+        fakeCharSet.append(jpChar)
+        zhChar2JpKanji[zhChar] = jpChar
+        JpKanji2zhChar[jpChar] = zhChar
+
+    # check
+    otherChars = chars["else"]
+    noEncodeOther = []
+    for char in otherChars:
+        if not (char in zhChar2JpKanji.keys()):
+            noEncodeOther.append(char)
+            zhChar2JpKanji[char] = " "
+    print('not encoded char in chars["else"], they will be replaced with space: ')
+    print(noEncodeOther)
+    assert len(newCharSet) == len(fakeCharSet)
+    newCharSetTable = []
+    fakeCharSetTable = []
+    index = 0
+    while index < len(newCharSet):
+        newCharSetTable.append("".join(newCharSet[index : index + 16]))
+        if(len("".join(fakeCharSet[index : index + 16]))<16):
+            print()
+        fakeCharSetTable.append("".join(fakeCharSet[index : index + 16]))
+        index += 16
+    # break into 16 chars per line:
+
+    return newCharSetTable, fakeCharSetTable
 
 
 def addHalfFullWidth(halfWidthToFullWidthPath):
@@ -129,7 +246,7 @@ def addHalfFullWidth(halfWidthToFullWidthPath):
     with open(halfWidthToFullWidthPath, "r") as file:
         halfWidthToFullWidth = json.loads(file.read())
     for half in halfWidthToFullWidth:
-        #TODO BUG check if in shiftjis
+        # TODO BUG check if in shiftjis
         full = halfWidthToFullWidth[half]
         zhChar2JpKanji[half] = full
         JpKanji2zhChar[full] = half
@@ -165,24 +282,40 @@ def writeCharsetData(outputPath, data):
         "w",
         encoding="utf-16le",
     ) as file:
+        file.write(u'\ufeff') # add bom manually
         for line in data:
             file.write(line + "\n")
 
 
-if __name__ == "__main__":
-    targets = [
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json",
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt\bmd-parts-zh.json",
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd-parts-zh.json",
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\ctd-zh.json",
-    ]
+def collectAllZhJson(folderRoot):
+    targets = []
+    for root, dirs, files in os.walk(folderRoot, topdown=False):
+        for name in files:
+            if name.endswith("-zh.json"):
+                targets.append(os.path.join(root, name))
+    return targets
+
+
+def buildCharset():
+    # targets = [
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json",
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\txt\bmd-parts-zh.json",
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\bmd-parts-zh.json",
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\cmptable_bin\ctd-zh.json",
+    # ]
+    targets = collectAllZhJson(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh"
+    )
+    targets.append(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
+    )
     collectAllJsonTransFile(targets)
 
-    addHalfFullWidth(halfWidthToFullWidth)
+    # addHalfFullWidth(halfWidthToFullWidth)
 
     originalJpCharsetPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\data-extract\font\seurapro_13_13.txt"
-    fakeZhCharset, fakeJpCharset = buildCompaTable(originalJpCharsetPath)
-
+    # fakeZhCharset, fakeJpCharset = buildCompaTable(originalJpCharsetPath)
+    fakeZhCharset, fakeJpCharset = buildComaTableCodeGen()
 
     # dump charset
 
@@ -215,4 +348,6 @@ if __name__ == "__main__":
             str(jpXlorPath),
         )
     )
-    print("DONE")
+
+if __name__ == "__main__":
+    buildCharset()
