@@ -357,7 +357,8 @@ def rebuilAllMsg(unTransMsgPath, transMsgPath, reBuildRoot, fType):
     rawMsg = loadJson(unTransMsgPath)
     recompiledFiles = []
     for msgFile in rawMsg:
-        rebuildOneMsg(msgFile, reBuildRoot, rawMsg, translatedMsg, fType)
+        outputPath = rebuildOneMsg(msgFile, reBuildRoot, rawMsg, translatedMsg, fType)
+        recompiledFiles.append(outputPath)
     return recompiledFiles
 
 

@@ -16,6 +16,15 @@ os.chdir(workplaceRoot)
 # import battle.support.bvp_bmd as bsb
 # bsb.rebuilBvp()
 
+# import battle.result.bf as brb
+# brb.rebuildBf()
+
+import battle.result.bmd as brb
+brb.rebuildAllBmd()
+
+import battle.result.persona_get_bin.bmd as brpb
+brpb.rebuildBin()
+
 import battle.event.rebuild_msg as ber
 ber.rebuildBMDs()
 

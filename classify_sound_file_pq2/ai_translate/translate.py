@@ -534,4 +534,8 @@ if __name__ == "__main__":
     # translate_facility_pack_cmbroot_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc\msg-parts.json"
     # )
-    translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\support\bvp-Bmd-parts.json')
+    # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\support\bvp-Bmd-parts.json')
+    
+    # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\result\msg-parts.json')
+    # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\result\bmd-parts.json')
+    translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\result\persona_get_bin\bmd-parts.json')
