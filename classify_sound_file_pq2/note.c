@@ -319,10 +319,6 @@ dungeon\pack\dng_com.arc
 \dungeon\script\support
 \dungeon\script\dun_com.bf
 
-\init\tutorialtable.bin 
-
-
-
 \facility
 arc file?
 \facility\pack\cmbroot.arc Done
@@ -512,3 +508,12 @@ TODO rebuild all 少了待机时右上角信息
 cmbroot.arc
 后正常
 修复arc文件头
+
+
+bvp
+
+01 00 03 00 D0 08 00 00 7B 01 00 00
+01 00 01 00 50 0A 00 00 A6 00 00 00
+
+D0 08: msg start location
+7b 01: msg file size

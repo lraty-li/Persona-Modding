@@ -38,7 +38,7 @@ def rebuilBf():
     rawJsonPath = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg.json'
     for targ in targets:
         rebuildBytes = rebuildFailBf(targ, oriRoot, cacheRoot, rawJsonPath)
-        # writeBinFile(str(Path().joinpath(repackRoot, targ)), rebuildBytes)
+        writeBinFile(str(Path().joinpath(repackRoot, targ)), rebuildBytes)
 
 if __name__ == "__main__":
     rebuilBf()

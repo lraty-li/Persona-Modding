@@ -3,6 +3,7 @@
 
 
 import shutil,os
+import subprocess
 
 def rebuildCPK():
 
@@ -30,9 +31,8 @@ def rebuildCPK():
     # rebuild xci file
     os.chdir(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool')
     os.system('rebuilt_romfs_3ds.bat')
+    subprocess.run(r'F:\Games\3ds\citra-windows-msys2-20240406-0c2f076\citra-qt.exe')
 
 if __name__ == '__main__':
     rebuildCPK()
-    os.system(
-        r'F:\Games\3ds\citra-windows-msys2-20240406-0c2f076\citra-qt.exe'
-    )
+    

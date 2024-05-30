@@ -1,4 +1,4 @@
-import json
+import json,os
 from pathlib import Path
 
 atlusScriptCompiler = (
@@ -21,6 +21,7 @@ jpXlorPath = Path().joinpath(jpCharsetOpPath.parent, jpCharsetOpPath.stem + ".xl
 
 rebuildCPKRoot = r'F:\TMP\cpk_output_workplace\datacpk'
 
+cacheRoot = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\cache'
 
 def loadJson(filePath):
     with open(filePath, "r") as file:
@@ -67,3 +68,7 @@ def fillToBytes(start, container, bBytes):
             container[start] = bbyte
             start += 1
     return container
+
+def createPath(path):
+    if not os.path.exists(path):
+        os.makedirs(path, exist_ok=True)

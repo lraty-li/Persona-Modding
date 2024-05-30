@@ -483,6 +483,20 @@ def translate_facility_pack_cmbroot_arc_bf(msgJsonPath):
         time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
+def translate_Json(msgJsonPath):
+    msgLines = loadJson(msgJsonPath)
+    msgMap = {}
+    for msgF in msgLines:
+        jpLine = msgLines[msgF]
+        while threading.active_count() > MUTI_THREADING_THREADHOLD:
+            time.sleep(MUTI_THREADING_SLEEP)
+        t = threading.Thread(
+            target=mutiThreadTranslate, args=(client, jpLine, msgMap, msgF)
+        )
+        t.start()
+    while threading.active_count() != 1:
+        time.sleep(MUTI_THREADING_SLEEP)
+    dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
@@ -520,3 +534,4 @@ if __name__ == "__main__":
     # translate_facility_pack_cmbroot_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc\msg-parts.json"
     # )
+    translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\support\bvp-Bmd-parts.json')

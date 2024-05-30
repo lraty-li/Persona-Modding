@@ -1,15 +1,12 @@
-targetStr = "追加"
+targetStr = "準備中"
 
 for char in targetStr:
     codePoint = char.encode("shiftjis")
     for code in codePoint:
         print(hex(code).replace("0x", ""), end=" ")
 print()
-print()
-print()
 targHexs = """
-ff ff
-
+83 8A
 """
 bBytes = bytes.fromhex(targHexs)
 sstr = bBytes.decode("shiftjis")

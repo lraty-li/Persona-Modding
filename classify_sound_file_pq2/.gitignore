@@ -13,7 +13,6 @@ AtlusScriptCompiler.log
 *.xllt
 *.xlor
 *.7z
-ai_translate/__pycache__
 ai_translate/openai_api_ket.py
 pq(2) 事件文本汉化20240420.pdf
 /test_run_on_raspi/*
@@ -29,17 +28,13 @@ zh/build_fake_charset/pq2*
 3dstool/pq2-event_only-gpt_3.5_turbo_0125-20240429.zip
 zh/init/cmptable_bin/zh
 zh/init/cmptable_bin/jp
-zh/__pycache__
 zh/init/cmptable_bin/rebuild
 zh/init/cmptable_bin/*.json
-zh/init/cmptable_bin/__pycache__
 zh/event/txt/*.json
-3dstool/__pycache__
 del/event/*
 zh/event/*.json
 zh/event/*.txt
 zh/battle/message/*.json
-zh/battle/message/__pycache__
 zh/charset/*-JpKanji2zhChar.json
 zh/charset/*-zhChar2JpKanji.json
 zh/charset/*.txt
@@ -56,3 +51,4 @@ note_image
 zh/facility/pack/shop_arc/*.json
 zh/facility/pack/cmbroot_arc/*.json
 **/__pycache__
+zh/battle/support/*.json
