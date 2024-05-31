@@ -245,6 +245,9 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 # TODO fix charset
                 #     "～": "～",
                 reJoinedLine.encode("shiftjis")
+            #BUG
+            # [f 0 5 65278][f 2 1]＞『[f 0 1 1][f 2 4 0][f 0 1 0]』は[n]　『[f 0 1 1][f 2 4 1][f 0 1 0]』を覚えた！[n][f 1 1][e]
+            # msg format lost
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
     # transMsgLines.append("\n")

@@ -20,6 +20,7 @@ JpKanji2zhCharPath = Path().joinpath(charsetOutRoot, charsetVersion + "-JpKanji2
 jpXlorPath = Path().joinpath(jpCharsetOpPath.parent, jpCharsetOpPath.stem + ".xlor")
 
 rebuildCPKRoot = r'F:\TMP\cpk_output_workplace\datacpk'
+oriCPKRoot = r'F:\TMP\cpk_output_workplace\ori-data'
 
 cacheRoot = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\cache'
 

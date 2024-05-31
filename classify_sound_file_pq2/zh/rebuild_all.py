@@ -19,6 +19,18 @@ os.chdir(workplaceRoot)
 # import battle.result.bf as brb
 # brb.rebuildBf()
 
+import camp.bf as cb
+cb.rebuildBf()
+
+import camp.dictionary_tbl as cd
+cd.rebuildTbl()
+
+import camp.skladd_arc.arc as cka
+cka.rebuilArc()
+
+import camp.skladdex_arc.arc as cka
+cka.rebuilArc()
+
 import battle.result.bmd as brb
 brb.rebuildAllBmd()
 

@@ -299,17 +299,19 @@ Done
 f:\TMP\cpk_output_workplace\datacpk\battle\btl_com.bf
 
 \battle\support\message Done
-\battle\support\ *.bvp
-\battle\result
+\battle\support\ *.bvp Done
+\battle\result Done
 
 
 \attraction\attrnametable.tbl
 \attraction\attrquestnametable.tbl
 \attraction\schwalkname.tbl
 
-\camp\cmppoem.bf
+\camp\cmppoem.bf Done
 
-\camp\dictionary.tbl
+\camp\dictionary.tbl Done
+\camp\skladd_arc
+\camp\skladdex_arc
 
 dungeon\pack\dng_com.arc
 \dungeon\floor_name.tbl
@@ -328,8 +330,9 @@ facility/ *.bmd Done
 facility/ *.bf Done
 
 init/ *.bmd Done
-\init\fcltable.bin
-\init\itemtbl.bin
+\init\fcltable.bin Done
+\init\itemtbl.bin Done
+\init\cmptable.bin Done
 \init\qsttable.bin
 \init\spkrtbl.bin
 \init\tutorialtable.bin
@@ -517,3 +520,6 @@ bvp
 
 D0 08: msg start location
 7b 01: msg file size
+
+
+format of 『』lost, should enable inline index for some file
