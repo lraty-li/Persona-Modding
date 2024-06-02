@@ -9,7 +9,13 @@ from msg_parser import (
     rebuildFailBf,
     RecompileType,
 )
-from common import dumpJson, atlusScriptCompiler, writeBinFile
+from common import (
+    dumpJson,
+    atlusScriptCompiler,
+    writeBinFile,
+    cacheRoot,
+    rebuildCPKRoot,
+)
 
 
 def dumpBfs(eventRoot, cacheRoot):
@@ -57,50 +63,44 @@ def parseBfMsgs(folderRoot):
 
 
 def collectMsg():
+    cacheFolder = cacheWorkplace
+    workplace = str(unpacedkWorkplace)
     if not os.path.exists(cacheFolder):
         os.makedirs(cacheFolder, exist_ok=True)
 
     targets = dumpBfs(workplace, cacheFolder)
 
     msgMap = parseBfMsgs(cacheFolder)
-    msgMapPath = "msg.json"
+    msgMapPath = str(Path().joinpath(codeWorkplace, "msg.json"))
     dumpJson(msgMapPath, msgMap)
     msgParts = getMsgLines(
         msgMapPath,
     )
     return msgParts
 
-
 def rebuildBf():
-
-    # rebuilAllMsg("msg.json", "msg-parts-zh.json", cacheFolder, RecompileType.BMD)
-
-    # targetFile = "weapon.bf"
-
-    # rebuildBytes = rebuildFailBf(
-    #     targetFile, workplace, cacheFolder, os.path.join(codeWorkplace, "msg.json")
-    # )
-    # writeBinFile(Path().joinpath(workplace, targetFile), rebuildBytes)
 
     rawJson = Path().joinpath(codeWorkplace, "msg.json")
     zhJson = Path().joinpath(codeWorkplace, "msg-parts-zh.json")
-    reBuildRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\cmbroot_arc_cache"
-    reBuildBinRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\cmbroot_arc"
     transedBmds = rebuilAllMsg(
-        rawJson, zhJson, reBuildRoot, RecompileType.Tutorial_Scr_Bf
+        rawJson, zhJson, cacheWorkplace, RecompileType.Tutorial_Scr_Bf
     )
     for bmdF in transedBmds:
         targetBmdf = Path().joinpath(
-            reBuildBinRoot, Path(bmdF).name.replace(".bf.flow.bf", ".bf")
+            unpacedkWorkplace, Path(bmdF).name.replace(".bf.flow.bf", ".bf")
         )
         shutil.copy(bmdF, str(targetBmdf))
 
-workplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\cmbroot_arc"
-# move to _cache, avoiding any side effect to repack
-codeWorkplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc"
-os.chdir(codeWorkplace)
-workplacePlib = Path(workplace)
-cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
+
+target = "cmbroot.arc"
+pathParts = ["facility", "pack"]
+codeWorkplace = os.path.dirname(os.path.abspath(__file__))
+unpacedkWorkplace = Path().joinpath(cacheRoot, *pathParts, target.replace(".", "_"))
+cacheWorkplace = str(unpacedkWorkplace) + "_cache"
+# oriBinPath = Path().joinpath(oriCPKRoot, *pathParts, target)
+cacheBinPath = Path().joinpath(cacheRoot, *pathParts, target)
+rebuildBinPath = Path().joinpath(rebuildCPKRoot, *pathParts, target)
+
 if __name__ == "__main__":
 
     # collectMsg()

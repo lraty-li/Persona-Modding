@@ -4,28 +4,32 @@ from pathlib import Path
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import dumBmds, getMsgLines, parseMsgFile
-from common import dumpJson
+from common import dumpJson, cacheRoot, oriCPKRoot
+from zh_common import unpackBin
 from msg_parser import rebuilAllMsg, RecompileType
 
 
 # parse .msg
 def parseMsgs(cacheFolder):
     msgMap = {}
+    msgNotJoined = ["msg_combine.bmd.msg", "msg_combine_lvup.bmd.msg"]
     files = os.listdir(cacheFolder)
     msgFile = [i for i in files if i.endswith(".bmd.msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(cacheFolder, msgF))
+        shouldJoinLine = True
+        if msgF in msgNotJoined:
+            shouldJoinLine = False
+        msgData = parseMsgFile(os.path.join(cacheFolder, msgF), shouldJoinLine)
         msgMap[msgF] = msgData
     return msgMap
 
 
-def collect_msg(jsonOutPutRoot, unpackedPath):
+def collect_msg(jsonOutPutRoot, unpackedPath, cacheFolderPath):
     unpackedPath = Path(unpackedPath)
-    cacheFolder = os.path.join(unpackedPath.parent, unpackedPath.name + "_cache")
-    if not os.path.exists(cacheFolder):
-        os.makedirs(cacheFolder, exist_ok=True)
-    dumBmds(unpackedPath, cacheFolder)
-    msgMap = parseMsgs(cacheFolder)
+    if not os.path.exists(cacheFolderPath):
+        os.makedirs(cacheFolderPath, exist_ok=True)
+    dumBmds(unpackedPath, cacheFolderPath)
+    msgMap = parseMsgs(cacheFolderPath)
     os.chdir(jsonOutPutRoot)
     msgMapPath = "bmd.json"
     dumpJson(msgMapPath, msgMap)
@@ -47,17 +51,19 @@ def rebuildBmds(workplaceRoot, reBuildRoot, reBuildBinRoot):
         shutil.copy(bmdF, targetBmdf)
 
 
-workplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc"
-
-# unpacedkWorkplace = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\facility\pack\cmbroot_arc"
-# collect_msg(workplace, unpacedkWorkplace)
-
-cacheRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache"
-cacheWorkplace = cacheRoot + r"\facility\pack\cmbroot_arc_cache"
-reBuildBinRoot = cacheRoot + r"\facility\pack\cmbroot_arc"
-
 def rebuildAllBmd():
-    rebuildBmds(workplace, cacheWorkplace, reBuildBinRoot)
+    rebuildBmds(codeWorkplace, cacheWorkplace, unpacedkWorkplace)
+
+
+target = "cmbroot.arc"
+pathParts = ["facility", "pack"]
+codeWorkplace = os.path.dirname(os.path.abspath(__file__))
+unpacedkWorkplace = Path().joinpath(cacheRoot, *pathParts, target.replace(".", "_"))
+cacheWorkplace = str(unpacedkWorkplace) + "_cache"
+oriBinPath = Path().joinpath(oriCPKRoot, *pathParts, target)
+cacheBinPath = Path().joinpath(cacheRoot, *pathParts, target)
 
 if __name__ == "__main__":
+
+    # collect_msg(codeWorkplace, unpacedkWorkplace, cacheWorkplace)
     rebuildAllBmd()

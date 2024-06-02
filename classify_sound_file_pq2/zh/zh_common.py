@@ -30,6 +30,7 @@ def replaceZhToJpKanji(text):
 
 
 SPLITERS = ["，", "。", "？", "…", "?", "!", "."]
+# \"
 NEW_LINE_THREADHOLD = 22
 
 
@@ -61,7 +62,7 @@ def unpackBin(filePath, outputPath=None):
         outputPath = Path().joinpath(targPth.parent, targPth.name.replace(".", "_"))
     if not os.path.exists(outputPath):
         os.mkdir(outputPath)
-    command = [pakPack, "unpack", filePath, str(outputPath)]
+    command = [pakPack, "unpack", str(filePath), str(outputPath)]
     os.system(" ".join(command))
 
 

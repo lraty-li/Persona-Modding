@@ -18,7 +18,7 @@ def parseMsgs(cacheFolder):
     files = os.listdir(cacheFolder)
     msgFile = [i for i in files if i.endswith(".bmd.msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(cacheFolder, msgF))
+        msgData = parseMsgFile(os.path.join(cacheFolder, msgF), joinMsgOneLine=False)
         msgMap[msgF] = msgData
     return msgMap
 
@@ -66,6 +66,6 @@ decompiledCacheFolder = os.path.join(
 )
 if __name__ == "__main__":
     # unpackBin(os.path.join(cacheWorkplaceRoot,target))
-    # collectMsg(str(codeWorkplace), unpackedToPath,decompiledCacheFolder)
+    # collectMsg(str(codeWorkplace), unpackedToPath, decompiledCacheFolder)
 
     rebuilArc()

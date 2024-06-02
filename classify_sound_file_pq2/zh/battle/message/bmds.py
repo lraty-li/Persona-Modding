@@ -42,7 +42,7 @@ def parseMsgs():
     files = os.listdir(cacheFolder)
     msgFile = [i for i in files if i.endswith(".msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(cacheFolder, msgF))
+        msgData = parseMsgFile(os.path.join(cacheFolder, msgF),joinMsgOneLine=False)
         msgMap[msgF] = msgData
     return msgMap
 

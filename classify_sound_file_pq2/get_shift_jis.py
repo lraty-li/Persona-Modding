@@ -1,4 +1,4 @@
-targetStr = "準備中"
+targetStr = "ルないけ"
 
 for char in targetStr:
     codePoint = char.encode("shiftjis")

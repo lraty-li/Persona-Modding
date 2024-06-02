@@ -91,10 +91,28 @@ def reJoinJustMsg(ctlStrs, msg):
         ctlStrs.pop(index)
     return reJoin, ctlStrs
 
+def removeLineBreak(ctlStrs, msg):
+    msgLength = len(msg)
+    msgCtlStrsLength = len(ctlStrs)
+    ctlStrNeedRemove = []
+    if msgCtlStrsLength > msgLength:
+        for i in range(msgCtlStrsLength):
+            if ctlStrs[i] == "[n]":
+                removeIndex = i
+                ctlStrNeedRemove.append(removeIndex)
+    else:
+        raise Exception("control string more  than msg?")
+    ctlStrNeedRemove.reverse()
+    for index in ctlStrNeedRemove:
+        ctlStrs.pop(index)
+        msg[index - 1] =  msg[index -1 ] + msg[index]
+        msg.pop(index)
+    return msg, ctlStrs
+
 
 # 要记录原本控制字符得信息，回填。总之能拼出来跟结构一模一样的文本
 # [n] 临时替换为句号?
-def parseLine(text, postProgress=True):
+def parseLine(text, joinMsgOneLine):
     reFindIter = re.finditer(r"\[.*?\]", text, flags=0)
     data = []
     msg = []
@@ -124,17 +142,17 @@ def parseLine(text, postProgress=True):
         print(reJoin)
         raise Exception("rejoin mismatch!")
     # 把[n] 合并掉，
-    # TODO 之后拼回来的时候再手动添加
-    if postProgress:
+    if joinMsgOneLine:
         joinedMsg, ctlStrsNoNewLine = reJoinJustMsg(ctlStrs, msg)
 
         msgNoU3000 = textPreProgress(joinedMsg)
         return [msgNoU3000, ctlStrsNoNewLine]  # use list for json
     else:
+        msg ,ctlStrs = removeLineBreak(ctlStrs,msg)
         return [msg, ctlStrs]  # use list for json
 
 
-def progressBlock(block):
+def progressBlock(block,joinMsgOneLine):
     lines = iter(block.split("\n"))
     header = next(lines)
     speaker = parseSpeaker(header)
@@ -150,20 +168,21 @@ def progressBlock(block):
 
     data = []
     for line in lines:
-        lineInfo = parseLine(line)
+        lineInfo = parseLine(line,joinMsgOneLine)
         data.append(lineInfo)
 
     return {"header": headerParts, "speaker": speaker, "linesInfo": data}
 
 
-def parseMsgFile(filePath):
+def parseMsgFile(filePath,joinMsgOneLine = True):
     blocksData = []
+    msgRaw = []
     with open(filePath, "r") as msgFile:
         msgRaw = msgFile.read()
-        msgBlocks = splitIntoBlocks(msgRaw)
-        for block in msgBlocks:
-            data = progressBlock(block)
-            blocksData.append(data)
+    msgBlocks = splitIntoBlocks(msgRaw)
+    for block in msgBlocks:
+        data = progressBlock(block,joinMsgOneLine)
+        blocksData.append(data)
     return blocksData
 
 
@@ -189,6 +208,15 @@ def _collectMapedLins(lineInfo, pathIndexs, inLineIndex=0):
     return mapEntry
 
 
+def collecMsgOfLineInfos(lineInfos, pathIndexs):
+    msgPartsMap = {}
+    for lineInfoIndex in range(len(lineInfos)):
+        lineInfo = lineInfos[lineInfoIndex]
+        mappedEntry = _collectMapedLins(lineInfo, pathIndexs + [lineInfoIndex])
+        msgPartsMap.update(mappedEntry)
+    return msgPartsMap
+
+
 def getMsgLines(msgMapPath, outptJson=True, fType=MsgMapType.BMD):
     msgPartsMap = {}
     msgMap = loadJson(msgMapPath)
@@ -199,23 +227,19 @@ def getMsgLines(msgMapPath, outptJson=True, fType=MsgMapType.BMD):
         if fType == MsgMapType.BMD:
             for blockIndex in range(len(contenet)):
                 block = contenet[blockIndex]
-                for lineInfoIndex in range(len(block["linesInfo"])):
-                    lineInfo = block["linesInfo"][lineInfoIndex]
-                    mappedEntry = _collectMapedLins(
-                        lineInfo, [fileName, blockIndex, lineInfoIndex]
-                    )
-                    msgPartsMap.update(mappedEntry)
+                partsMap = collecMsgOfLineInfos(
+                    block["linesInfo"], [fileName, blockIndex]
+                )
+                msgPartsMap.update(partsMap)
         elif fType == MsgMapType.BVP or fType == MsgMapType.EVENT:
             for targ in contenet:
                 blocks = contenet[targ]
                 for blockIndex in range(len(blocks)):
                     block = blocks[blockIndex]
-                    for lineInfoIndex in range(len(block["linesInfo"])):
-                        lineInfo = block["linesInfo"][lineInfoIndex]
-                        mappedEntry = _collectMapedLins(
-                            lineInfo, [fileName, targ, blockIndex, lineInfoIndex]
-                        )
-                        msgPartsMap.update(mappedEntry)
+                    partsMap = collecMsgOfLineInfos(
+                        block["linesInfo"], [fileName, targ, blockIndex]
+                    )
+                    msgPartsMap.update(partsMap)
         else:
             raise Exception("unimplement")
 
@@ -229,15 +253,21 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
     transMsgLines = []
     for lineInfoIndex in range(len(blockLines)):
         # text = lineInfo[0] #TODO hand over the translatedMsg logic to outside
-        translatedMsgLine = translatedMsg[
-            "{}_{}_{}_{}".format(msgFile, blockIndex, lineInfoIndex, 0)
-        ]
+
         lineInfo = blockLines[lineInfoIndex]
         ctlStrs = lineInfo[1]
+        jpMsgs = lineInfo[0]
+        #TODO do not use differen form?
+        if(type(jpMsgs) == str):
+            jpMsgs = [jpMsgs]
         reJoinedLine = ""
         for index in range(len(ctlStrs)):
             reJoinedLine += ctlStrs[index]
-            if index < 1:  # 文本都被合并成一行了
+            if index < len(jpMsgs):  
+                #  某些文本都被合并成一行了，但有丢失格式的问题，选择性开启
+                translatedMsgLine = translatedMsg[
+                    "{}_{}_{}_{}".format(msgFile, blockIndex, lineInfoIndex, index)
+                ]
                 # replace chars before insert [n], otherwise [n] would be replaced
                 replacedLine = replaceZhToJpKanji(translatedMsgLine)
                 reJoinedLine += joinNewLineCtlStr(replacedLine)
@@ -245,9 +275,6 @@ def rebuildBlockLines(blockLines, msgFile, translatedMsg, blockIndex):
                 # TODO fix charset
                 #     "～": "～",
                 reJoinedLine.encode("shiftjis")
-            #BUG
-            # [f 0 5 65278][f 2 1]＞『[f 0 1 1][f 2 4 0][f 0 1 0]』は[n]　『[f 0 1 1][f 2 4 1][f 0 1 0]』を覚えた！[n][f 1 1][e]
-            # msg format lost
         transMsgLines.append(reJoinedLine)
     transMsgLines.append("\n")
     # transMsgLines.append("\n")

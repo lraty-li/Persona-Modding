@@ -523,3 +523,32 @@ D0 08: msg start location
 
 
 format of 『』lost, should enable inline index for some file
+enabled format keeping:
+zh/camp/skladd_arc
+zh/camp/skladdex_arc
+zh/battle/message
+zh/battle/result/ bmd 
+zh/battle/result/persona_get_bin bmd 
+
+zh/facility/bmd.py
+msg_usercmm
+msg_trade
+msg_book
+msg_costume
+msg_market
+msg_sklcard
+不知为何都被控制字符分割为单字
+目前需要分割的只有 msg_combine
+
+zh/facility/cmbroot/
+msg_combine_lvup
+msg_combine
+
+event
+
+
+event关闭合并为一行，不然比如其他游戏主角的文本会因为换行符插入而混乱
+
+BUG:
+设置界面文本乱码
+出现很多X，因为00填充吗？

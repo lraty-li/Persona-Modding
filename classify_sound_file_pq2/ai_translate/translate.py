@@ -5,7 +5,7 @@ from open_ai import translate
 from openai_api_ket import API_KEY
 import sys
 
-MUTI_THREADING_THREADHOLD = 70
+MUTI_THREADING_THREADHOLD = 77
 MUTI_THREADING_SLEEP = 2
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
@@ -112,11 +112,34 @@ def restKeys(filePath, flattenMap):
     return restKeys
 
 
+keepRawKeyWords  = [
+    'sorry'
+]
+
+def isKeyWordListInText(text, keyWords):
+    lowerText = text.lower()
+    for kKeyWord in keyWords:
+        if(kKeyWord in lowerText):
+            return True
+    return False
+
+def _simpleFiltOut(zhMsg, jpMsg):
+    maxZhLenth = len(jpMsg) * 2
+    if zhMsg == None:
+        zhMsg = ''
+    if(isKeyWordListInText(zhMsg,keepRawKeyWords)):
+        zhMsg = jpMsg
+    if len(zhMsg) > maxZhLenth:
+        # 超出原文本几倍
+        zhMsg = zhMsg[:maxZhLenth]
+    return zhMsg
+
+
 def mutiThreadTranslate(client, jpLine, msgMap, mbmF):
     try:
         zhMsg = translate(client, jpLine)
         # TODO zhMsg may be None?
-        zhMsg = "{}".format(zhMsg)
+        zhMsg = _simpleFiltOut(zhMsg, jpLine)
     except Exception as e:
         print(e)
         zhMsg = "ERROR"
@@ -303,7 +326,7 @@ def translate_battle_table_tbl():
     dumpJson(outputPath, msgMap)
 
 
-def translate_battle_facility_bmds():
+def translate_facility_bmds():
     workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility"
     os.chdir(workplaceRoot)
     msgJsonPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\bmd-parts.json"
@@ -449,7 +472,7 @@ def translate_facility_pack_shop_arc_bf(msgJsonPath):
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
 
-def translate_facility_pack_shop_arc_bmd():
+def translate_facility_pack_cmbroot_arc_bmd():
     workplaceRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc"
     os.chdir(workplaceRoot)
     msgJsonPath = r"bmd-parts.json"
@@ -483,6 +506,7 @@ def translate_facility_pack_cmbroot_arc_bf(msgJsonPath):
         time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
 
+
 def translate_Json(msgJsonPath):
     msgLines = loadJson(msgJsonPath)
     msgMap = {}
@@ -497,6 +521,7 @@ def translate_Json(msgJsonPath):
     while threading.active_count() != 1:
         time.sleep(MUTI_THREADING_SLEEP)
     dumpJson(msgJsonPath.replace(".json", "-zh.json"), msgMap)
+
 
 if __name__ == "__main__":
     # trans_init_cmptable_ctd()
@@ -519,7 +544,7 @@ if __name__ == "__main__":
     # translate_battle_support_message_bmds()
     # translate_item_tbl()
     # translate_battle_table_tbl()
-    # translate_battle_facility_bmds()
+    # translate_facility_bmds()
     # translate_battle_message_tbl()
     # translate_facility_msgs(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
@@ -530,15 +555,24 @@ if __name__ == "__main__":
     # translate_facility_pack_shop_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
     # )
-    # translate_facility_pack_shop_arc_bmd()
+    translate_facility_pack_cmbroot_arc_bmd()
     # translate_facility_pack_cmbroot_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc\msg-parts.json"
     # )
     # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\support\bvp-Bmd-parts.json')
-    
+
     # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\result\msg-parts.json')
     # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\result\bmd-parts.json')
     # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\result\persona_get_bin\bmd-parts.json')
     # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\camp\msg-parts.json')
     # translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\camp\dictionary_tbl.json')
-    translate_Json(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\camp\skladd_arc\bmd-parts.json')
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\camp\skladd_arc\bmd-parts.json"
+    # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\camp\skladdex_arc\bmd-parts.json"
+    # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\msg-parts.json"
+    # )
+

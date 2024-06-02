@@ -9,18 +9,9 @@ from zh_common import (
     notFoundedCharWhenReplace,
 )
 from msg_parser import rebuilMsgFile
-from common import rebuildCPKRoot, loadJson, atlusScriptCompiler
+from common import rebuildCPKRoot, loadJson, atlusScriptCompiler,cacheRoot
 
 def rebuildEventMsg():
-
-    reBuildCPKEventroot = os.path.join(rebuildCPKRoot, "event")
-    msgRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\event"
-
-    translatedMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\pq2-event-msg-zhsc-gpt-3.5-turbo-0125-20240427-maped.json"
-    translatedMsg = loadJson(translatedMsgPath)
-
-    rawMsgPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\msg_-ai_transl.json"
-
     transedMsgToBeWrite = {}
     rawMsg = loadJson(rawMsgPath)
     failTargets = []
@@ -54,6 +45,11 @@ def rebuildEventMsg():
         #     transMsgLines.append("\n")
         #     transMsgLines.append("\n")
         # transedMsgToBeWrite[msgFile] = transMsgLines
+        
+        
+        #DEBUG 
+        # msgFile = 'e100_245.bf.msg'
+        #DEBUG END
         # 写入文件
         eventFolder = msgFile[:2] + "00"
         msgOutPutRoot = os.path.join(msgRoot, eventFolder)
@@ -90,6 +86,17 @@ def rebuildEventMsg():
             # TODO just bypass now
             # but the way to insert zh msg into bf file need still
             failTargets.append(msgFile)
+
+
+# move to _cache, avoiding any side effect to repack
+codeWorkplace = os.path.dirname(os.path.abspath(__file__))
+reBuildCPKEventroot = os.path.join(rebuildCPKRoot, "event")
+msgRoot = os.path.join(cacheRoot, "event")
+
+translatedMsgPath = os.path.join(codeWorkplace, "msg-parts-zh.json")
+translatedMsg = loadJson(translatedMsgPath)
+
+rawMsgPath = os.path.join(codeWorkplace, "msg.json")
 
 if __name__ == "__main__":
     rebuildEventMsg()
