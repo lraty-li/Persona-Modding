@@ -8,13 +8,19 @@ from zh_common import repackBin
 
 rebldCpkInintRoot = r"F:\TMP\cpk_output_workplace\datacpk\init"
 
+
 def buildBin():
     unPath = Path(unpackedBin)
     outputBinPath = Path().joinpath(unPath.parent, unPath.name.replace("_", "."))
     repackBin(unpackedBin)
-    shutil.copy(outputBinPath, os.path.join(rebldCpkInintRoot, Path(outputBinPath).name))
+    shutil.copy(
+        outputBinPath, os.path.join(rebldCpkInintRoot, Path(outputBinPath).name)
+    )
 
 
-#rebuild xci
+# rebuild xci
 # sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool")
 # import rebuild_cpk
+
+if __name__ == "__main__":
+    buildBin()
