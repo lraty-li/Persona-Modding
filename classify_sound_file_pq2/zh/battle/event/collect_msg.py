@@ -46,9 +46,9 @@ def dumpBfs(eventRoot):
 def parseMsgs(folderRoot):
     msgMap = {}
     files = os.listdir(folderRoot)
-    msgFile = [i for i in files if i.endswith(".msg")] #TODO .bf.msg
+    msgFile = [i for i in files if i.endswith(".msg")]  # TODO .bf.msg
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(folderRoot, msgF))
+        msgData = parseMsgFile(os.path.join(folderRoot, msgF), joinMsgOneLine=False)
         msgMap[msgF] = msgData
     return msgMap
 
@@ -57,7 +57,9 @@ if __name__ == "__main__":
     eventRoot = (
         r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\event"
     )
-    dumpBfs(r'D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\event\support')
+    dumpBfs(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache\battle\event"
+    )
 
     # move to _cache, avoiding any side effect to repack
     workplacePlib = Path(workplace)
