@@ -112,22 +112,22 @@ def restKeys(filePath, flattenMap):
     return restKeys
 
 
-keepRawKeyWords  = [
-    'sorry'
-]
+keepRawKeyWords = ["sorry"]
+
 
 def isKeyWordListInText(text, keyWords):
     lowerText = text.lower()
     for kKeyWord in keyWords:
-        if(kKeyWord in lowerText):
+        if kKeyWord in lowerText:
             return True
     return False
+
 
 def _simpleFiltOut(zhMsg, jpMsg):
     maxZhLenth = len(jpMsg) * 2
     if zhMsg == None:
-        zhMsg = ''
-    if(isKeyWordListInText(zhMsg,keepRawKeyWords)):
+        zhMsg = ""
+    if isKeyWordListInText(zhMsg, keepRawKeyWords):
         zhMsg = jpMsg
     if len(zhMsg) > maxZhLenth:
         # 超出原文本几倍
@@ -555,7 +555,7 @@ if __name__ == "__main__":
     # translate_facility_pack_shop_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
     # )
-    translate_facility_pack_cmbroot_arc_bmd()
+    # translate_facility_pack_cmbroot_arc_bmd()
     # translate_facility_pack_cmbroot_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\cmbroot_arc\msg-parts.json"
     # )
@@ -575,4 +575,6 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\msg-parts.json"
     # )
-
+    translate_Json(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\attraction\tbl-parts.json"
+    )

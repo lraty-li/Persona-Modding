@@ -13,6 +13,9 @@ os.chdir(workplaceRoot)
 # import build_fake_charset.build_new_charset_bcfnt as bfcbc
 # bfcbc.buildCharsetBcFnt()
 
+import attraction.tbl as at
+at.rebuildTbl()
+
 # import battle.support.bvp_bmd as bsb
 # bsb.rebuilBvp()
 

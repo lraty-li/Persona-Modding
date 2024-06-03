@@ -121,6 +121,8 @@ def rebuildTblBytes(rawJsonPath, translatedJsonPath):
     msgMap = {}
     targets = []
     for file in rawData:
+        if(file == 'attrquestnametable.tbl'):
+            print()
         msgMap[file] = []
         targets.append(file)
         msgInfos = rawData[file]
@@ -142,6 +144,7 @@ def rebuildTblBytes(rawJsonPath, translatedJsonPath):
                     # 如果长度不够，用全角空格补足
                     # BUG replaceZhToJpKanji 会把全角空格换回半角空格...，所以先替换算了
                     # zhMinusJp=0 不能放到else
+                    # BUG? 原本的结构中，总是以00结尾。不是00的话会翻车吗
                     replacedLine += "　" * abs(zhMinusJp)
                 else:
                     replacedLine = replacedLine[:-zhMinusJp]

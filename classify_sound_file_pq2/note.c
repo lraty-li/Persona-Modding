@@ -302,7 +302,7 @@ f:\TMP\cpk_output_workplace\datacpk\battle\btl_com.bf
 \battle\support\ *.bvp Done
 \battle\result Done
 
-
+Done
 \attraction\attrnametable.tbl
 \attraction\attrquestnametable.tbl
 \attraction\schwalkname.tbl
@@ -310,11 +310,12 @@ f:\TMP\cpk_output_workplace\datacpk\battle\btl_com.bf
 \camp\cmppoem.bf Done
 
 \camp\dictionary.tbl Done
-\camp\skladd_arc
-\camp\skladdex_arc
+\camp\skladd_arc Done
+\camp\skladdex_arc Done
 
 dungeon\pack\dng_com.arc
-\dungeon\floor_name.tbl
+\dungeon\pack\field\f01_01.arc
+\dungeon\floor_name.tbl 似乎是世界树迷宫的文件
 \dungeon\message
 \dungeon\script\charaTalk
 \dungeon\script\gimmick
@@ -550,5 +551,4 @@ event
 event关闭合并为一行，不然比如其他游戏主角的文本会因为换行符插入而混乱
 
 BUG:
-设置界面文本乱码
 出现很多X，因为00填充吗？
