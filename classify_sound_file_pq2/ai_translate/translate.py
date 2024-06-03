@@ -551,7 +551,7 @@ if __name__ == "__main__":
     # )
     # translate_init_bmds()
     # translate_init_itemtbl_bin()
-    # translate_facility_pack_shop_arc_bmd()
+    translate_facility_pack_shop_arc_bmd()
     # translate_facility_pack_shop_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
     # )
@@ -578,6 +578,8 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\attraction\tbl-parts.json"
     # )
-    translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\script\charaTalk\msg-parts.json"
-    )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\script\charaTalk\msg-parts.json"
+    # )
+
+    pass

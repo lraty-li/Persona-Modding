@@ -33,9 +33,7 @@ def rebuildCPK():
     os.chdir(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool")
     os.system("rebuilt_romfs_3ds.bat")
     os.system(
-        "START {}".format(
-            r"F:\Games\3ds\citra-windows-msys2-20240406-0c2f076\citra-qt.exe"
-        )
+        r"F:\Games\3ds\citra-windows-msys2-20240406-0c2f076\citra-qt.exe"
     )
 
 

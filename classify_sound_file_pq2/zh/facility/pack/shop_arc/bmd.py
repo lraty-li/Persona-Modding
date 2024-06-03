@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import dumBmds, getMsgLines, parseMsgFile
-from common import dumpJson
+from common import createPath, dumpJson, cacheRoot, rebuildCPKRoot
 from msg_parser import rebuilAllMsg, RecompileType
 
 
@@ -12,33 +12,34 @@ from msg_parser import rebuilAllMsg, RecompileType
 def parseMsgs(cacheFolder):
     msgMap = {}
     files = os.listdir(cacheFolder)
+    notJoinTargets = ["msg_combine.bmd.msg", "msg_weapon.bmd.msg"]
     msgFile = [i for i in files if i.endswith(".bmd.msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(cacheFolder, msgF))
+        shouldJoinLine = True
+        if msgF in notJoinTargets:
+            shouldJoinLine = False
+        msgData = parseMsgFile(
+            os.path.join(cacheFolder, msgF), joinMsgOneLine=shouldJoinLine
+        )
         msgMap[msgF] = msgData
     return msgMap
 
 
-def collect_msg(workplacePlib):
-    workpalce = str(workplacePlib)
-    cacheFolder = os.path.join(workplacePlib.parent, workplacePlib.name + "_cache")
-    if not os.path.exists(cacheFolder):
-        os.makedirs(cacheFolder, exist_ok=True)
-    dumBmds(workpalce, cacheFolder)
-    msgMap = parseMsgs(cacheFolder)
-    os.chdir(workpalce)
-    msgMapPath = "bmd.json"
+def collect_msg():
+    createPath(decompiledCacheFolder)
+    dumBmds(unpackedToPath, decompiledCacheFolder)
+    msgMap = parseMsgs(decompiledCacheFolder)
+    msgMapPath = str(Path().joinpath(codeWorkplace, "bmd.json"))
     dumpJson(msgMapPath, msgMap)
     msgParts = getMsgLines(
         msgMapPath,
     )
-    print()
+    return msgParts
 
 
 def rebuildBmds(workplaceRoot, reBuildRoot, reBuildBinRoot):
     rawJson = os.path.join(workplaceRoot, "bmd.json")
     zhJson = os.path.join(workplaceRoot, "bmd-parts-zh.json")
-
     transedBmds = rebuilAllMsg(rawJson, zhJson, reBuildRoot, RecompileType.BMD)
     for bmdF in transedBmds:
         targetBmdf = Path().joinpath(
@@ -47,20 +48,22 @@ def rebuildBmds(workplaceRoot, reBuildRoot, reBuildBinRoot):
         shutil.copy(bmdF, targetBmdf)
 
 
-workplace = (
-    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc"
-)
-cacheRoot = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\cache"
-cacheWorkplace = cacheRoot + r"\facility\pack\shop_arc_cache"
-reBuildBinRoot = cacheRoot + r"\facility\pack\shop_arc"
-
 def rebuildAllBmd():
-    rebuildBmds(workplace, cacheWorkplace, reBuildBinRoot)
+    rebuildBmds(codeWorkplace, cacheWorkplace, reBuildBinRoot)
+
+
+targetFile = "shop.arc"
+pathPatrs = ["facility", "pack"]
+codeWorkplace = os.path.dirname(os.path.abspath(__file__))
+cacheWorkplace = Path().joinpath(cacheRoot, *pathPatrs)
+reBuildBinRoot = Path().joinpath(rebuildCPKRoot, *pathPatrs)
+unpackedToPath = Path().joinpath(cacheWorkplace, targetFile.replace(".", "_"))
+decompiledCacheFolder = os.path.join(
+    unpackedToPath.parent, unpackedToPath.name + "_cache"
+)
 
 
 if __name__ == "__main__":
-    # workplacePlib = Path(workplace)
-    # collect_msg(workplacePlib)
+    # collect_msg()
 
-    rebuildBmds(workplace, cacheWorkplace, reBuildBinRoot)
-
+    rebuildBmds(codeWorkplace, decompiledCacheFolder, unpackedToPath)

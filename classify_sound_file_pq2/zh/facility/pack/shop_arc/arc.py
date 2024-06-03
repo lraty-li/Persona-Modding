@@ -8,7 +8,7 @@ from common import (
 )
 from arc_common import getArcFileNames, rebuildArcBytes
 
-# from zh_common import repackBin
+from zh_common import repackBin, unpackBin
 
 
 def rebuilArc():
