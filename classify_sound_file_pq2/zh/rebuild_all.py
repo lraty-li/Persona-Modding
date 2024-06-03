@@ -16,6 +16,9 @@ os.chdir(workplaceRoot)
 import attraction.tbl as at
 at.rebuildTbl()
 
+import dungeon.script.charaTalk.bf as dscb
+dscb.rebuildBf()
+
 # import battle.support.bvp_bmd as bsb
 # bsb.rebuilBvp()
 

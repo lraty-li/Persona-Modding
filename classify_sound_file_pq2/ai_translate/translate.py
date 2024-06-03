@@ -575,6 +575,9 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\event\msg-parts.json"
     # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\attraction\tbl-parts.json"
+    # )
     translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\attraction\tbl-parts.json"
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\script\charaTalk\msg-parts.json"
     )

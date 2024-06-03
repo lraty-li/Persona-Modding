@@ -318,6 +318,8 @@ dungeon\pack\dng_com.arc
 \dungeon\floor_name.tbl 似乎是世界树迷宫的文件
 \dungeon\message
 \dungeon\script\charaTalk
+Error: Result of void-returning function 'WND_FUNCTION_001E' was used
+
 \dungeon\script\gimmick
 \dungeon\script\support
 \dungeon\script\dun_com.bf
@@ -539,7 +541,7 @@ msg_costume
 msg_market
 msg_sklcard
 不知为何都被控制字符分割为单字
-目前需要分割的只有 msg_combine
+目前需要分割的只有 msg_combine,msg_weapon
 
 zh/facility/cmbroot/
 msg_combine_lvup
