@@ -532,15 +532,15 @@ if __name__ == "__main__":
     # translate_tutorial_scr_msgs()
     # translate_item_mbm()
     # trans_init_fcltable_ftd()
-    translate_battle_event_msgs(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-parts.json"
-    )
-    translate_battle_event_msgs(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-bgm-parts.json"
-    )
-    translate_battle_event_msgs(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-support-parts.json"
-    )
+    # translate_battle_event_msgs(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-parts.json"
+    # )
+    # translate_battle_event_msgs(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-bgm-parts.json"
+    # )
+    # translate_battle_event_msgs(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\event\msg-support-parts.json"
+    # )
     # translate_battle_support_message_bmds()
     # translate_item_tbl()
     # translate_battle_table_tbl()
@@ -584,5 +584,11 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\script\support\msg-parts.json"
     # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\script\gimmick\msg-parts.json"
+    # )
+    translate_Json(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\script\msg-parts.json"
+    )
 
     pass
