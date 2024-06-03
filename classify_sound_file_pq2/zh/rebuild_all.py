@@ -16,7 +16,14 @@ os.chdir(workplaceRoot)
 
 
 
+import facility.pack.top_arc.bf as fptb
+fptb.rebuildBf()
 
+import facility.pack.top_arc.bmd as fptb
+fptb.rebuildAllBmd()
+
+import facility.pack.top_arc.arc as fpta
+fpta.repack()
 
 import dungeon.message.bmd as dmb
 dmb.rebuildAllBmd()

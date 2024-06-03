@@ -316,19 +316,19 @@ Done
 dungeon\pack\dng_com.arc
 \dungeon\pack\field\f01_01.arc
 \dungeon\floor_name.tbl 似乎是世界树迷宫的文件
-\dungeon\message
-\dungeon\script\charaTalk
+\dungeon\message Done
+\dungeon\script\charaTalk Done
 Error: Result of void-returning function 'WND_FUNCTION_001E' was used
 
-\dungeon\script\gimmick
-\dungeon\script\support
-\dungeon\script\dun_com.bf
+\dungeon\script\gimmick Done
+\dungeon\script\support Done
+\dungeon\script\dun_com.bf Done
 
 \facility
 arc file?
 \facility\pack\cmbroot.arc Done
 \facility\pack\shop.arc Done
-\facility\pack\top.arc
+\facility\pack\top.arc Done
 facility/ *.bmd Done
 facility/ *.bf Done
 
