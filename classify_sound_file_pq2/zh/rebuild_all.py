@@ -13,6 +13,20 @@ os.chdir(workplaceRoot)
 # import build_fake_charset.build_new_charset_bcfnt as bfcbc
 # bfcbc.buildCharsetBcFnt()
 
+
+
+
+
+
+import dungeon.message.bmd as dmb
+dmb.rebuildAllBmd()
+
+import dungeon.message.objective.free.bmd as dmofb
+dmofb.rebuildAllBmd()
+
+import dungeon.message.objective.quest.bmd as dmofq
+dmofq.rebuildAllBmd()
+
 import attraction.tbl as at
 at.rebuildTbl()
 
