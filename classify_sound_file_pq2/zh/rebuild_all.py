@@ -19,6 +19,9 @@ at.rebuildTbl()
 import dungeon.script.charaTalk.bf as dscb
 dscb.rebuildBf()
 
+import dungeon.script.support.bf as dssb
+dssb.rebuildBf()
+
 # import battle.support.bvp_bmd as bsb
 # bsb.rebuilBvp()
 
