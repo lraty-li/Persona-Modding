@@ -116,6 +116,9 @@ fpsb.rebuildAllBmd()
 import facility.pack.shop_arc.arc as fpsa
 fpsa.rebuilArc()
 
+import init.spkrtbl_bin.spkrtbl as iss
+iss.rebuilBin()
+
 import init.cmptable_bin.rebuild_bmd as icbr
 icbr.rebuildBMDs()
 

@@ -599,11 +599,14 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\message\objective\quest\bmd-parts.json"
     # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\top_arc\msg-parts.json"
+    # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\top_arc\bmd-parts.json"
+    # )
     translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\top_arc\msg-parts.json"
-    )
-    translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\top_arc\bmd-parts.json"
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\spkrtbl_bin\spkrtbl-parts.json"
     )
 
     pass
