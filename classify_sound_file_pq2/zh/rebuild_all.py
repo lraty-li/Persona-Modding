@@ -70,6 +70,15 @@ brpb.rebuildBin()
 import battle.event.rebuild_msg as ber
 ber.rebuildBMDs()
 
+import battle.pack.btl_com_arc.bmd as bbab
+bbab.rebuildAllBmd()
+
+import battle.pack.btl_com_arc.mbm as bbam
+bbam.rebuildAllMbm()
+
+import battle.pack.btl_com_arc.arc as bpba
+bpba.repack()
+
 import battle.message.rebuild_bmd as bmr
 bmr.rebuildBMDs()
 
