@@ -25,6 +25,15 @@ fptb.rebuildAllBmd()
 import facility.pack.top_arc.arc as fpta
 fpta.repack()
 
+import dungeon.pack.dng_com_arc.bmd as dpdb
+dpdb.rebuildAllBmd()
+
+import dungeon.pack.dng_com_arc.bf as dpdb
+dpdb.rebuildBf()
+
+import dungeon.pack.dng_com_arc.arc as dpda
+dpda.repack()
+
 import dungeon.message.bmd as dmb
 dmb.rebuildAllBmd()
 
