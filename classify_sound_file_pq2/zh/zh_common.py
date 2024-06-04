@@ -72,6 +72,6 @@ def repackBin(folderPath, outputPath=None):
         outputPath = os.path.join(targPth.parent, targPth.name.replace("_", "."))
     if not os.path.exists(outputPath):
         os.mkdir(outputPath)
-    command = [pakPack, "pack", folderPath, "v2", outputPath]
+    command = [pakPack, "pack", str(folderPath), "v2", str(outputPath)]
     os.system(" ".join(command))
     return outputPath

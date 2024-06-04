@@ -134,6 +134,12 @@ fpsb.rebuildAllBmd()
 import facility.pack.shop_arc.arc as fpsa
 fpsa.rebuilArc()
 
+import init.tutorialtable_bin.ftd as itf
+itf.rebuildFtd()
+
+import init.tutorialtable_bin.bin as tb
+tb.repack()
+
 import init.spkrtbl_bin.spkrtbl as iss
 iss.rebuilBin()
 

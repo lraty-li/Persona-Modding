@@ -614,11 +614,14 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\battle\pack\btl_com_arc\mbm-parts.json"
     # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\pack\dng_com_arc\bmd-parts.json"
+    # )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\pack\dng_com_arc\msg-parts.json"
+    # )
     translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\pack\dng_com_arc\bmd-parts.json"
-    )
-    translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\dungeon\pack\dng_com_arc\msg-parts.json"
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\tutorialtable_bin\ftd-parts.json"
     )
 
     pass

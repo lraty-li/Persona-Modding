@@ -337,8 +337,8 @@ init/ *.bmd Done
 \init\itemtbl.bin Done
 \init\cmptable.bin Done
 \init\qsttable.bin
-\init\spkrtbl.bin
-\init\tutorialtable.bin
+\init\spkrtbl.bin Done
+\init\tutorialtable.bin Done
 
 \interfaceFile\Dungeon.mbm
 
@@ -557,3 +557,4 @@ BUG:
 额外的换行：翻译后文本比较长，被额外插入换行符。但如果关闭了合并为一样，原本的换行符也起作用
 
 战斗时效果提示
+
