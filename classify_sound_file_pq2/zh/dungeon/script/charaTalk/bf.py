@@ -55,7 +55,7 @@ def parseBfMsgs(folderRoot):
     files = os.listdir(folderRoot)
     msgFile = [i for i in files if i.endswith(".bf.msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(folderRoot, msgF))
+        msgData = parseMsgFile(os.path.join(folderRoot, msgF),False)
         msgMap[msgF] = msgData
     return msgMap
 

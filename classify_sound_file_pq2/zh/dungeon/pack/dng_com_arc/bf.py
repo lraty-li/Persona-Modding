@@ -15,7 +15,7 @@ from common import (
     writeBinFile,
     cacheRoot,
     rebuildCPKRoot,
-    createPath
+    createPath,
 )
 
 
@@ -56,7 +56,7 @@ def parseBfMsgs(folderRoot):
     files = os.listdir(folderRoot)
     msgFile = [i for i in files if i.endswith(".bf.msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(folderRoot, msgF))
+        msgData = parseMsgFile(os.path.join(folderRoot, msgF), False)
         msgMap[msgF] = msgData
     return msgMap
 
@@ -90,14 +90,14 @@ def rebuildBf():
         shutil.copy(bmdF, str(targetBmdf))
 
 
-targetBin = 'dng_com.arc'
+targetBin = "dng_com.arc"
 pathParts = [
     "dungeon",
     "pack",
 ]
 codeWorkplace = os.path.dirname(os.path.abspath(__file__))
 
-cacheWorkplace = Path().joinpath(cacheRoot, *pathParts, targetBin.replace('.','_'))
+cacheWorkplace = Path().joinpath(cacheRoot, *pathParts, targetBin.replace(".", "_"))
 reBuildBinRoot = cacheWorkplace
 unpackedToPath = Path(cacheWorkplace)
 decompiledCacheFolder = os.path.join(

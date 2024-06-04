@@ -339,6 +339,7 @@ init/ *.bmd Done
 \init\qsttable.bin
 \init\spkrtbl.bin Done
 \init\tutorialtable.bin Done
+init/ *.gsd
 
 \interfaceFile\Dungeon.mbm
 
@@ -551,10 +552,24 @@ event
 
 
 event关闭合并为一行，不然比如其他游戏主角的文本会因为换行符插入而混乱
+BUG:模型不说话了...，只有第一句嘴在动
 
 BUG:
-出现很多X，因为00填充吗？
+出现很多X，因为00填充吗？ 81 40？
 额外的换行：翻译后文本比较长，被额外插入换行符。但如果关闭了合并为一样，原本的换行符也起作用
 
 战斗时效果提示
 
+https://discord.com/channels/746211612981198989/746230710150496367/1153834584165847112
+
+equip-character name:
+cheat engine 搜索: aa8a828d (高巻)
+地址 1BA3A447450
+可能是在什么二进制程序里
+
+草，在cci\cxi0\exefs code.bin 里
+保存提示
+地图名称
+菜单-装备/技能-人物名称
+
+惊了，待机bgm是在p4加入之后会变的
