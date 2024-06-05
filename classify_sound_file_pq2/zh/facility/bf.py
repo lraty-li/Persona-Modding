@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.append(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh")
 from msg_parser import getMsgLines, parseMsgFile
-from common import dumpJson ,atlusScriptCompiler
+from common import dumpJson, atlusScriptCompiler
 
 
 def dumpBfs(eventRoot, cacheRoot):
@@ -23,7 +23,7 @@ def dumpBfs(eventRoot, cacheRoot):
                 if not os.path.exists(cacheTargetRoot):
                     os.makedirs(cacheTargetRoot, exist_ok=True)
                 cacheTargetPath = os.path.join(cacheTargetRoot, name).replace("\\", "/")
-                #copy to _cache
+                # copy to _cache
                 shutil.copy(targetPath, cacheTargetPath)
                 os.system(
                     atlusScriptCompiler
@@ -39,13 +39,13 @@ def dumpBfs(eventRoot, cacheRoot):
 
 
 # parse .bf.msg
-#TODO refactor, .bmd.msg, .bf.msg
+# TODO refactor, .bmd.msg, .bf.msg
 def parseBfMsgs(folderRoot):
     msgMap = {}
     files = os.listdir(folderRoot)
     msgFile = [i for i in files if i.endswith(".bf.msg")]
     for msgF in msgFile:
-        msgData = parseMsgFile(os.path.join(folderRoot, msgF))
+        msgData = parseMsgFile(os.path.join(folderRoot, msgF), False)
         msgMap[msgF] = msgData
     return msgMap
 
