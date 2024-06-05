@@ -126,7 +126,7 @@ def isKeyWordListInText(text, keyWords):
 def _simpleFiltOut(zhMsg, jpMsg):
     maxZhLenth = len(jpMsg) * 2
     if zhMsg == None:
-        zhMsg = ""
+        zhMsg = " " # do not return empty msg, it would stuck the dialogue
     if isKeyWordListInText(zhMsg, keepRawKeyWords):
         zhMsg = jpMsg
     if len(zhMsg) > maxZhLenth:
