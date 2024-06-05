@@ -125,8 +125,8 @@ def isKeyWordListInText(text, keyWords):
 
 def _simpleFiltOut(zhMsg, jpMsg):
     maxZhLenth = len(jpMsg) * 2
-    if zhMsg == None:
-        zhMsg = " " # do not return empty msg, it would stuck the dialogue
+    if zhMsg == None or len(zhMsg) == 0:
+        zhMsg = " "  # do not return empty msg, it would stuck the dialogue
     if isKeyWordListInText(zhMsg, keepRawKeyWords):
         zhMsg = jpMsg
     if len(zhMsg) > maxZhLenth:
@@ -623,8 +623,8 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\tutorialtable_bin\ftd-parts.json"
     # )
-    # translate_Json(
-    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
-    # )
+    translate_Json(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
+    )
 
     pass

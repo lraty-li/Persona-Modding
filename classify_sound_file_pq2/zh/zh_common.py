@@ -51,10 +51,11 @@ def replaceZhToJpKanjiBytes(text, targetBytesLength, filling=b"\x00"):
 
 SPLITERS = ["，", "。", "？", "…", "?", "!", "."]
 # \"
-NEW_LINE_THREADHOLD = 22
+NEW_LINE_THREADHOLD = 18
 
 
 def joinNewLineCtlStr(text):
+    # TODO custom NEW_LINE_THREADHOLD
     if len(text) > NEW_LINE_THREADHOLD:
         splited = False
         for spliter in SPLITERS:
