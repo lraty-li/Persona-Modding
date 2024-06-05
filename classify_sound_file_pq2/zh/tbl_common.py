@@ -14,11 +14,14 @@ def reJoinMsgBytes(msgs, otherBytes):
     for index in range(otherBytesLength):
         reJoin += otherBytes[index]
         if index < msgsLength:
-            msgBytes = msgs[index].encode("shiftjis")
+            if(type(msgs[index]) == str):
+                msgBytes = msgs[index].encode("shiftjis")
+            elif(type(msgs[index]) == bytes):
+                msgBytes = msgs[index]
             reJoin += msgBytes
     return reJoin
 
-
+#TODO refactor zh/code_bin/splitBytesCodeBin
 def splitBytes(bBytes):
     inMsgLine = False  # status
     msgPiece = []
@@ -33,7 +36,7 @@ def splitBytes(bBytes):
 
         if inMsgLine:
             try:
-                if twoBytes == b"\x00":
+                if twoBytes == b"\x00": #?
                     raise UnicodeDecodeError("shiftjis", bBytes, index, -1, "")
                 char = twoBytes.decode("shiftjis")
                 msgPiece += char

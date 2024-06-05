@@ -10,7 +10,8 @@ zhChar2JpKanji = loadJson(zhChar2JpKanjiPath)
 JpKanji2zhChar = loadJson(JpKanji2zhCharPath)
 
 # clear?
-notFoundedCharWhenReplace =[]
+notFoundedCharWhenReplace = []
+
 
 def replaceZhToJpKanji(text):
     replacedLine = ""
@@ -20,13 +21,28 @@ def replaceZhToJpKanji(text):
         else:
             # TODO 区分是跳过部分还是无编码
             # replacedLine += char  # 被跳过的部分，所以不会有编码
-            if(char in JpKanji2zhChar.keys()):
-                replacedLine += " " 
+            if char in JpKanji2zhChar.keys():
+                replacedLine += " "
             else:
-                print("WARN: {} not found in zhChar2JpKanji or JpKanji2zhChar".format(char))
+                print(
+                    "WARN: {} not found in zhChar2JpKanji or JpKanji2zhChar".format(
+                        char
+                    )
+                )
                 replacedLine += " "
                 notFoundedCharWhenReplace.append(char)
     return replacedLine
+
+
+def replaceZhToJpKanjiBytes(text, targetBytesLength, filling=b"\x00"):
+    textRp = replaceZhToJpKanji(text)
+    textRpBytes = textRp.encode("shiftjis")
+    lengthDiff = targetBytesLength - len(textRpBytes)
+    if lengthDiff < 0:
+        textRpBytes = textRpBytes[:lengthDiff]
+    else:
+        textRpBytes += filling * lengthDiff
+    return textRpBytes
 
 
 SPLITERS = ["，", "。", "？", "…", "?", "!", "."]

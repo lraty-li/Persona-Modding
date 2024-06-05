@@ -62,6 +62,8 @@ def getReveBinValue(bBytes):
     return int(sum)
 
 def fillToBytes(start, container, bBytes):
+    if(type(container) == bytes):
+        container = list(container)
     if len(bBytes) > len(container):
         raise
     else:
