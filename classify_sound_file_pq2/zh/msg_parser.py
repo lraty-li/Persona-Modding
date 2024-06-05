@@ -174,7 +174,7 @@ def progressBlock(block,joinMsgOneLine):
     return {"header": headerParts, "speaker": speaker, "linesInfo": data}
 
 
-def parseMsgFile(filePath,joinMsgOneLine = True):
+def parseMsgFile(filePath,joinMsgOneLine = False):
     blocksData = []
     msgRaw = []
     with open(filePath, "r") as msgFile:

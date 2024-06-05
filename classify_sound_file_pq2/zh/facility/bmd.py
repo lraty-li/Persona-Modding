@@ -12,11 +12,18 @@ def parseMsgs(cacheFolder):
     msgMap = {}
     files = os.listdir(cacheFolder)
     msgFile = [i for i in files if i.endswith(".bmd.msg")]
-    notJoinTargets = ["msg_combine.bmd.msg", "msg_weapon.bmd.msg"]
+    joinTargets = [
+        "msg_usercmm.bmd.msg",
+        "msg_trade.bmd.msg",
+        "msg_sklcard.bmd.msg",
+        "msg_costume.bmd.msg",
+        "msg_book.bmd.msg",
+        "msg_market.bmd.msg"
+    ]
     for msgF in msgFile:
-        shouldJoinLine = True
-        if msgF in notJoinTargets:
-            shouldJoinLine = False
+        shouldJoinLine = False
+        if msgF in joinTargets:
+            shouldJoinLine = True
         msgData = parseMsgFile(
             os.path.join(cacheFolder, msgF), joinMsgOneLine=shouldJoinLine
         )
@@ -49,7 +56,6 @@ def rebuildBmds(workplaceRoot, rebuildMsgOutputRoot, moveToRoot):
         shutil.copy(bmdF, targetBmdf)
 
 
-
 codeWorkplace = os.path.dirname(os.path.abspath(__file__))
 
 cacheWorkplace = Path().joinpath(cacheRoot, "facility")
@@ -69,5 +75,5 @@ def rebuildAllBmd():
 
 
 if __name__ == "__main__":
-    collectMsg(str(codeWorkplace),cacheWorkplace)
-    # rebuildAllBmd()
+    # collectMsg(str(codeWorkplace), cacheWorkplace)
+    rebuildAllBmd()
