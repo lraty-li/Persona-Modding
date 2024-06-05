@@ -41,7 +41,11 @@ def replaceZhToJpKanjiBytes(text, targetBytesLength, filling=b"\x00"):
     if lengthDiff < 0:
         textRpBytes = textRpBytes[:lengthDiff]
     else:
-        textRpBytes += filling * lengthDiff
+        textRpBytes = (
+            filling * int(lengthDiff / 2)
+            + textRpBytes
+            + filling * int((lengthDiff + 1) / 2)
+        )
     return textRpBytes
 
 

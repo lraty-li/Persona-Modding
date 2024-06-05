@@ -39,13 +39,11 @@ def splitBytesCodeBin(bBytes):
     otherBytes = []
     msgs = []
     indexReadAdd = 2
-    while 1:
-        if index + 2 > rawBytesLength:
-            break
+    while index + indexReadAdd <= rawBytesLength:
         decodeTarget = rawBytes[index : index + indexReadAdd]
         try:
             char = decodeTarget.decode("shiftjis")
-            if decodeTarget == b"\x0a" or decodeTarget[:1] == b"\x0a":
+            if decodeTarget == b"\x0a" or decodeTarget[:1] < b"\x7f":
                 # 换行符放入other byte
                 status = DecodeStatus.decodeOneByteNotPassNext
                 raise UnicodeDecodeError("shiftjis", bBytes, index, -1, "")
@@ -87,9 +85,6 @@ def splitBytesCodeBin(bBytes):
     if len(otherBytesPiece) > 0:
         otherBytes.append(otherBytesPiece)
     msgs = ["".join(i) for i in msgs]
-    # 合并方式：
-    # 从otherBytes 开始，互相拉链式缝合回去
-    # rejoin check
     rejoined = reJoinMsgBytes(msgs, otherBytes)
     if bytes(rejoined) != bBytes:
         raise Exception("rejoin fail")
@@ -116,6 +111,11 @@ def collectMsg(num, rawBytes):
     print()
 
 
+def collectAllMsg():
+    for index in offsets:
+        collectMsg(index, rawBytes)
+
+
 def buildPatchBytes(num, zhMsgMap, rawData):
 
     start = offsets[str(num)]["start"]
@@ -124,14 +124,15 @@ def buildPatchBytes(num, zhMsgMap, rawData):
     jpOtherBytes = rawData[1]
     zhMsgRps = []
     for index in range(len(zhMsgMap)):
-        if("codeBin_{}_{}".format(num, index) == 'codeBin_1_246'):
+        if "codeBin_{}_{}".format(num, index) == "codeBin_1_246":
             print()
         zhMsg = zhMsgMap["codeBin_{}_{}".format(num, index)]
         jpMsg = jpMsgs[index]
-        #TODO 填充不能为 00 ，之前的缺失可能原因
-        #TODO 81 40 显示为X，字库问题
-        #TODO 居中，允许从两侧fill
-        zhMsgRpBytes = replaceZhToJpKanjiBytes(zhMsg, len(jpMsg.encode("shiftjis")),filling=b'\x20')
+        # TODO 填充不能为 00 ，之前的缺失可能原因
+        # TODO 81 40 显示为X，字库问题
+        zhMsgRpBytes = replaceZhToJpKanjiBytes(
+            zhMsg, len(jpMsg.encode("shiftjis")), filling=b"\x20"
+        )
         zhMsgRps.append(zhMsgRpBytes)
     joinedBytes = reJoinMsgBytes(zhMsgRps, jpOtherBytes)
     assert len(joinedBytes) == end - start
@@ -145,12 +146,16 @@ def patchAll():
 
     joinedBytes = buildPatchBytes(target, zhMsgMap, rawMsgMap[str(target)])
     fileBytes = fillToBytes(offsets[str(target)]["start"], rawBytes[:], joinedBytes)
-    outputPath = r'D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool\cci\cxi0\exefs\code.bin'
+    outputPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool\cci\cxi0\exefs\code.bin"
     # writeBinFile(Path().joinpath(codeWorkplace, "test.bin"), fileBytes)
     writeBinFile(outputPath, fileBytes)
     os.chdir(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool")
-    os.system(r'.\3dstool.exe -cvtfz exefs cci\cxi0\exefs.bin --header cci\cxi0\exefs\exefsheader.bin --exefs-dir cci\cxi0\exefs')
-    os.system(r'.\3dstool.exe -cvtf cxi cci\0.cxi --header cci\cxi0\ncchheader.bin --exh cci\cxi0\exh.bin --logo cci\cxi0\logo.bcma.lz --plain cci\cxi0\plain.bin --exefs cci\cxi0\exefs.bin --romfs cci\cxi0\romfs.bin --not-encrypt')
+    os.system(
+        r".\3dstool.exe -cvtfz exefs cci\cxi0\exefs.bin --header cci\cxi0\exefs\exefsheader.bin --exefs-dir cci\cxi0\exefs"
+    )
+    os.system(
+        r".\3dstool.exe -cvtf cxi cci\0.cxi --header cci\cxi0\ncchheader.bin --exh cci\cxi0\exh.bin --logo cci\cxi0\logo.bcma.lz --plain cci\cxi0\plain.bin --exefs cci\cxi0\exefs.bin --romfs cci\cxi0\romfs.bin --not-encrypt"
+    )
 
 
 targetFile = "code.bin"
@@ -163,5 +168,5 @@ zhJsonPath = Path().joinpath(codeWorkplace, "msg-parts-zh.json")
 rawBytes = readBinFile(oriBinPath)  # 文件很大，不重复读取
 
 if __name__ == "__main__":
-    # collectMsg(1)
+    # collectAllMsg()
     patchAll()
