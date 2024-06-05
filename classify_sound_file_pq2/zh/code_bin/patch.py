@@ -25,7 +25,12 @@ class DecodeStatus(Enum):
     decodeOneByteNotPassNext = 3
 
 
-offsets = {"1": {"start": 0x4B548A, "end": 0x4B7689}}
+offsets = {
+    "0": {"start": 0x45EB14, "end": 0x45EDC4},
+    "1": {"start": 0x4B548A, "end": 0x4B7689},
+    "2": {"start": 0x458F04, "end": 0x458F87},
+    "3": {"start": 0x455284, "end": 0x4554EF},
+}
 
 
 def splitBytesCodeBin(bBytes):
@@ -39,7 +44,11 @@ def splitBytesCodeBin(bBytes):
     otherBytes = []
     msgs = []
     indexReadAdd = 2
-    while index + indexReadAdd <= rawBytesLength:
+    while 1:
+        if 0 < rawBytesLength - index < indexReadAdd:
+            indexReadAdd = rawBytesLength - index
+        if index + indexReadAdd > rawBytesLength:
+            break
         decodeTarget = rawBytes[index : index + indexReadAdd]
         try:
             char = decodeTarget.decode("shiftjis")
@@ -91,7 +100,7 @@ def splitBytesCodeBin(bBytes):
     return msgs, otherBytes
 
 
-def collectMsg(num, rawBytes):
+def collectMsg(num, rawBytes, msgMap, flattenMap):
 
     start = offsets[str(num)]["start"]
     end = offsets[str(num)]["end"]
@@ -99,21 +108,26 @@ def collectMsg(num, rawBytes):
     msgs = rawBytes[start:end]
     # 81 41 0A 82 6D 82 64, 在现有的splitBytes 0A 82 被合并读取导致打乱
     splitedMsg = splitBytesCodeBin(msgs)
-    msgMap = {}
     msgMap[str(num)] = splitedMsg
-    dumpJson(outputJsonPath, msgMap)
-    # flatten
-    flattenMsgMap = {}
-    msgLines = splitedMsg[0]
-    for index in range(len(msgLines)):
-        flattenMsgMap["codeBin_{}_{}".format(num, index)] = msgLines[index]
-    dumpJson(outputPartsJsonPath, flattenMsgMap)
-    print()
+    return msgMap
 
 
 def collectAllMsg():
+    msgMap = {}
+    flattenMsgMap = {}
     for index in offsets:
-        collectMsg(index, rawBytes)
+        msgMap = collectMsg(index, rawBytes, msgMap, flattenMsgMap)
+    for index in msgMap:
+        msgLines = msgMap[index][0]
+        for lineIndex in range(len(msgLines)):
+            # flatten
+            flattenMsgMap["codeBin_{}_{}".format(index, lineIndex)] = msgLines[
+                lineIndex
+            ]
+
+    dumpJson(outputJsonPath, msgMap)
+    dumpJson(outputPartsJsonPath, flattenMsgMap)
+    print()
 
 
 def buildPatchBytes(num, zhMsgMap, rawData):
@@ -123,7 +137,7 @@ def buildPatchBytes(num, zhMsgMap, rawData):
     jpMsgs = rawData[0]
     jpOtherBytes = rawData[1]
     zhMsgRps = []
-    for index in range(len(zhMsgMap)):
+    for index in range(len(jpMsgs)):
         if "codeBin_{}_{}".format(num, index) == "codeBin_1_246":
             print()
         zhMsg = zhMsgMap["codeBin_{}_{}".format(num, index)]
@@ -140,15 +154,18 @@ def buildPatchBytes(num, zhMsgMap, rawData):
 
 
 def patchAll():
-    target = 1
+
     zhMsgMap = loadJson(zhJsonPath)
     rawMsgMap = loadJson(outputJsonPath)
-
-    joinedBytes = buildPatchBytes(target, zhMsgMap, rawMsgMap[str(target)])
-    fileBytes = fillToBytes(offsets[str(target)]["start"], rawBytes[:], joinedBytes)
+    rebuildBytes = rawBytes[:]
+    for target in offsets:
+        joinedBytes = buildPatchBytes(target, zhMsgMap, rawMsgMap[str(target)])
+        rebuildBytes = fillToBytes(
+            offsets[str(target)]["start"], rebuildBytes, joinedBytes
+        )
     outputPath = r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool\cci\cxi0\exefs\code.bin"
     # writeBinFile(Path().joinpath(codeWorkplace, "test.bin"), fileBytes)
-    writeBinFile(outputPath, fileBytes)
+    writeBinFile(outputPath, rebuildBytes)
     os.chdir(r"D:\code\git\Persona-Modding\classify_sound_file_pq2\3dstool")
     os.system(
         r".\3dstool.exe -cvtfz exefs cci\cxi0\exefs.bin --header cci\cxi0\exefs\exefsheader.bin --exefs-dir cci\cxi0\exefs"
