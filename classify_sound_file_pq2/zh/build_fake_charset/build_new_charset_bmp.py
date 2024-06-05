@@ -88,7 +88,7 @@ def buildImage(charset, fontName, charImgRoot, charSize, fontPath):
     )
     # 原版的 "pq2_seurapro_13_13 比 pq2_seurapro_12_12 在12行多了一个∥，之后全部往后推"
     # 所以把bypass前推到11，不然因为原版字符图片的错位，新生成的字符图片会有错位，例如索引片假的时候。    
-    BYPASS_LINE_NUM = 9
+    BYPASS_LINE_NUM = 7
     lineIndex = 0
     for lineIndex in range(len(charset)):
         line = charset[lineIndex]
