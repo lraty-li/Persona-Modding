@@ -34,18 +34,21 @@ def replaceZhToJpKanji(text):
     return replacedLine
 
 
-def replaceZhToJpKanjiBytes(text, targetBytesLength, filling=b"\x00"):
+def replaceZhToJpKanjiBytes(text, targetBytesLength, filling=b"\x00", center=True):
     textRp = replaceZhToJpKanji(text)
     textRpBytes = textRp.encode("shiftjis")
     lengthDiff = targetBytesLength - len(textRpBytes)
     if lengthDiff < 0:
         textRpBytes = textRpBytes[:lengthDiff]
     else:
-        textRpBytes = (
-            filling * int(lengthDiff / 2)
-            + textRpBytes
-            + filling * int((lengthDiff + 1) / 2)
-        )
+        if center:
+            textRpBytes = (
+                filling * int(lengthDiff / 2)
+                + textRpBytes
+                + filling * int((lengthDiff + 1) / 2)
+            )
+        else:
+            textRpBytes = textRpBytes + filling * int(lengthDiff)
     return textRpBytes
 
 
