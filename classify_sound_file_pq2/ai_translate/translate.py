@@ -15,6 +15,9 @@ client = openai.OpenAI(
     api_key=API_KEY,
     base_url="https://api.v36.cm/v1/",
 )
+p5rCmpMap = loadJson(
+    r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\charset\p5r_cmpMap.json"
+)
 
 
 def trans_init_cmptable_ctd():
@@ -137,9 +140,11 @@ def _simpleFiltOut(zhMsg, jpMsg):
 
 def mutiThreadTranslate(client, jpLine, msgMap, mbmF):
     try:
-        zhMsg = translate(client, jpLine)
-        # TODO zhMsg may be None?
-        zhMsg = _simpleFiltOut(zhMsg, jpLine)
+        if jpLine in p5rCmpMap.keys():
+            zhMsg = p5rCmpMap[jpLine]
+        else:
+            zhMsg = translate(client, jpLine)
+            zhMsg = _simpleFiltOut(zhMsg, jpLine)
     except Exception as e:
         print(e)
         zhMsg = "ERROR"
@@ -550,7 +555,7 @@ if __name__ == "__main__":
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
     # )
     # translate_init_bmds()
-    # translate_init_itemtbl_bin()
+    translate_init_itemtbl_bin()
     # translate_facility_pack_shop_arc_bmd()
     # translate_facility_pack_shop_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
@@ -623,9 +628,9 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\tutorialtable_bin\ftd-parts.json"
     # )
-    translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
-    )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
+    # )
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\qsttable_bin\spkrtbl-parts.json"
     # )
