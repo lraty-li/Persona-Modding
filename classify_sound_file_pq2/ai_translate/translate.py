@@ -623,11 +623,11 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\tutorialtable_bin\ftd-parts.json"
     # )
-    # translate_Json(
-    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
-    # )
     translate_Json(
-        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\qsttable_bin\spkrtbl-parts.json"
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
     )
+    # translate_Json(
+    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\qsttable_bin\spkrtbl-parts.json"
+    # )
 
     pass

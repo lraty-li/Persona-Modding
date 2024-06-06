@@ -573,3 +573,5 @@ cheat engine 搜索: aa8a828d (高巻)
 菜单-装备/技能-人物名称
 
 惊了，待机bgm是在p4加入之后会变的
+
+init item tbl filling

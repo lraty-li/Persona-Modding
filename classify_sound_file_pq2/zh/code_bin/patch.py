@@ -30,6 +30,13 @@ offsets = {
     "1": {"start": 0x4B548A, "end": 0x4B7689},
     "2": {"start": 0x458F04, "end": 0x458F87},
     "3": {"start": 0x455284, "end": 0x4554EF},
+    "4": {"start": 0x45E584, "end": 0x45E72B},
+    "5": {"start": 0x45E78C, "end": 0x45E907},
+    "6": {"start": 0x453CF8, "end": 0x453DAF},
+    "7": {"start": 0x45862C, "end": 0x458650},
+    "8": {"start": 0x459AB8, "end": 0x459C55},
+    "9": {"start": 0x459CA4, "end": 0x459CFB},
+    "10": {"start": 0x45E5B4, "end": 0x45E72B},
 }
 
 
@@ -185,5 +192,9 @@ zhJsonPath = Path().joinpath(codeWorkplace, "msg-parts-zh.json")
 rawBytes = readBinFile(oriBinPath)  # 文件很大，不重复读取
 
 if __name__ == "__main__":
+    for i in offsets:
+        start = offsets[i]["start"]
+        end = offsets[i]["end"]
+        assert end > start
     # collectAllMsg()
     patchAll()
