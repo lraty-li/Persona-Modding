@@ -128,6 +128,8 @@ def isKeyWordListInText(text, keyWords):
 
 def _simpleFiltOut(zhMsg, jpMsg):
     maxZhLenth = len(jpMsg) * 2
+    if jpMsg.isspace():
+        zhMsg = jpMsg
     if zhMsg == None or len(zhMsg) == 0:
         zhMsg = " "  # do not return empty msg, it would stuck the dialogue
     if isKeyWordListInText(zhMsg, keepRawKeyWords):
@@ -138,16 +140,26 @@ def _simpleFiltOut(zhMsg, jpMsg):
     return zhMsg
 
 
+def _shouldByPass(jpMsg):
+    shouldByPass = False
+    if jpMsg.isspace():
+        shouldByPass = True
+    return shouldByPass
+
+
 def mutiThreadTranslate(client, jpLine, msgMap, mbmF):
     try:
         if jpLine in p5rCmpMap.keys():
             zhMsg = p5rCmpMap[jpLine]
         else:
-            zhMsg = translate(client, jpLine)
-            zhMsg = _simpleFiltOut(zhMsg, jpLine)
+            if not _shouldByPass(jpLine):
+                zhMsg = translate(client, jpLine)
+                zhMsg = _simpleFiltOut(zhMsg, jpLine)
+            else:
+                zhMsg = jpLine.replace("　",' ')
     except Exception as e:
         print(e)
-        zhMsg = "ERROR"
+        zhMsg = "ERROR: TRANSLATE"
     print("{} | {}".format(jpLine, zhMsg))
     msgMap[mbmF] = zhMsg
 
@@ -555,7 +567,7 @@ if __name__ == "__main__":
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\msg-parts.json"
     # )
     # translate_init_bmds()
-    translate_init_itemtbl_bin()
+    # translate_init_itemtbl_bin()
     # translate_facility_pack_shop_arc_bmd()
     # translate_facility_pack_shop_arc_bf(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\facility\pack\shop_arc\msg-parts.json"
@@ -628,9 +640,9 @@ if __name__ == "__main__":
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\tutorialtable_bin\ftd-parts.json"
     # )
-    # translate_Json(
-    #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
-    # )
+    translate_Json(
+        r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\code_bin\msg-parts.json"
+    )
     # translate_Json(
     #     r"D:\code\git\Persona-Modding\classify_sound_file_pq2\zh\init\qsttable_bin\spkrtbl-parts.json"
     # )
